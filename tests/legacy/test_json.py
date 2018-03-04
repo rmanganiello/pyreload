@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 
+from json import loads
+from logging import log
+import unittest
 from urllib import urlencode
 from urllib2 import urlopen, HTTPError
-from json import loads
 
-from logging import log
+import pytest
+
 
 url = "http://localhost:8001/api/%s"
 
-class TestJson:
+@pytest.mark.skip(reason='Broken legacy tests')
+class TestJson(unittest.TestCase):
 
     def call(self, name, post=None):
         if not post: post = {}
