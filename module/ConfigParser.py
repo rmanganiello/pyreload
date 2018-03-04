@@ -77,7 +77,7 @@ class ConfigParser:
 
             if not v or int(v) < CONF_VERSION:
                 copy(join(pypath, "module", "config", "default.conf"), "pyload.conf")
-                print "Old version of config was replaced"
+                print("Old version of config was replaced")
 
             f = open("plugin.conf", "rb")
             v = f.readline()
@@ -88,7 +88,7 @@ class ConfigParser:
                 f = open("plugin.conf", "wb")
                 f.write("version: " + str(CONF_VERSION))
                 f.close()
-                print "Old version of plugin-config replaced"
+                print("Old version of plugin-config replaced")
         except:
             if n < 3:
                 sleep(0.3)
@@ -113,7 +113,7 @@ class ConfigParser:
             self.updateValues(homeconf, self.config)
 
         except Exception, e:
-            print "Config Warning"
+            print("Config Warning")
             print_exc()
 
 
@@ -190,8 +190,8 @@ class ConfigParser:
                                                      "value": value}
 
             except Exception, e:
-                print "Config Warning:"
-                print line
+                print("Config Warning:")
+                print(line)
                 print_exc()
 
         f.close()
@@ -390,8 +390,8 @@ if __name__ == "__main__":
 
     b = time()
 
-    print "sec", b - a
+    print("sec", b - a)
 
-    print c.config
+    print(c.config)
 
     c.saveConfig(c.config, "user.conf")

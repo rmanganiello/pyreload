@@ -70,9 +70,9 @@ class CNLHandler(BaseHTTPRequestHandler):
     #    pass
 
     def add_package(self, name, urls, queue=0):
-        print "name", name
-        print "urls", urls
-        print "queue", queue
+        print("name", name)
+        print("urls", urls)
+        print("queue", queue)
 
     def get_post(self, name, default=""):
         if name in self.post:
@@ -223,4 +223,4 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             s.stop = True
             s.stopped = True
-            print "quiting.."
+            print("quiting..")

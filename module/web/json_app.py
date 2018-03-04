@@ -68,7 +68,7 @@ def links():
 @route("/json/packages")
 @login_required('LIST')
 def packages():
-    print "/json/packages"
+    print("/json/packages")
     try:
         data = PYLOAD.getQueue()
 
@@ -308,5 +308,5 @@ def change_password():
     newpw = request.POST["login_new_password"]
 
     if not PYLOAD.changePassword(user, oldpw, newpw):
-        print "Wrong password"
+        print("Wrong password")
         return HTTPError()

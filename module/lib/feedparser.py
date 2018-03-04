@@ -3869,7 +3869,7 @@ if __name__ == '__main__':
             sys.exit(0)
     else:
         if not sys.argv[1:]:
-            print __doc__
+            print(__doc__)
             sys.exit(0)
         class _Options:
             etag = modified = agent = referrer = None

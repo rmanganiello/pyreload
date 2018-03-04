@@ -97,7 +97,7 @@ class DatabaseJob():
         except Exception, e:
             print_exc()
             try:
-                print "Database Error @", self.f.__name__, self.args[1:], self.kwargs, e
+                print("Database Error @", self.f.__name__, self.args[1:], self.kwargs, e)
             except:
                 pass
 
@@ -173,7 +173,7 @@ class DatabaseBackend(Thread):
                 try:
                     self.manager.core.log.warning(_("Filedatabase was deleted due to incompatible version."))
                 except:
-                    print "Filedatabase was deleted due to incompatible version."
+                    print("Filedatabase was deleted due to incompatible version.")
                 remove("files.version")
                 move("files.db", "files.backup.db")
             f = open("files.version", "wb")
@@ -188,7 +188,7 @@ class DatabaseBackend(Thread):
             try:
                 self.core.log.error(_("Filedatabase could NOT be converted."))
             except:
-                print "Filedatabase could NOT be converted."
+                print("Filedatabase could NOT be converted.")
     
     #--convert scripts start
     
@@ -197,7 +197,7 @@ class DatabaseBackend(Thread):
         try:
             self.manager.core.log.info(_("Database was converted from v2 to v3."))
         except:
-            print "Database was converted from v2 to v3."
+            print("Database was converted from v2 to v3.")
         self._convertV3()
     
     def _convertV3(self):
@@ -205,7 +205,7 @@ class DatabaseBackend(Thread):
         try:
             self.manager.core.log.info(_("Database was converted from v3 to v4."))
         except:
-            print "Database was converted from v3 to v4."
+            print("Database was converted from v3 to v4.")
     
     #--convert scripts end
     
@@ -251,7 +251,7 @@ class DatabaseBackend(Thread):
             try:
                 self.core.log.info(_("Converting old Django DB"))
             except:
-                print "Converting old Django DB"
+                print("Converting old Django DB")
             conn = sqlite3.connect('pyload.db')
             c = conn.cursor()
             c.execute("SELECT username, password, email from auth_user WHERE is_superuser")
@@ -326,14 +326,14 @@ if __name__ == "__main__":
             c = db.createCursor()
             for i in range(10):
                 res = c.execute("SELECT value FROM storage WHERE identifier=? AND key=?", ("foo", i))
-                print res.fetchone()
+                print(res.fetchone())
         
         @style.queue
         def error(db):
             c = db.createCursor()
-            print "a"
+            print("a")
             c.execute("SELECT myerror FROM storage WHERE identifier=? AND key=?", ("foo", i))
-            print "e"
+            print("e")
     
     db.registerSub(Test)
     from time import time
@@ -341,12 +341,12 @@ if __name__ == "__main__":
     for i in range(100):
         db.insert()
     end = time()
-    print end-start
+    print(end-start)
     
     start = time()
     db.insert2()
     end = time()
-    print end-start
+    print(end-start)
     
     db.error()
 

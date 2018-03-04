@@ -160,9 +160,9 @@ def choose_path(browse_for, path=""):
 ## Views
 @error(500)
 def error500(error):
-    print "An error occured while processing the request."
+    print("An error occured while processing the request.")
     if error.traceback:
-        print error.traceback
+        print(error.traceback)
 
     return base(["An Error occured, please enable debug mode to get more details.", error,
                  error.traceback.replace("\n", "<br>") if error.traceback else "No Traceback"])
@@ -323,7 +323,7 @@ def get_download(path):
         return static_file(fs_encode(path), fs_encode(root), download=True)
 
     except Exception, e:
-        print e
+        print(e)
         return HTTPError(404, "File not Found.")
 
 

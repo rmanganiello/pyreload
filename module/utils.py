@@ -64,7 +64,7 @@ else:
 def get_console_encoding(enc):
     if os.name == "nt": 
         if enc == "cp65001": # aka UTF-8
-            print "WARNING: Windows codepage 65001 is not supported."
+            print("WARNING: Windows codepage 65001 is not supported.")
             enc = "cp850"
     else:
         enc = "utf8"
@@ -196,6 +196,6 @@ def html_unescape(text):
     return re.sub("&#?\w+;", fixup, text)
 
 if __name__ == "__main__":
-    print freeSpace(".")
+    print(freeSpace("."))
 
-    print remove_chars("ab'cdgdsf''ds'", "'ghd")
+    print(remove_chars("ab'cdgdsf''ds'", "'ghd"))

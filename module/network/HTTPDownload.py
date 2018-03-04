@@ -334,7 +334,7 @@ if __name__ == "__main__":
     bucket.setRate(200 * 1024)
     bucket = None
 
-    print "starting"
+    print("starting")
 
     dwnld = HTTPDownload(url, "test_100mb.bin", bucket=bucket)
     dwnld.download(chunks=3, resume=True)

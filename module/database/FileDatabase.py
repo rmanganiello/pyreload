@@ -923,9 +923,9 @@ if __name__ == "__main__":
     db.db.commit()
 
     b = time()
-    print "adding 200 links, single sql execs, no commit", b-a
+    print("adding 200 links, single sql execs, no commit", b-a)
     
-    print db.getCompleteData(1)
+    print(db.getCompleteData(1))
  
     c  = time()
     
@@ -934,11 +934,11 @@ if __name__ == "__main__":
     
     d = time()
     
-    print "updates", d-c
+    print("updates", d-c)
 
-    print db.getCompleteData(1)
+    print(db.getCompleteData(1))
     
     
     e = time()
     
-    print "complete data", e-d
+    print("complete data", e-d)

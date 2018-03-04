@@ -52,7 +52,7 @@ from module.utils import formatSize, formatSpeed
 try:
     import pynotify
 except ImportError:
-    print "pynotify not installed, falling back to qt tray notification"
+    print("pynotify not installed, falling back to qt tray notification")
 
 class main(QObject):
     def __init__(self):
@@ -659,7 +659,7 @@ class main(QObject):
                         info = self.connector.getLinkInfo(event[3])
                         self.emit(SIGNAL("showMessage"), _("Added '%s' to queue") % info.name)
                 except:
-                    print "can't send notification"
+                    print("can't send notification")
             elif event.destination == Destination.Collector:
                 self.packageCollector.addEvent(event)
 
@@ -745,7 +745,7 @@ class Notification(QObject):
         try:
             self.usePynotify = pynotify.init("icon-summary-body")
         except:
-            print "init error"
+            print("init error")
 
     def showMessage(self, body):
         if self.usePynotify:

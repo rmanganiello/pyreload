@@ -57,7 +57,7 @@ def call_api(func, args=""):
 
 def callApi(func, *args, **kwargs):
     if not hasattr(PYLOAD.EXTERNAL, func) or func.startswith("_"):
-        print "Invalid API call", func
+        print("Invalid API call", func)
         return HTTPError(404, json.dumps("Not Found"))
 
     result = getattr(PYLOAD, func)(*[literal_eval(x) for x in args],

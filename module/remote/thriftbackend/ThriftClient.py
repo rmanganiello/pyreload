@@ -90,9 +90,9 @@ if __name__ == "__main__":
 
     client = ThriftClient(user="User", password="pwhere")
 
-    print client.getServerVersion()
-    print client.statusServer()
-    print client.statusDownloads()
+    print(client.getServerVersion())
+    print(client.statusServer())
+    print(client.statusDownloads())
     q = client.getQueue()
 
 #    for p in q:
@@ -101,9 +101,9 @@ if __name__ == "__main__":
 #      print "Package Name: ", data.name
 
 
-    print client.getServices()
-    print client.call(Pyload.ServiceCall("UpdateManager", "recheckForUpdates"))
+    print(client.getServices())
+    print(client.call(Pyload.ServiceCall("UpdateManager", "recheckForUpdates")))
 
-    print client.getConfigValue("download", "limit_speed", "core")
+    print(client.getConfigValue("download", "limit_speed", "core"))
 
     client.close()

@@ -41,7 +41,7 @@ def initReport():
 			reports.append(f)
 		
 	for i, f in enumerate(reports):
-		print "%s. %s" % (i,f) 
+		print("%s. %s" % (i,f)) 
 	
 	choice = raw_input("Choose Report: ")
 	
@@ -92,4 +92,4 @@ def initReport():
 	return frame, plugin, pyfile
 	
 if __name__=='__main__':
-	print "No main method, use this module with your python shell"
+	print("No main method, use this module with your python shell")

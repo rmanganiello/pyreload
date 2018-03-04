@@ -11,7 +11,7 @@ class RequestHandler(SocketServer.BaseRequestHandler):
 
     def handle(self):
 
-        print self.request.recv(1024)
+        print(self.request.recv(1024))
 
 
 

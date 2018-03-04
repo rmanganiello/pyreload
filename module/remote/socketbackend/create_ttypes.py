@@ -20,7 +20,7 @@ def main():
     enums = []
     classes = []
 
-    print "generating lightweight ttypes.py"
+    print("generating lightweight ttypes.py")
 
     for name in dir(ttypes):
         klass = getattr(ttypes, name)

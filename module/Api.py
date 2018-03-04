@@ -34,7 +34,7 @@ if activated:
         from remote.thriftbackend.thriftgen.pyload.Pyload import Iface
         BaseObject = TBase
     except ImportError:
-        print "Thrift not imported"
+        print("Thrift not imported")
         from remote.socketbackend.ttypes import *
 else:
     from remote.socketbackend.ttypes import *

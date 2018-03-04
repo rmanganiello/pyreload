@@ -8,47 +8,47 @@ import sys
 
 def main():
     print("#####   System Information   #####\n")
-    print("Platform:", sys.platform)
-    print("Operating System:", os.name)
-    print("Python:", sys.version.replace("\n", "")+ "\n")
+    print(("Platform:", sys.platform))
+    print(("Operating System:", os.name))
+    print(("Python:", sys.version.replace("\n", "")+ "\n"))
 
     try:
         import pycurl
-        print("pycurl:", pycurl.version)
+        print(("pycurl:", pycurl.version))
     except:
-        print("pycurl:", "missing")
+        print(("pycurl:", "missing"))
 
     try:
         import Crypto
-        print("py-crypto:", Crypto.__version__)
+        print(("py-crypto:", Crypto.__version__))
     except:
-        print("py-crypto:", "missing")
+        print(("py-crypto:", "missing"))
 
     try:
         import OpenSSL
-        print("OpenSSL:", OpenSSL.version.__version__)
+        print(("OpenSSL:", OpenSSL.version.__version__))
     except:
-        print("OpenSSL:", "missing")
+        print(("OpenSSL:", "missing"))
 
     try:
         from PIL import Image
-        print("image library:", Image.VERSION)
+        print(("image library:", Image.VERSION))
     except:
         try:
             import Image
-            print("image library:", Image.VERSION)
+            print(("image library:", Image.VERSION))
         except:
-            print("image library:", "missing")
+            print(("image library:", "missing"))
 
     try:
         import PyQt4.QtCore
-        print("pyqt:", PyQt4.QtCore.PYQT_VERSION_STR)
+        print(("pyqt:", PyQt4.QtCore.PYQT_VERSION_STR))
     except:
-        print("pyqt:", "missing")
+        print(("pyqt:", "missing"))
 
     from module.common import JsEngine
     js = "available" if JsEngine.ENGINE else "missing"
-    print("JS engine", js)
+    print(("JS engine", js))
 
     print("\n\n#####   System Status   #####")
     print("\n##  pyLoadCore  ##")
