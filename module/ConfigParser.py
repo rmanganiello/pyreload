@@ -62,13 +62,13 @@ class ConfigParser:
         try:
             if not exists("pyload.conf"):
                 copy(join(pypath, "module", "config", "default.conf"), "pyload.conf")
-                chmod("pyload.conf", 0600)
+                chmod("pyload.conf", 0o600)
 
             if not exists("plugin.conf"):
                 f = open("plugin.conf", "wb")
                 f.write("version: " + str(CONF_VERSION))
                 f.close()
-                chmod("plugin.conf", 0600)
+                chmod("plugin.conf", 0o600)
 
             f = open("pyload.conf", "rb")
             v = f.readline()
@@ -219,7 +219,7 @@ class ConfigParser:
     def saveConfig(self, config, filename):
         """saves config to filename"""
         with open(filename, "wb") as f:
-            chmod(filename, 0600)
+            chmod(filename, 0o600)
             f.write("version: %i \n" % CONF_VERSION)
             for section in sorted(config.iterkeys()):
                 f.write('\n%s - "%s":\n' % (section, config[section]["desc"]))

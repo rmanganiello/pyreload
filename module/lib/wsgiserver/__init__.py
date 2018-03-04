@@ -1565,7 +1565,7 @@ class CherryPyWSGIServer(object):
             except: pass
             
             # So everyone can access the socket...
-            try: os.chmod(self.bind_addr, 0777)
+            try: os.chmod(self.bind_addr, 0o777)
             except: pass
             
             info = [(socket.AF_UNIX, socket.SOCK_STREAM, 0, "", self.bind_addr)]

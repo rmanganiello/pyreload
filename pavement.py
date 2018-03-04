@@ -124,12 +124,12 @@ def get_source(options):
     folder = [x for x in path(".").dirs() if x.name.startswith("spoob-pyload-")][0]
     folder.move(pyload)
 
-    change_mode(pyload, 0644)
-    change_mode(pyload, 0755, folder=True)
+    change_mode(pyload, 0o644)
+    change_mode(pyload, 0o755, folder=True)
 
     for file in pyload.files():
         if file.name.endswith(".py"):
-            file.chmod(0755)
+            file.chmod(0o755)
 
     (pyload / ".hgtags").remove()
     (pyload / ".gitignore").remove()

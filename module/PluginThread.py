@@ -69,7 +69,7 @@ class PluginThread(Thread):
                     pass
 
             info = zipfile.ZipInfo(save_join(pyfile.pluginname, "debug_Report.txt"), gmtime())
-            info.external_attr = 0644 << 16L # change permissions
+            info.external_attr = 0o644 << 16 # change permissions
 
             zip.writestr(info, dump)
             zip.close()
