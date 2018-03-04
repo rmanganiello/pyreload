@@ -609,7 +609,7 @@ class HTTPRequest(object):
         # exc_info tuple."
         if self.sent_headers:
             try:
-                raise exc_info[0], exc_info[1], exc_info[2]
+                raise exc_info[0](exc_info[1]).with_traceback(exc_info[2])
             finally:
                 exc_info = None
         
@@ -1593,7 +1593,7 @@ class CherryPyWSGIServer(object):
                 continue
             break
         if not self.socket:
-            raise socket.error, msg
+            raise socket.error(msg)
         
         # Timeout so KeyboardInterrupt can be caught on Win32
         self.socket.settimeout(1)
