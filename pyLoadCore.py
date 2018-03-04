@@ -323,7 +323,7 @@ class Core(object):
 
                     group = getgrnam(self.config["permission"]["group"])
                     os.setgid(group[2])
-                except Exception, e:
+                except Exception as e:
                     print(_("Failed changing group: %s") % e)
 
         if self.config["permission"]["change_user"]:
@@ -333,7 +333,7 @@ class Core(object):
 
                     user = getpwnam(self.config["permission"]["user"])
                     os.setuid(user[2])
-                except Exception, e:
+                except Exception as e:
                     print(_("Failed changing user: %s") % e)
 
         self.check_file(self.config['log']['log_folder'], _("folder for logs"), True)
@@ -469,7 +469,7 @@ class Core(object):
         while True:
             try:
                 sleep(2)
-            except IOError, e:
+            except IOError as e:
                 if e.errno != 4:  # errno.EINTR
                     raise
 
@@ -588,7 +588,7 @@ class Core(object):
         for i in range(3,50):
             try:
                 close(i)
-            except :
+            except:
                 pass
 
         execl(executable, executable, *sys.argv)
@@ -630,11 +630,11 @@ def deamon():
         pid = os.fork()
         if pid > 0:
             sys.exit(0)
-    except OSError, e:
+    except OSError as e:
         print("fork #1 failed: %d (%s)" % (e.errno, e.strerror), file=sys.stderr)
         sys.exit(1)
 
-    # decouple from parent environment 
+    # decouple from parent environment
     os.setsid()
     os.umask(0)
 
@@ -645,7 +645,7 @@ def deamon():
         # exit from second parent, print eventual PID before
             print("Daemon PID %d" % pid)
             sys.exit(0)
-    except OSError, e:
+    except OSError as e:
         print("fork #2 failed: %d (%s)" % (e.errno, e.strerror), file=sys.stderr)
         sys.exit(1)
 
@@ -680,7 +680,7 @@ def main():
             pyload_core.removeLogger()
             _exit(1)
 
-# And so it begins... 
+# And so it begins...
 if __name__ == "__main__":
     main()
 

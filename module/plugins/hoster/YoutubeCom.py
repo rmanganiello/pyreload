@@ -345,7 +345,7 @@ class YoutubeCom(Hoster):
 
                 decrypted_sig = decrypt_func(encrypted_sig)
 
-            except (JSInterpreterError, AssertionError), e:
+            except (JSInterpreterError, AssertionError) as e:
                 self.log_error(_("Signature decode failed"), e)
                 self.fail(e.message)
 
@@ -433,7 +433,7 @@ class YoutubeCom(Hoster):
 
         try:
             filename = self.download(url, disposition=False)
-        except Skip, e:
+        except Skip as e:
             filename = os.path.join(self.pyload.config.get("general", "download_folder"),
                                     self.pyfile.package().folder,
                                     self.pyfile.name)
@@ -498,7 +498,7 @@ class YoutubeCom(Hoster):
 
         try:
             filename = self.download(url, disposition=False)
-        except Skip, e:
+        except Skip as e:
             filename = os.path.join(self.pyload.config.get("general", "download_folder"),
                                     self.pyfile.package().folder,
                                     self.pyfile.name)

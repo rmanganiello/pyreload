@@ -32,7 +32,7 @@ class TestJson(unittest.TestCase):
     def test_access(self):
         try:
             urlopen(url % "getServerVersion")
-        except HTTPError, e:
+        except HTTPError as e:
             assert e.code == 403
         else:
             assert False
@@ -46,7 +46,7 @@ class TestJson(unittest.TestCase):
     def test_unknown_method(self):
         try:
             self.call("notExisting")
-        except HTTPError, e:
+        except HTTPError as e:
             assert e.code == 404
         else:
             assert False

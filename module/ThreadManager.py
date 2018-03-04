@@ -133,7 +133,7 @@ class ThreadManager:
         """run all task which have to be done (this is for repetivive call by core)"""
         try:
             self.tryReconnect()
-        except Exception, e:
+        except Exception as e:
             self.log.error(_("Reconnect Failed: %s") % str(e) )
             self.reconnecting.clear()
             if self.core.debug:
@@ -142,7 +142,7 @@ class ThreadManager:
 
         try:
             self.assignJob()
-        except Exception, e:
+        except Exception as e:
             self.log.warning("Assign job error", e)
             if self.core.debug:
                 print_exc()
@@ -274,7 +274,7 @@ class ThreadManager:
         if job:
             try:
                 job.initPlugin()
-            except Exception, e:
+            except Exception as e:
                 self.log.critical(str(e))
                 print_exc()
                 job.setStatus("failed")

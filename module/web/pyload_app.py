@@ -322,7 +322,7 @@ def get_download(path):
     try:
         return static_file(fs_encode(path), fs_encode(root), download=True)
 
-    except Exception, e:
+    except Exception as e:
         print(e)
         return HTTPError(404, "File not Found.")
 

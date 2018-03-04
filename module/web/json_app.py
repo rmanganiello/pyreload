@@ -60,7 +60,7 @@ def links():
 
         data = {'links': links, 'ids': ids}
         return data
-    except Exception, e:
+    except Exception as e:
         print_exc()
         return HTTPError()
 

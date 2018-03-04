@@ -100,7 +100,7 @@ class Cli:
                     self.lock.acquire()
                     self.inputHandler.onEnter(self.input)
 
-                except Exception, e:
+                except Exception as e:
                     println(2, red(e))
                 finally:
                     self.lock.release()
@@ -384,7 +384,7 @@ class RefreshThread(Thread):
                 os.system("clear")
                 print(_("pyLoad was terminated"))
                 _exit(0)
-            except Exception, e:
+            except Exception as e:
                 println(2, red(str(e)))
                 self.cli.reset()
                 print_exc()

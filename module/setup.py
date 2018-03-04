@@ -417,7 +417,7 @@ class Setup():
             print(_("Press Enter to exit."))
             raw_input()
             exit()
-        except Exception, e:
+        except Exception as e:
             print(_("Setting config path failed: %s") % str(e))
 
     def print_dep(self, name, value):

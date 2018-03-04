@@ -127,7 +127,7 @@ class HTTPDownload():
 
         try:
             self._download(chunks, resume)
-        except pycurl.error, e:
+        except pycurl.error as e:
             #code 33 - no resume
             code = e.args[0]
             if code == 33:
@@ -212,7 +212,7 @@ class HTTPDownload():
                     chunk = self.findChunk(c)
                     try: # check if the header implies success, else add it to failed list
                         chunk.verifyHeader()
-                    except BadHeader, e:
+                    except BadHeader as e:
                         self.log.debug("Chunk %d failed: %s" % (chunk.id + 1, str(e)))
                         failed.append(chunk)
                         ex = e
@@ -231,7 +231,7 @@ class HTTPDownload():
 
                     try: # check if the header implies success, else add it to failed list
                         chunk.verifyHeader()
-                    except BadHeader, e:
+                    except BadHeader as e:
                         self.log.debug("Chunk %d failed: %s" % (chunk.id + 1, str(e)))
                         failed.append(chunk)
                         ex = e
@@ -306,7 +306,7 @@ class HTTPDownload():
     def closeChunk(self, chunk):
         try:
             self.m.remove_handle(chunk.c)
-        except pycurl.error, e:
+        except pycurl.error as e:
             self.log.debug("Error removing chunk: %s" % str(e))
         finally:
             chunk.close()

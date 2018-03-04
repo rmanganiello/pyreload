@@ -94,7 +94,7 @@ class DatabaseJob():
     def processJob(self):
         try:
             self.result = self.f(*self.args, **self.kwargs)
-        except Exception, e:
+        except Exception as e:
             print_exc()
             try:
                 print("Database Error @", self.f.__name__, self.args[1:], self.kwargs, e)

@@ -37,7 +37,7 @@ class ThriftClient:
         self.createConnection(host, port)
         try:
             self.transport.open()
-        except error, e:
+        except error as e:
             if e.args and e.args[0] in (111, 10061):
                 raise NoConnection
             else:
@@ -46,7 +46,7 @@ class ThriftClient:
 
         try:
             correct = self.client.login(user, password)
-        except error, e:
+        except error as e:
             if e.args and e.args[0] == 104:
                 #connection reset by peer, probably wants ssl
                 try:

@@ -1004,7 +1004,7 @@ class Api(Iface):
         try:
             ret = self.core.hookManager.callRPC(plugin, func, args, parse)
             return str(ret)
-        except Exception, e:
+        except Exception as e:
             raise ServiceException(e.message)
 
     @permission(PERMS.STATUS)

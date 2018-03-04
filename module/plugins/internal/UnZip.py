@@ -45,10 +45,10 @@ class UnZip(Extractor):
                 if badfile is not None:
                     raise CRCError(badfile)
 
-        except (zipfile.BadZipfile, zipfile.LargeZipFile), e:
+        except (zipfile.BadZipfile, zipfile.LargeZipFile) as e:
             raise ArchiveError(e)
 
-        except RuntimeError, e:
+        except RuntimeError as e:
             if "encrypted" in e.args[0] or "Bad password" in e.args[0]:
                 raise PasswordError(e)
             else:
@@ -64,5 +64,5 @@ class UnZip(Extractor):
                 self.files = z.namelist()
             return self.files
 
-        except RuntimeError, e:
+        except RuntimeError as e:
             raise ArchiveError(e)

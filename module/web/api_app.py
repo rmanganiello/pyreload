@@ -50,7 +50,7 @@ def call_api(func, args=""):
 
     try:
         return callApi(func, *args, **kwargs)
-    except Exception, e:
+    except Exception as e:
         print_exc()
         return HTTPError(500, json.dumps({"error": e.message, "traceback": format_exc()}))
 

@@ -2769,7 +2769,7 @@ class Processor(Iface, TProcessor):
     result = getPackageData_result()
     try:
       result.success = self._handler.getPackageData(args.pid)
-    except PackageDoesNotExists, e:
+    except PackageDoesNotExists as e:
       result.e = e
     oprot.writeMessageBegin("getPackageData", TMessageType.REPLY, seqid)
     result.write(oprot)
@@ -2783,7 +2783,7 @@ class Processor(Iface, TProcessor):
     result = getPackageInfo_result()
     try:
       result.success = self._handler.getPackageInfo(args.pid)
-    except PackageDoesNotExists, e:
+    except PackageDoesNotExists as e:
       result.e = e
     oprot.writeMessageBegin("getPackageInfo", TMessageType.REPLY, seqid)
     result.write(oprot)
@@ -2797,7 +2797,7 @@ class Processor(Iface, TProcessor):
     result = getFileData_result()
     try:
       result.success = self._handler.getFileData(args.fid)
-    except FileDoesNotExists, e:
+    except FileDoesNotExists as e:
       result.e = e
     oprot.writeMessageBegin("getFileData", TMessageType.REPLY, seqid)
     result.write(oprot)
@@ -3075,7 +3075,7 @@ class Processor(Iface, TProcessor):
     result = setPackageData_result()
     try:
       self._handler.setPackageData(args.pid, args.data)
-    except PackageDoesNotExists, e:
+    except PackageDoesNotExists as e:
       result.e = e
     oprot.writeMessageBegin("setPackageData", TMessageType.REPLY, seqid)
     result.write(oprot)
@@ -3221,9 +3221,9 @@ class Processor(Iface, TProcessor):
     result = call_result()
     try:
       result.success = self._handler.call(args.info)
-    except ServiceDoesNotExists, ex:
+    except ServiceDoesNotExists as ex:
       result.ex = ex
-    except ServiceException, e:
+    except ServiceException as e:
       result.e = e
     oprot.writeMessageBegin("call", TMessageType.REPLY, seqid)
     result.write(oprot)

@@ -88,5 +88,5 @@ try:
     # Close!
     transport.close()
 
-except Thrift.TException, tx:
+except Thrift.TException as tx:
     print('ThriftExpection: %s' % tx.message)

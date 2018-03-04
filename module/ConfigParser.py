@@ -112,7 +112,7 @@ class ConfigParser:
                 del homeconf["remote"]["username"]
             self.updateValues(homeconf, self.config)
 
-        except Exception, e:
+        except Exception as e:
             print("Config Warning")
             print_exc()
 
@@ -189,7 +189,7 @@ class ConfigParser:
                                                      "type": typ,
                                                      "value": value}
 
-            except Exception, e:
+            except Exception as e:
                 print("Config Warning:")
                 print(line)
                 print_exc()

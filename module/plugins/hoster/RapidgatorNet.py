@@ -65,7 +65,7 @@ class RapidgatorNet(SimpleHoster):
             status = json_data['response_status']
             message = json_data['response_details']
 
-        except BadHeader, e:
+        except BadHeader as e:
             status = e.code
             message = e.message
 

@@ -86,7 +86,7 @@ class HookManager:
         def new(*args):
             try:
                 return func(*args)
-            except Exception, e:
+            except Exception as e:
                 args[0].log.error(_("Error executing hooks: %s") % str(e))
                 if args[0].core.debug:
                     traceback.print_exc()
@@ -308,7 +308,7 @@ class HookManager:
             for f in self.events[event]:
                 try:
                     f(*args)
-                except Exception, e:
+                except Exception as e:
                     self.log.warning("Error calling event handler %s: %s, %s, %s"
                     % (event, f, args, str(e)))
                     if self.core.debug:
