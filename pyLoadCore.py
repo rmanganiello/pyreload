@@ -39,6 +39,8 @@ from sys import argv, executable, exit
 from time import time, sleep
 from traceback import print_exc
 
+import six
+
 from module import InitHomeDir
 from module.plugins.AccountManager import AccountManager
 from module.CaptchaManager import CaptchaManager
@@ -631,7 +633,7 @@ def deamon():
         if pid > 0:
             sys.exit(0)
     except OSError as e:
-        print("fork #1 failed: %d (%s)" % (e.errno, e.strerror), file=sys.stderr)
+        sys.print_("fork #1 failed: %d (%s)" % (e.errno, e.strerror), file=sys.stderr)
         sys.exit(1)
 
     # decouple from parent environment
@@ -646,7 +648,7 @@ def deamon():
             print("Daemon PID %d" % pid)
             sys.exit(0)
     except OSError as e:
-        print("fork #2 failed: %d (%s)" % (e.errno, e.strerror), file=sys.stderr)
+        six.print_("fork #2 failed: %d (%s)" % (e.errno, e.strerror), file=sys.stderr)
         sys.exit(1)
 
     # Iterate through and close some file descriptors.
