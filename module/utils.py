@@ -62,13 +62,13 @@ else:
     fs_encode = fs_decode = lambda x: x  # do nothing
 
 def get_console_encoding(enc):
-    if os.name == "nt": 
+    if os.name == "nt":
         if enc == "cp65001": # aka UTF-8
             print("WARNING: Windows codepage 65001 is not supported.")
             enc = "cp850"
     else:
         enc = "utf8"
-    
+
     return enc
 
 def compare_time(start, end):
@@ -114,18 +114,16 @@ def freeSpace(folder):
 
 
 def uniqify(seq, idfun=None):
-# order preserving
+    # order preserving
     if idfun is None:
         def idfun(x): return x
-    seen = {}
+    seen = set()
     result = []
     for item in seq:
         marker = idfun(item)
-        # in old Python versions:
-        # if seen.has_key(marker)
-        # but in new ones:
-        if marker in seen: continue
-        seen[marker] = 1
+        if marker in seen:
+            continue
+        seen.add(marker)
         result.append(item)
     return result
 

@@ -51,10 +51,10 @@ class XDCCRequest():
     def createSocket(self):
         # proxytype = None
         # proxy = None
-        # if self.proxies.has_key("socks5"):
+        # if "socks5" in self.proxies:
         # proxytype = socks.PROXY_TYPE_SOCKS5
         # proxy = self.proxies["socks5"]
-        # elif self.proxies.has_key("socks4"):
+        # elif "socks4" in self.proxies:
         # proxytype = socks.PROXY_TYPE_SOCKS4
         # proxy = self.proxies["socks4"]
         # if proxytype:
