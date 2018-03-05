@@ -6,6 +6,7 @@ from traceback import print_exc
 from shutil import copyfileobj
 
 from bottle import route, request, HTTPError
+import six
 
 from webinterface import PYLOAD
 
@@ -241,7 +242,7 @@ def load_config(category, section):
     elif category == "plugin":
         conf = PYLOAD.getPluginConfigDict()
 
-    for key, option in conf[section].iteritems():
+    for key, option in six.iteritems(conf[section]):
         if key in ("desc","outline"): continue
 
         if ";" in option["type"]:
@@ -255,7 +256,7 @@ def load_config(category, section):
 @route("/json/save_config/:category", method="POST")
 @login_required("SETTINGS")
 def save_config(category):
-    for key, value in request.POST.iteritems():
+    for key, value in six.iteritems(request.POST):
         try:
             section, option = key.split("|")
         except:
@@ -281,10 +282,10 @@ def add_account():
 def update_accounts():
     deleted = [] #dont update deleted accs or they will be created again
 
-    for name, value in request.POST.iteritems():
+    for name, value in six.iteritems(request.POST):
         value = value.strip()
         if not value: continue
-        
+
         tmp, user = name.split(";")
         plugin, action = tmp.split("|")
 

@@ -12,13 +12,14 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
     @author: mkaay
 """
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from sip import delete
+import six
 
 
 class SettingsWidget(QWidget):
@@ -30,7 +31,7 @@ class SettingsWidget(QWidget):
         self.data = None
         self.pdata = None
         self.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-    
+
     def setConnector(self, connector):
         self.connector = connector
 
@@ -64,7 +65,7 @@ class SettingsWidget(QWidget):
 
         tab = QTabWidget()
         self.tab = tab
-        
+
         gw = QWidget()
         gw.setLayout(QVBoxLayout())
         gw.layout().addWidget(self.general)
@@ -78,11 +79,11 @@ class SettingsWidget(QWidget):
 
         self.data = self.connector.getConfig()
         self.pdata = self.connector.getPluginConfig()
-        for k, section in self.data.iteritems():
+        for k, section in six.iteritems(self.data):
             s = Section(section, general)
             self.sections[k] = s
 
-        for k, section in self.pdata.iteritems():
+        for k, section in six.iteritems(self.pdata):
             s = Section(section, plugins, "plugin")
             self.psections[k] = s
 
@@ -165,18 +166,18 @@ class Section(QGroupBox):
         self.ctype = ctype
         layout = QFormLayout(self)
         self.setLayout(layout)
-        
+
         sw = QWidget()
         sw.setLayout(QVBoxLayout())
         sw.layout().addWidget(self)
-        
+
         sa = QScrollArea()
         sa.setWidgetResizable(True)
         sa.setWidget(sw)
         sa.setFrameShape(sa.NoFrame)
-        
+
         parent.addTab(sa, data.description)
-        
+
         for option in self.data.items:
             if option.type == "int":
                 i = QSpinBox(self)

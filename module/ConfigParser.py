@@ -7,8 +7,10 @@ import re
 from time import sleep
 from os.path import exists, join
 from shutil import copy
-
 from traceback import print_exc
+
+import six
+
 from utils import chmod
 
 # ignore these plugin configs, mainly because plugins were wiped out
@@ -22,22 +24,22 @@ CONF_VERSION = 1
 class ConfigParser:
     """
     holds and manage the configuration
-    
+
     current dict layout:
-    
+
     {
-    
-     section : { 
-      option : { 
+
+     section : {
+      option : {
             value:
             type:
             desc:
       }
-      desc: 
-    
+      desc:
+
     }
-    
-    
+
+
     """
 
     CONFLINE = re.compile(r'^\s*(?P<T>.+?)\s+(?P<N>[^ ]+?)\s*:\s*"(?P<D>.+?)"\s*=\s?(?P<V>.*)')
@@ -135,7 +137,7 @@ class ConfigParser:
         for line in config:
             comment = line.rfind("#")
             if line.find(":", comment) < 0 > line.find("=", comment) and comment > 0 and line[comment - 1].isspace():
-                line = line.rpartition("#") # removes comments            
+                line = line.rpartition("#") # removes comments
                 if line[1]:
                     line = line[0]
                 else:
@@ -201,13 +203,14 @@ class ConfigParser:
     def updateValues(self, config, dest):
         """sets the config values from a parsed config file to values in destination"""
 
-        for section in config.iterkeys():
+        for section, section_data in six.iteritems(config):
             if section in dest:
-                for option in config[section].iterkeys():
-                    if option in ("desc", "outline"): continue
+                for option, option_data in six.iteritems(section_data):
+                    if option in ("desc", "outline"):
+                        continue
 
                     if option in dest[section]:
-                        dest[section][option]["value"] = config[section][option]["value"]
+                        dest[section][option]["value"] = option_data["value"]
 
                         #else:
                         #    dest[section][option] = config[section][option]
@@ -221,7 +224,7 @@ class ConfigParser:
         with open(filename, "wb") as f:
             chmod(filename, 0o600)
             f.write("version: %i \n" % CONF_VERSION)
-            for section in sorted(config.iterkeys()):
+            for section in sorted(six.iterkeys(config)):
                 f.write('\n%s - "%s":\n' % (section, config[section]["desc"]))
 
                 for option, data in sorted(config[section].items(), key=lambda _x: _x[0]):

@@ -27,6 +27,7 @@ from os.path import isdir, isfile, join, abspath
 from sys import getfilesystemencoding
 
 from bottle import route, static_file, request, response, redirect, HTTPError, error
+import six
 from six.moves.urllib.parse import unquote
 
 from webinterface import PYLOAD, PYLOAD_DIR, PROJECT_DIR, SETUP, PREFIX, env
@@ -482,10 +483,10 @@ def logs(item=-1):
 @login_required("ADMIN")
 def admin():
     # convert to dict
-    user = dict([(name, toDict(y)) for name, y in PYLOAD.getAllUserData().iteritems()])
+    user = dict([(name, toDict(y)) for name, y in six.iteritems(PYLOAD.getAllUserData())])
     perms = permlist()
 
-    for data in user.itervalues():
+    for data in six.itervalues(user):
         data["perms"] = {}
         get_permission(data["perms"], data["permission"])
         data["perms"]["admin"] = True if data["role"] is 0 else False

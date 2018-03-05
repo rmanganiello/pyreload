@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
     @author: mkaay, RaNaN
 """
 
@@ -25,6 +25,8 @@ from os.path import isfile, join, exists, abspath
 from sys import version_info
 from itertools import chain
 from traceback import print_exc
+
+import six
 
 from module.lib.SafeEval import const_eval as literal_eval
 from module.ConfigParser import IGNORE
@@ -116,13 +118,13 @@ class PluginManager:
 
     def parse(self, folder, pattern=False, home={}):
         """
-        returns dict with information 
+        returns dict with information
         home contains parsed plugins from module.
-        
+
         {
         name : {path, version, config, (pattern, re), (plugin, class)}
         }
-        
+
         """
         plugins = {}
         if home:
@@ -246,8 +248,11 @@ class PluginManager:
                 res.append((url, last[0]))
                 continue
 
-            for name, value in chain(self.crypterPlugins.iteritems(), self.hosterPlugins.iteritems(),
-                self.containerPlugins.iteritems()):
+            for name, value in chain(
+                six.iteritems(self.crypterPlugins),
+                six.iteritems(self.hosterPlugins),
+                six.iteritems(self.containerPlugins),
+            ):
                 if value["re"].match(url):
                     res.append((url, name))
                     last = (name, value)
@@ -389,8 +394,8 @@ class PluginManager:
         if "hooks" in as_dict or "internal" in as_dict:
             return False
 
-        for type in as_dict.iterkeys():
-            for plugin in as_dict[type]:
+        for _type, value in six.iteritems(as_dict):
+            for plugin in value:
                 if plugin in self.plugins[type]:
                     if "module" in self.plugins[type][plugin]:
                         self.log.debug("Reloading %s" % plugin)
@@ -449,4 +454,4 @@ if __name__ == "__main__":
     b = time()
 
     print(b - a, "s")
-    
+

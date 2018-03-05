@@ -39,7 +39,7 @@ def parse_permissions(session):
         return perms
 
     if session.get("role") == ROLE.ADMIN:
-        for k in perms.iterkeys():
+        for k in perms:
             perms[k] = True
 
     elif session.get("perms"):

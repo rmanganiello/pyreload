@@ -6,6 +6,7 @@ import json
 from traceback import format_exc, print_exc
 
 from bottle import route, request, response, HTTPError
+import six
 from six.moves.urllib.parse import unquote
 
 from utils import toDict, set_session
@@ -44,7 +45,7 @@ def call_api(func, args=""):
     args = args.split("/")[1:]
     kwargs = {}
 
-    for x, y in chain(request.GET.iteritems(), request.POST.iteritems()):
+    for x, y in chain(six.iteritems(request.GET), six.iteritems(request.POST)):
         if x == "session": continue
         kwargs[x] = unquote(y)
 
@@ -61,7 +62,7 @@ def callApi(func, *args, **kwargs):
         return HTTPError(404, json.dumps("Not Found"))
 
     result = getattr(PYLOAD, func)(*[literal_eval(x) for x in args],
-                                   **dict([(x, literal_eval(y)) for x, y in kwargs.iteritems()]))
+                                   **dict([(x, literal_eval(y)) for x, y in six.iteritems(kwargs)]))
 
     # null is invalid json  response
     if result is None: result = True

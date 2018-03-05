@@ -22,6 +22,8 @@ from os.path import join
 from time import time
 import re
 
+import six
+
 from PyFile import PyFile
 from utils import freeSpace, compare_time
 from common.packagetools import parseNames
@@ -49,7 +51,7 @@ def permission(bits):
         def __new__(cls, func, *args, **kwargs):
             permMap[func.__name__] = bits
             return func
-        
+
     return _Dec
 
 
@@ -103,10 +105,10 @@ class Api(Iface):
 
     def _convertConfigFormat(self, c):
         sections = {}
-        for sectionName, sub in c.iteritems():
+        for sectionName, sub in six.iteritems(c):
             section = ConfigSection(sectionName, sub["desc"])
             items = []
-            for key, data in sub.iteritems():
+            for key, data in six.iteritems(sub):
                 if key in ("desc", "outline"):
                     continue
                 item = ConfigItem()
@@ -160,7 +162,7 @@ class Api(Iface):
     @permission(PERMS.SETTINGS)
     def getConfig(self):
         """Retrieves complete config of core.
-        
+
         :return: list of `ConfigSection`
         """
         return self._convertConfigFormat(self.core.config.config)
@@ -219,7 +221,7 @@ class Api(Iface):
     @permission(PERMS.LIST)
     def statusServer(self):
         """Some general information about the current status of pyLoad.
-        
+
         :return: `ServerStatus`
         """
         serverStatus = ServerStatus(self.core.threadManager.pause, len(self.core.threadManager.processingIds()),
@@ -386,7 +388,7 @@ class Api(Iface):
         data = parseNames(tmp)
         result = {}
 
-        for k, v in data.iteritems():
+        for k, v in six.iteritems(data):
             for url, status in v:
                 status.packagename = k
                 result[url] = status
@@ -443,7 +445,7 @@ class Api(Iface):
         :return: list of package ids
         """
         return [self.addPackage(name, urls, dest) for name, urls
-                in self.generatePackages(links).iteritems()]
+                in six.iteritems(self.generatePackages(links))]
 
     @permission(PERMS.ADD)
     def checkAndAddPackages(self, links, dest=Destination.Queue):
@@ -472,7 +474,7 @@ class Api(Iface):
 
         pdata = PackageData(data["id"], data["name"], data["folder"], data["site"], data["password"],
                             data["queue"], data["order"],
-                            links=[self._convertPyFile(x) for x in data["links"].itervalues()])
+                            links=[self._convertPyFile(x) for x in six.itervalues(data["links"])])
 
         return pdata
 
@@ -484,7 +486,7 @@ class Api(Iface):
         :return: `PackageData` with .fid attribute
         """
         data = self.core.files.getPackageData(int(pid))
-        
+
         if not data:
             raise PackageDoesNotExists(pid)
 
@@ -511,7 +513,7 @@ class Api(Iface):
     @permission(PERMS.DELETE)
     def deleteFiles(self, fids):
         """Deletes several file entries from pyload.
-        
+
         :param fids: list of file ids
         """
         for id in fids:
@@ -541,7 +543,7 @@ class Api(Iface):
                             pack["password"], pack["queue"], pack["order"],
                             pack["linksdone"], pack["sizedone"], pack["sizetotal"],
                             pack["linkstotal"])
-                for pack in self.core.files.getInfoData(Destination.Queue).itervalues()]
+                for pack in six.itervalues(self.core.files.getInfoData(Destination.Queue))]
 
     @permission(PERMS.LIST)
     def getQueueData(self):
@@ -553,8 +555,8 @@ class Api(Iface):
         return [PackageData(pack["id"], pack["name"], pack["folder"], pack["site"],
                             pack["password"], pack["queue"], pack["order"],
                             pack["linksdone"], pack["sizedone"], pack["sizetotal"],
-                            links=[self._convertPyFile(x) for x in pack["links"].itervalues()])
-                for pack in self.core.files.getCompleteData(Destination.Queue).itervalues()]
+                            links=[self._convertPyFile(x) for x in six.itervalues(pack["links"])])
+                for pack in six.itervalues(self.core.files.getCompleteData(Destination.Queue))]
 
     @permission(PERMS.LIST)
     def getCollector(self):
@@ -566,7 +568,7 @@ class Api(Iface):
                             pack["password"], pack["queue"], pack["order"],
                             pack["linksdone"], pack["sizedone"], pack["sizetotal"],
                             pack["linkstotal"])
-                for pack in self.core.files.getInfoData(Destination.Collector).itervalues()]
+                for pack in six.itervalues(self.core.files.getInfoData(Destination.Collector))]
 
     @permission(PERMS.LIST)
     def getCollectorData(self):
@@ -577,14 +579,14 @@ class Api(Iface):
         return [PackageData(pack["id"], pack["name"], pack["folder"], pack["site"],
                             pack["password"], pack["queue"], pack["order"],
                             pack["linksdone"], pack["sizedone"], pack["sizetotal"],
-                            links=[self._convertPyFile(x) for x in pack["links"].itervalues()])
-                for pack in self.core.files.getCompleteData(Destination.Collector).itervalues()]
+                            links=[self._convertPyFile(x) for x in six.itervalues(pack["links"])])
+                for pack in six.itervalues(self.core.files.getCompleteData(Destination.Collector))]
 
 
     @permission(PERMS.ADD)
     def addFiles(self, pid, links):
         """Adds files to specific package.
-        
+
         :param pid: package id
         :param links: list of urls
         """
@@ -706,7 +708,7 @@ class Api(Iface):
         """Gives a package a new position.
 
         :param pid: package id
-        :param position: 
+        :param position:
         """
         self.core.files.reorderPackage(pid, position)
 
@@ -729,7 +731,7 @@ class Api(Iface):
         p = self.core.files.getPackage(pid)
         if not p: raise PackageDoesNotExists(pid)
 
-        for key, value in data.iteritems():
+        for key, value in six.iteritems(data):
             if key == "id": continue
             setattr(p, key, value)
 
@@ -776,7 +778,7 @@ class Api(Iface):
         """
         rawData = self.core.files.getPackageData(int(pid))
         order = {}
-        for id, pyfile in rawData["links"].iteritems():
+        for id, pyfile in six.iteritems(rawData["links"]):
             while pyfile["order"] in order.keys(): #just in case
                 pyfile["order"] += 1
             order[pyfile["order"]] = pyfile["id"]
@@ -918,7 +920,7 @@ class Api(Iface):
 
         :param username:
         :param password:
-        :param remoteip: 
+        :param remoteip:
         :return: dict with info, empty when login is incorrect
         """
         if self.core.config["remote"]["nolocalauth"] and remoteip == "127.0.0.1":
@@ -956,7 +958,7 @@ class Api(Iface):
     def getAllUserData(self):
         """returns all known user and info"""
         res = {}
-        for user, data in self.core.db.getAllUserData().iteritems():
+        for user, data in six.iteritems(self.core.db.getAllUserData()):
             res[user] = UserData(user, data["email"], data["role"], data["permission"], data["template"])
 
         return res
@@ -968,7 +970,7 @@ class Api(Iface):
         :return: dict with this style: {"plugin": {"method": "description"}}
         """
         data = {}
-        for plugin, funcs in self.core.hookManager.methods.iteritems():
+        for plugin, funcs in six.iteritems(self.core.hookManager.methods):
             data[plugin] = funcs
 
         return data

@@ -21,6 +21,8 @@ from PyQt4.QtGui import *
 
 from time import time
 
+import six
+
 from module.remote.thriftbackend.ThriftClient import Destination
 from module.gui.Collector import CollectorModel, Package, Link, CollectorView, statusMapReverse
 from module.utils import formatSize, formatSpeed
@@ -70,7 +72,7 @@ class QueueModel(CollectorModel):
         self._data = []
         order = self.connector.getPackageOrder(Destination.Queue)
         self.beginInsertRows(QModelIndex(), 0, len(order.values()))
-        for position, pid in order.iteritems():
+        for position, pid in six.iteritems(order):
             pack = self.connector.getPackageData(pid)
             package = Package(pack)
             self._data.append(package)

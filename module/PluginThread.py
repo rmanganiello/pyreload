@@ -30,6 +30,7 @@ from copy import copy
 from types import MethodType
 
 from pycurl import error
+import six
 
 from PyFile import PyFile
 from plugins.Plugin import Abort, Fail, Reconnect, Retry, SkipDownload
@@ -317,7 +318,7 @@ class DownloadThread(PluginThread):
                 pyfile.checkIfProcessed()
                 exc_clear()
 
-            
+
             #pyfile.plugin.req.clean()
 
             self.active = False
@@ -461,7 +462,7 @@ class HookThread(PluginThread):
                 #dirty method to filter out exceptions
                 if "unexpected keyword argument 'thread'" not in e.args[0]:
                     raise
-                
+
                 del self.kwargs["thread"]
                 self.f(*self.args, **self.kwargs)
         finally:
@@ -510,14 +511,14 @@ class InfoThread(PluginThread):
 
         #directly write to database
         if self.pid > -1:
-            for pluginname, urls in plugins.iteritems():
+            for pluginname, urls in six.iteritems(plugins):
                 plugin = self.m.core.pluginManager.getPlugin(pluginname, True)
                 if hasattr(plugin, "getInfo"):
                     self.fetchForPlugin(pluginname, plugin, urls, self.updateDB)
                     self.m.core.files.save()
 
         elif self.add:
-            for pluginname, urls in plugins.iteritems():
+            for pluginname, urls in six.iteritems(plugins):
                 plugin = self.m.core.pluginManager.getPlugin(pluginname, True)
                 if hasattr(plugin, "getInfo"):
                     self.fetchForPlugin(pluginname, plugin, urls, self.updateCache, True)
@@ -558,7 +559,7 @@ class InfoThread(PluginThread):
 
             self.m.infoResults[self.rid] = {}
 
-            for pluginname, urls in plugins.iteritems():
+            for pluginname, urls in six.iteritems(plugins):
                 plugin = self.m.core.pluginManager.getPlugin(pluginname, True)
                 if hasattr(plugin, "getInfo"):
                     self.fetchForPlugin(pluginname, plugin, urls, self.updateResult, True)
@@ -594,7 +595,7 @@ class InfoThread(PluginThread):
 
             data = parseNames(tmp)
             result = {}
-            for k, v in data.iteritems():
+            for k, v in six.iteritems(data):
                 for url, status in v:
                     status.packagename = k
                     result[url] = status

@@ -2,6 +2,8 @@
 
 import re
 
+import six
+
 from ..internal.Hoster import Hoster
 from ..internal.misc import json
 
@@ -15,7 +17,7 @@ def quality_fallback(desired, available):
             return quality_fallback("240p", available)
         else:
             # Return the entry starting with the lowest digit (shoud be 240p)
-            (quality, result) = sorted(available.iteritems(), key=lambda x: x[0], reverse=True)[0]
+            (quality, result) = sorted(six.iteritems(available), key=lambda x: x[0], reverse=True)[0]
 
     return result
 
@@ -23,7 +25,7 @@ def quality_fallback(desired, available):
 class XHamsterCom(Hoster):
     __name__ = "XHamsterCom"
     __type__ = "hoster"
-    __version__ = "0.19"
+    __version__ = "0.20"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:\w+\.)?xhamster\.com/videos/.+'

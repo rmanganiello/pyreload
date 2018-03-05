@@ -25,6 +25,8 @@ from threading import RLock
 
 from types import MethodType
 
+import six
+
 from module.PluginThread import HookThread
 from module.plugins.PluginManager import literal_eval
 from utils import lock
@@ -126,7 +128,7 @@ class HookManager:
                 if self.core.config.getPlugin(pluginname, "activated"):
                     pluginClass = self.core.pluginManager.loadClass("hooks", pluginname)
                     if not pluginClass: continue
-                    
+
                     plugin = pluginClass(self.core, self)
                     plugins.append(plugin)
                     self.pluginMap[pluginClass.__name__] = plugin
@@ -274,10 +276,10 @@ class HookManager:
     def getAllInfo(self):
         """returns info stored by hook plugins"""
         info = {}
-        for name, plugin in self.pluginMap.iteritems():
+        for name, plugin in six.iteritems(self.pluginMap):
             if plugin.info:
                 #copy and convert so str
-                info[name] = dict([(x, str(y) if not isinstance(y, basestring) else y) for x, y in plugin.info.iteritems()])
+                info[name] = dict([(x, str(y) if not isinstance(y, basestring) else y) for x, y in six.iteritems(plugin.info)])
         return info
 
 
@@ -285,7 +287,7 @@ class HookManager:
         info = {}
         if plugin in self.pluginMap and self.pluginMap[plugin].info:
             info = dict([(x, str(y) if not isinstance(y, basestring) else y)
-                for x, y in self.pluginMap[plugin].info.iteritems()])
+                for x, y in six.iteritems(self.pluginMap[plugin].info)])
 
         return info
 
@@ -313,4 +315,4 @@ class HookManager:
                     % (event, f, args, str(e)))
                     if self.core.debug:
                         traceback.print_exc()
-    
+

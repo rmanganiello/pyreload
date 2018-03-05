@@ -3,6 +3,7 @@
 import inspect
 import re
 
+import six
 from six.moves.urllib.parse import urlparse
 
 from module.network.HTTPRequest import BadHeader
@@ -176,7 +177,7 @@ class PreloadStub(object):
 class CloudFlareDdos(Addon):
     __name__ = "CloudFlareDdos"
     __type__ = "hook"
-    __version__ = "0.14"
+    __version__ = "0.15"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False)]
@@ -191,7 +192,7 @@ class CloudFlareDdos(Addon):
 
     def deactivate(self):
         while len(self.stubs):
-            stub = next(self.stubs.itervalues())
+            stub = next(six.itervalues(self.stubs))
             self._unoverride_preload(stub.owner_plugin)
 
         self._unoverride_get_url()

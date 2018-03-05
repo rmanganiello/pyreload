@@ -30,6 +30,8 @@ from threading import Thread, Lock
 from time import sleep
 from traceback import print_exc
 
+import six
+
 import ConfigParser
 
 from codecs import getwriter
@@ -359,7 +361,7 @@ class Cli:
         while True:
             sleep(1)
             result = client.pollResults(rid)
-            for url, status in result.data.iteritems():
+            for url, status in six.iteritems(result.data):
                 if status.status == 2: check = "Online"
                 elif status.status == 1: check = "Offline"
                 else: check = "Unknown"
