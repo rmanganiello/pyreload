@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import pycurl
 import re
 
@@ -10,7 +12,7 @@ from ..internal.misc import json, replace_patterns
 class FshareVnFolder(Crypter):
     __name__ = "FshareVnFolder"
     __type__ = "crypter"
-    __version__ = "0.10"
+    __version__ = "0.11"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?fshare\.vn/folder/(?P<ID>\w+)'
@@ -26,7 +28,7 @@ class FshareVnFolder(Crypter):
     __authors__ = [("zoidberg", "zoidberg@mujmail.cz"),
                    ("GammaC0de", "nitzo2001[AT]yahoo[DOT]com")]
 
-    OFFLINE_PATTERN = ur'Thư mục của bạn yêu cầu không tồn tại'
+    OFFLINE_PATTERN = r'Thư mục của bạn yêu cầu không tồn tại'
     NAME_PATTERN = r'<title>Fshare - (.+?)(?: - Fshare)?</title>'
 
     URL_REPLACEMENTS = [("http://", "https://")]
@@ -42,7 +44,7 @@ class FshareVnFolder(Crypter):
         for item in folder_items:
             if item['type'] == 1:
                 links.append("https://www.fshare.vn/file/" + item['linkcode'])
-                
+
             else:
                 if self.config.get('dl_subfolders'):
                         if self.config.get('package_subfolder'):

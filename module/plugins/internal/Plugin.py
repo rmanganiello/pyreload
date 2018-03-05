@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import unicode_literals, with_statement
 
 import inspect
 import os
@@ -27,7 +27,7 @@ _decode = decode
 class Plugin(object):
     __name__ = "Plugin"
     __type__ = "plugin"
-    __version__ = "0.73"
+    __version__ = "0.74"
     __status__ = "stable"
 
     __config__ = []  #: [("name", "type", "desc", "default")]
@@ -73,7 +73,7 @@ class Plugin(object):
 
     def _log(self, level, plugintype, pluginname, messages):
         log = getattr(self.pyload.log, level)
-        msg = u" | ".join(decode(a).strip() for a in messages if a)
+        msg = " | ".join(decode(a).strip() for a in messages if a)
         log("%(plugintype)s %(pluginname)s: %(msg)s" %
             {'plugintype': plugintype.upper(),
              'pluginname': pluginname,

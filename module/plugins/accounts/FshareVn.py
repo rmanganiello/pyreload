@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 import time
 
@@ -10,7 +12,7 @@ from ..internal.misc import parse_html_form
 class FshareVn(Account):
     __name__ = "FshareVn"
     __type__ = "account"
-    __version__ = "0.22"
+    __version__ = "0.23"
     __status__ = "testing"
 
     __description__ = """Fshare.vn account plugin"""
@@ -19,9 +21,9 @@ class FshareVn(Account):
                    ("stickell", "l.stickell@yahoo.it"),
                    ("GammaC0de", "nitzo2001[AT]yahoo[DOT]com")]
 
-    VALID_UNTIL_PATTERN = ur'>Hạn dùng:.+?>([\d/]+)</span>'
-    LIFETIME_PATTERN = ur'<dt>Lần đăng nhập trước:</dt>\s*<dd>.+?</dd>'
-    TRAFFIC_LEFT_PATTERN = ur'>Đã SD: </a>\s*([\d.,]+)(?:([\w^_]+))\s*/\s*([\d.,]+)(?:([\w^_]+))'
+    VALID_UNTIL_PATTERN = r'>Hạn dùng:.+?>([\d/]+)</span>'
+    LIFETIME_PATTERN = r'<dt>Lần đăng nhập trước:</dt>\s*<dd>.+?</dd>'
+    TRAFFIC_LEFT_PATTERN = r'>Đã SD: </a>\s*([\d.,]+)(?:([\w^_]+))\s*/\s*([\d.,]+)(?:([\w^_]+))'
 
     def grab_info(self, user, password, data):
         html = self.load("https://www.fshare.vn")

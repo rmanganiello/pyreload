@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 
 from ..internal.SimpleHoster import SimpleHoster
@@ -8,7 +10,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class MegaRapidCz(SimpleHoster):
     __name__ = "MegaRapidCz"
     __type__ = "hoster"
-    __version__ = "0.64"
+    __version__ = "0.65"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?(share|mega)rapid\.cz/soubor/\d+/.+'
@@ -28,14 +30,14 @@ class MegaRapidCz(SimpleHoster):
 
     NAME_PATTERN = r'<h1.*?><span.*?>(?:<a.*?>)?(?P<N>.+?)'
     SIZE_PATTERN = r'<td class="i">Velikost:</td>\s*<td class="h"><strong>\s*(?P<S>[\d.,]+) (?P<U>[\w^_]+)</strong></td>'
-    OFFLINE_PATTERN = ur'Nastala chyba 404|Soubor byl smazán'
+    OFFLINE_PATTERN = r'Nastala chyba 404|Soubor byl smazán'
 
     CHECK_TRAFFIC = True
 
     LINK_PREMIUM_PATTERN = r'<a href="(.+?)" title="Stahnout">(.+?)</a>'
 
-    ERR_LOGIN_PATTERN = ur'<div class="error_div"><strong>Stahování je přístupné pouze přihlášeným uživatelům'
-    ERR_CREDIT_PATTERN = ur'<div class="error_div"><strong>Stahování zdarma je možné jen přes náš'
+    ERR_LOGIN_PATTERN = r'<div class="error_div"><strong>Stahování je přístupné pouze přihlášeným uživatelům'
+    ERR_CREDIT_PATTERN = r'<div class="error_div"><strong>Stahování zdarma je možné jen přes náš'
 
     def setup(self):
         self.chunk_limit = 1

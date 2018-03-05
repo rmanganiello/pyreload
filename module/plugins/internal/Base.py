@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import inspect
 import re
 import time
@@ -26,7 +28,7 @@ def parse_fileInfo(klass, url="", html=""):
 class Base(Plugin):
     __name__ = "Base"
     __type__ = "base"
-    __version__ = "0.33"
+    __version__ = "0.34"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -100,7 +102,7 @@ class Base(Plugin):
 
     def _log(self, level, plugintype, pluginname, messages):
         log = getattr(self.pyload.log, level)
-        msg = u" | ".join(decode(a).strip() for a in messages if a)
+        msg = " | ".join(decode(a).strip() for a in messages if a)
 
         #: Hide any user/password
         try:

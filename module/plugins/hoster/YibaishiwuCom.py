@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 import urlparse
 
@@ -10,7 +12,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class YibaishiwuCom(SimpleHoster):
     __name__ = "YibaishiwuCom"
     __type__ = "hoster"
-    __version__ = "0.19"
+    __version__ = "0.20"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?(?:u\.)?115\.com/file/(?P<ID>\w+)'
@@ -27,7 +29,7 @@ class YibaishiwuCom(SimpleHoster):
 
     NAME_PATTERN = r'file_name: \'(?P<N>.+?)\''
     SIZE_PATTERN = r'file_size: \'(?P<S>.+?)\''
-    OFFLINE_PATTERN = ur'<h3><i style="color:red;">哎呀！提取码不存在！不妨搜搜看吧！</i></h3>'
+    OFFLINE_PATTERN = r'<h3><i style="color:red;">哎呀！提取码不存在！不妨搜搜看吧！</i></h3>'
 
     LINK_FREE_PATTERN = r'(/\?ct=(pickcode|download)[^"\']+)'
 

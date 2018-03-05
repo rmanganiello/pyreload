@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import operator
 import os
 import re
@@ -100,7 +102,7 @@ class Ffmpeg(object):
     @property
     def found(self):
         return self.CMD is not None
-    
+
     def add_stream(self, streams):
         if isinstance(streams, list):
             self.streams.extend(streams)
@@ -206,7 +208,7 @@ class Ffmpeg(object):
 class YoutubeCom(Hoster):
     __name__ = "YoutubeCom"
     __type__ = "hoster"
-    __version__ = "0.66"
+    __version__ = "0.67"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:[^/]*\.)?(?:youtu\.be/|youtube\.com/watch\?(?:.*&)?v=)[\w\-]+'
@@ -239,7 +241,7 @@ class YoutubeCom(Hoster):
     URL_REPLACEMENTS = [(r'youtu\.be/', 'youtube.com/watch?v=')]
 
     #: Invalid characters that must be removed from the file name
-    invalid_chars = u'\u2605:?><"|\\'
+    invalid_chars = '\u2605:?><"|\\'
 
     #: name, width, height, quality ranking, 3D, type
     formats = {

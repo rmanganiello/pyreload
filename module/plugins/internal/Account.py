@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import random
 import threading
 import time
@@ -12,7 +14,7 @@ from .Plugin import Plugin, Skip
 class Account(Plugin):
     __name__ = "Account"
     __type__ = "account"
-    __version__ = "0.83"
+    __version__ = "0.84"
     __status__ = "stable"
 
     __description__ = """Base account plugin"""
@@ -63,7 +65,7 @@ class Account(Plugin):
 
     def _log(self, level, plugintype, pluginname, messages):
         log = getattr(self.pyload.log, level)
-        msg = u" | ".join(decode(a).strip() for a in messages if a)
+        msg = " | ".join(decode(a).strip() for a in messages if a)
 
         #: Hide any user/password
         try:

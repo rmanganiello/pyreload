@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import random
 
 from ..internal.SimpleHoster import SimpleHoster
@@ -8,7 +10,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class MultishareCz(SimpleHoster):
     __name__ = "MultishareCz"
     __type__ = "hoster"
-    __version__ = "0.48"
+    __version__ = "0.49"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?multishare\.cz/stahnout/(?P<ID>\d+)'
@@ -28,8 +30,8 @@ class MultishareCz(SimpleHoster):
     CHECK_TRAFFIC = True
     LEECH_HOSTER = True
 
-    INFO_PATTERN = ur'(?:<li>Název|Soubor): <strong>(?P<N>.+?)</strong><(?:/li><li|br)>Velikost: <strong>(?P<S>.+?)</strong>'
-    OFFLINE_PATTERN = ur'<h1>Stáhnout soubor</h1><p><strong>Požadovaný soubor neexistuje.</strong></p>'
+    INFO_PATTERN = r'(?:<li>Název|Soubor): <strong>(?P<N>.+?)</strong><(?:/li><li|br)>Velikost: <strong>(?P<S>.+?)</strong>'
+    OFFLINE_PATTERN = r'<h1>Stáhnout soubor</h1><p><strong>Požadovaný soubor neexistuje.</strong></p>'
 
     def handle_free(self, pyfile):
         self.download(

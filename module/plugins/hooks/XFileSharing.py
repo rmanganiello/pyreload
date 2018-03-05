@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import inspect
 import re
 
@@ -9,7 +11,7 @@ from ..internal.Addon import Addon
 class XFileSharing(Addon):
     __name__ = "XFileSharing"
     __type__ = "hook"
-    __version__ = "0.56"
+    __version__ = "0.57"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -68,7 +70,7 @@ class XFileSharing(Addon):
                 builtin_list = getattr(self, "BUILTIN_%sS" % type.upper())
                 plugin_set.update(builtin_list)
 
-            plugin_set.difference_update(('', u''))
+            plugin_set.difference_update(('',))
 
             if not plugin_set:
                 self.log_info(_("No %s to handle") % type)

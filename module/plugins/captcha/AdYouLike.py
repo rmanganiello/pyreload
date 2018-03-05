@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 
 from ..internal.CaptchaService import CaptchaService
@@ -9,7 +11,7 @@ from ..internal.misc import json
 class AdYouLike(CaptchaService):
     __name__ = "AdYouLike"
     __type__ = "captcha"
-    __version__ = "0.11"
+    __version__ = "0.12"
     __status__ = "testing"
 
     __description__ = """AdYouLike captcha service plugin"""
@@ -78,7 +80,7 @@ class AdYouLike(CaptchaService):
             instructions_visual = challenge['translations'][
                 server['all']['lang']]['instructions_visual']
             response = re.search(
-                u'«(.+?)»', instructions_visual).group(1).strip()
+                '«(.+?)»', instructions_visual).group(1).strip()
 
         except AttributeError:
             self.fail(_("AdYouLike result not found"))

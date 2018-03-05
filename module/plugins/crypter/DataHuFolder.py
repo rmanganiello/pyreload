@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
 
 from ..internal.SimpleCrypter import SimpleCrypter
 
@@ -7,7 +8,7 @@ from ..internal.SimpleCrypter import SimpleCrypter
 class DataHuFolder(SimpleCrypter):
     __name__ = "DataHuFolder"
     __type__ = "crypter"
-    __version__ = "0.13"
+    __version__ = "0.14"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?data\.hu/dir/\w+'
@@ -23,12 +24,12 @@ class DataHuFolder(SimpleCrypter):
                    ("stickell", "l.stickell@yahoo.it")]
 
     LINK_PATTERN = r'<a href=\'(http://data\.hu/get/.+)\' target=\'_blank\'>\1</a>'
-    NAME_PATTERN = ur'<title>(?P<N>.+?) Let\xf6lt\xe9se</title>'
+    NAME_PATTERN = r'<title>(?P<N>.+?) Let\xf6lt\xe9se</title>'
 
     def _prepare(self):
         SimpleCrypter._prepare(self)
 
-        if u'K\xe9rlek add meg a jelsz\xf3t' in self.data:  #: Password protected
+        if 'K\xe9rlek add meg a jelsz\xf3t' in self.data:  #: Password protected
             password = self.get_password()
             if not password:
                 self.fail(_("Password required"))
@@ -41,5 +42,5 @@ class DataHuFolder(SimpleCrypter):
                 self.pyfile.url, post={
                     'mappa_pass': password})
 
-            if u'Hib\xe1s jelsz\xf3' in self.data:  #: Wrong password
+            if 'Hib\xe1s jelsz\xf3' in self.data:  #: Wrong password
                 self.fail(_("Wrong password"))

@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 from ..internal.SimpleHoster import SimpleHoster
 
 
 class DataportCz(SimpleHoster):
     __name__ = "DataportCz"
     __type__ = "hoster"
-    __version__ = "0.47"
+    __version__ = "0.48"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?dataport\.cz/file/(.+)'
@@ -26,7 +28,7 @@ class DataportCz(SimpleHoster):
     OFFLINE_PATTERN = r'<h2>Soubor nebyl nalezen</h2>'
 
     CAPTCHA_PATTERN = r'<section id="captcha_bg">\s*<img src="(.*?)"'
-    FREE_SLOTS_PATTERN = ur'Počet volných slotů: <span class="darkblue">(\d+)</span><br />'
+    FREE_SLOTS_PATTERN = r'Počet volných slotů: <span class="darkblue">(\d+)</span><br />'
 
     def handle_free(self, pyfile):
         captchas = {

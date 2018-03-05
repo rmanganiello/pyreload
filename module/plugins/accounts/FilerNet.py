@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 import time
 
@@ -9,7 +11,7 @@ from ..internal.Account import Account
 class FilerNet(Account):
     __name__ = "FilerNet"
     __type__ = "account"
-    __version__ = "0.13"
+    __version__ = "0.14"
     __status__ = "testing"
 
     __description__ = """Filer.net account plugin"""
@@ -18,7 +20,7 @@ class FilerNet(Account):
                    ("GammaC0de", "nitzo2001[AT]yahoo[DOT]com")]
 
     TOKEN_PATTERN = r'name="_csrf_token" value="(.+?)"'
-    VALID_UNTIL_PATTERN = ur'Der Premium-Zugang ist gültig bis (.+)\.\s*</td>'
+    VALID_UNTIL_PATTERN = r'Der Premium-Zugang ist gültig bis (.+)\.\s*</td>'
     TRAFFIC_LEFT_PATTERN = r'Traffic</th>\s*<td>([\d.,]+) (?:([\w^_]+))</td>'
     FREE_PATTERN = r'Account Status</th>\s*<td>\s*Free'
 

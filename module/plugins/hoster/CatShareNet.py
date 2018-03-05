@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 
 from ..captcha.ReCaptcha import ReCaptcha
@@ -9,7 +11,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class CatShareNet(SimpleHoster):
     __name__ = "CatShareNet"
     __type__ = "hoster"
-    __version__ = "0.22"
+    __version__ = "0.23"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?catshare\.net/\w{15,16}'
@@ -32,7 +34,7 @@ class CatShareNet(SimpleHoster):
 
     OFFLINE_PATTERN = r'<div class="alert alert-error"'
 
-    IP_BLOCKED_PATTERN = ur'>Nasz serwis wykrył że Twój adres IP nie pochodzi z Polski.<'
+    IP_BLOCKED_PATTERN = r'>Nasz serwis wykrył że Twój adres IP nie pochodzi z Polski.<'
     WAIT_PATTERN = r'var\scount\s=\s(\d+);'
 
     LINK_FREE_PATTERN = r'<form action="(.+?)" method="GET">'

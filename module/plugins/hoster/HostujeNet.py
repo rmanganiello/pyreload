@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 
 from ..internal.SimpleHoster import SimpleHoster
@@ -8,7 +10,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class HostujeNet(SimpleHoster):
     __name__ = "HostujeNet"
     __type__ = "hoster"
-    __version__ = "0.06"
+    __version__ = "0.07"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?hostuje\.net/\w+'
@@ -25,7 +27,7 @@ class HostujeNet(SimpleHoster):
 
     NAME_PATTERN = r'<input type="hidden" name="name" value="(?P<N>.+?)">'
     SIZE_PATTERN = r'<b>Rozmiar:</b> (?P<S>[\d.,]+) (?P<U>[\w^_]+)<br>'
-    OFFLINE_PATTERN = ur'Podany plik nie został odnaleziony\.\.\.'
+    OFFLINE_PATTERN = r'Podany plik nie został odnaleziony\.\.\.'
 
     def setup(self):
         self.multiDL = True

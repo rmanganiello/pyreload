@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 import time
 
@@ -9,7 +11,7 @@ from ..internal.Account import Account
 class MegaRapidCz(Account):
     __name__ = "MegaRapidCz"
     __type__ = "account"
-    __version__ = "0.42"
+    __version__ = "0.43"
     __status__ = "testing"
 
     __description__ = """MegaRapid.cz account plugin"""
@@ -19,8 +21,8 @@ class MegaRapidCz(Account):
 
     login_timeout = 60
 
-    LIMITDL_PATTERN = ur'<td>Max. počet paralelních stahování: </td><td>(\d+)'
-    VALID_UNTIL_PATTERN = ur'<td>Paušální stahování aktivní. Vyprší </td><td><strong>(.*?)</strong>'
+    LIMITDL_PATTERN = r'<td>Max. počet paralelních stahování: </td><td>(\d+)'
+    VALID_UNTIL_PATTERN = r'<td>Paušální stahování aktivní. Vyprší </td><td><strong>(.*?)</strong>'
     TRAFFIC_LEFT_PATTERN = r'<tr><td>Kredit</td><td>(.*?) GiB'
 
     def grab_info(self, user, password, data):
@@ -58,4 +60,4 @@ class MegaRapidCz(Account):
                                    'login': user,
                                    'pass1': password,
                                    'remember': 1,
-                                   'sbmt': u"Přihlásit"})
+                                   'sbmt': "Přihlásit"})

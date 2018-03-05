@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 
 from ..internal.misc import parse_size
@@ -9,7 +11,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class CzshareCom(SimpleHoster):
     __name__ = "CzshareCom"
     __type__ = "hoster"
-    __version__ = "1.11"
+    __version__ = "1.12"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?(czshare|sdilej)\.(com|cz)/(\d+/|download\.php\?).+'
@@ -121,7 +123,7 @@ class CzshareCom(SimpleHoster):
         inputs['captchastring2'] = self.captcha.decrypt(captcha_url)
         self.data = self.load(parsed_url, post=inputs)
 
-        if u"<li>Zadaný ověřovací kód nesouhlasí!</li>" in self.data:
+        if "<li>Zadaný ověřovací kód nesouhlasí!</li>" in self.data:
             self.retry_captcha()
 
         elif re.search(self.MULTIDL_PATTERN, self.data):

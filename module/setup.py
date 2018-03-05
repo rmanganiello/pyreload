@@ -13,9 +13,11 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
     @author: RaNaN
 """
+from __future__ import unicode_literals
+
 from getpass import getpass
 import module.common.pylgettext as gettext
 import os
@@ -37,7 +39,7 @@ class Setup():
 
     def start(self):
         langs = self.config.getMetaData("general", "language")["type"].split(";")
-        lang = self.ask(u"Choose your Language / Wähle deine Sprache", "en", langs)
+        lang = self.ask("Choose your Language / Wähle deine Sprache", "en", langs)
         gettext.setpaths([os.path.join(os.sep, "usr", "share", "pyload", "locale"), None])
         translation = gettext.translation("setup", os.path.join(self.path, "locale"), languages=[lang, "en"], fallback=True)
         translation.install(True)
@@ -479,7 +481,7 @@ class Setup():
                     return p1
                 else:
                     print(_("Passwords did not match."))
-                    
+
         while True:
             try:
                 input = raw_input(qst + " %s: " % info)

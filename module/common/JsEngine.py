@@ -16,6 +16,7 @@
 
     @author: RaNaN
 """
+from __future__ import unicode_literals
 
 from imp import find_module
 from os.path import join, exists
@@ -158,5 +159,5 @@ class JsEngine():
 if __name__ == "__main__":
     js = JsEngine()
 
-    test = u'"ü"+"ä"'
+    test = '"ü"+"ä"'
     js.eval(test)

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import time
 import urlparse
 
@@ -10,7 +12,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class DatoidCz(SimpleHoster):
     __name__ = "DatoidCz"
     __type__ = "hoster"
-    __version__ = "0.02"
+    __version__ = "0.03"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?datoid\.(?:cz|sk|pl)/(?!slozka)\w{6}'
@@ -25,7 +27,7 @@ class DatoidCz(SimpleHoster):
     __license__ = "GPLv3"
     __authors__ = [("GammaC0de", "nitzo2001[AT]yahoo[DOT]com")]
 
-    NAME_PATTERN = ur'Název souboru: (?P<N>.+)'
+    NAME_PATTERN = r'Název souboru: (?P<N>.+)'
     SIZE_PATTERN = r'Velikost: (?P<S>[\d.,]+) (?P<U>[\w^_]+)'
     OFFLINE_PATTERN = r'Tento soubor neexistuje'
 
