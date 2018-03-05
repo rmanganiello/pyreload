@@ -4,10 +4,10 @@ import binascii
 import random
 import re
 import time
-import urllib
 
 import Crypto.Cipher.ARC4
 import pycurl
+from six.moves.urllib.parse import quote
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..internal.misc import timestamp
@@ -17,7 +17,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class TurbobitNet(SimpleHoster):
     __name__ = "TurbobitNet"
     __type__ = "hoster"
-    __version__ = "0.31"
+    __version__ = "0.32"
     __status__ = "broken"
 
     __pattern__ = r'http://(?:www\.)?turbobit\.net/(?:download/free/)?(?P<ID>\w+)'
@@ -143,7 +143,7 @@ class TurbobitNet(SimpleHoster):
 
         for b in [1, 3]:
             self.jscode = "var id = \'%s\';var b = %d;var inn = \'%s\';%sout" % (
-                          self.info['pattern']['ID'], b, urllib.quote(fun), rtUpdate)
+                          self.info['pattern']['ID'], b, quote(fun), rtUpdate)
 
             try:
                 out = self.js.eval(self.jscode)

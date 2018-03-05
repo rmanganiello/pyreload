@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urllib
+
+from six.moves.urllib.parse import unquote
 
 from module.network.HTTPRequest import BadHeader
 
@@ -12,7 +13,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class RockfileEu(SimpleHoster):
     __name__ = "RockfileEu"
     __type__ = "hoster"
-    __version__ = "0.14"
+    __version__ = "0.15"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?rockfile\.(?:eu|co)/(?P<ID>\w{12}).html'
@@ -90,7 +91,7 @@ class RockfileEu(SimpleHoster):
             self.link = m.group(1)
 
         if self.link and pyfile.name == self.info['pattern']['ID'] + ".html":
-            pyfile.name = urllib.unquote(self.link.split('/')[-1])
+            pyfile.name = unquote(self.link.split('/')[-1])
 
 
         try:

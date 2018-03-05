@@ -2,7 +2,8 @@
 
 import base64
 import re
-import urllib
+
+from six.moves.urllib.parse import unquote
 
 from module.network.RequestFactory import getURL as get_url
 
@@ -19,7 +20,7 @@ def xor_decrypt(data, key):
 class MegadyskPlFolder(SimpleCrypter):
     __name__ = "MegadyskPlFolder"
     __type__ = "crypter"
-    __version__ = "0.03"
+    __version__ = "0.04"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?megadysk\.pl/(?:f|s)/.+'
@@ -57,7 +58,7 @@ class MegadyskPlFolder(SimpleCrypter):
         key = m.group(1)
 
         res = xor_decrypt(encrypted_info, key)
-        json_data = json.loads(urllib.unquote(res))
+        json_data = json.loads(unquote(res))
 
         if json_data['app']['maintenance']:
             info['status'] = 6

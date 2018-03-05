@@ -6,6 +6,11 @@ import urllib
 import urlparse
 from StringIO import StringIO
 
+from six.moves.urllib.parse import (
+    quote_plus,
+    unquote,
+)
+
 from ..internal.CaptchaService import CaptchaService
 
 try:
@@ -27,7 +32,7 @@ except ImportError:
 class ReCaptcha(CaptchaService):
     __name__ = 'ReCaptcha'
     __type__ = 'captcha'
-    __version__ = '0.37'
+    __version__ = '0.38'
     __status__ = 'testing'
 
     __description__ = 'ReCaptcha captcha service plugin'
@@ -51,7 +56,7 @@ class ReCaptcha(CaptchaService):
             self.KEY_V1_PATTERN,
             html)
         if m is not None:
-            self.key = urllib.unquote(m.group(1).strip())
+            self.key = unquote(m.group(1).strip())
             self.log_debug("Key: %s" % self.key)
             return self.key
         else:
@@ -334,7 +339,7 @@ class ReCaptcha(CaptchaService):
 
             response = self.decrypt_image(img)
 
-            post_str = "c=" + urllib.quote_plus(challenge) +\
+            post_str = "c=" + quote_plus(challenge) +\
                        "".join("&response=%s" % str(int(k) - 1)
                                for k in response if k.isdigit())
             html = self.pyfile.plugin.load(

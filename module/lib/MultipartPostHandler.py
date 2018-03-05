@@ -41,11 +41,13 @@ Further Example:
   then uploads it to the W3C validator.
 """
 
-from urllib import urlencode
 from urllib2 import BaseHandler, HTTPHandler, build_opener
 import mimetools, mimetypes
 from os import write, remove
 from cStringIO import StringIO
+
+from six.moves.urllib.parse import urlencode
+
 
 class Callable:
     def __init__(self, anycallable):

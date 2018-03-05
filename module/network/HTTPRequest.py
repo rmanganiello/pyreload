@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
     @author: RaNaN
 """
 
@@ -21,15 +21,19 @@ import cStringIO
 import pycurl
 
 from codecs import getincrementaldecoder, lookup, BOM_UTF8
-from urllib import quote, urlencode
 from httplib import responses
 from logging import getLogger
+
+from six.moves.urllib.parse import (
+    quote,
+    urlencode,
+)
 
 from module.plugins.Plugin import Abort
 
 def myquote(url):
     return quote(url.encode('utf_8') if isinstance(url, unicode) else url, safe="%/:=&?~#+!$,;'@()*[]")
-    
+
 def myurlencode(data):
     data = dict(data)
     return urlencode(dict((x.encode('utf_8') if isinstance(x, unicode) else x, \
@@ -281,7 +285,7 @@ class HTTPRequest():
             #self.log.debug("Decoded %s" % encoding )
             if lookup(encoding).name == 'utf-8' and rep.startswith(BOM_UTF8):
                 encoding = 'utf-8-sig'
-            
+
             decoder = getincrementaldecoder(encoding)("replace")
             rep = decoder.decode(rep, True)
 
@@ -334,4 +338,4 @@ if __name__ == "__main__":
     url = "http://pyload.org"
     c = HTTPRequest()
     print(c.load(url))
-    
+

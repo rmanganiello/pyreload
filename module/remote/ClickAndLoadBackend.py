@@ -18,9 +18,10 @@
 import re
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from cgi import FieldStorage
-from urllib import unquote
 from base64 import standard_b64decode
 from binascii import unhexlify
+
+from six.moves.urllib.parse import unquote
 
 try:
     from Crypto.Cipher import AES

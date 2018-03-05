@@ -7,8 +7,9 @@ import os
 import re
 import subprocess
 import time
-import urllib
 from xml.dom.minidom import parseString as parse_xml
+
+from six.moves.urllib.parse import unquote
 
 from module.network.CookieJar import CookieJar
 from module.network.HTTPRequest import HTTPRequest
@@ -208,7 +209,7 @@ class Ffmpeg(object):
 class YoutubeCom(Hoster):
     __name__ = "YoutubeCom"
     __type__ = "hoster"
-    __version__ = "0.67"
+    __version__ = "0.68"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:[^/]*\.)?(?:youtu\.be/|youtube\.com/watch\?(?:.*&)?v=)[\w\-]+'
@@ -539,7 +540,7 @@ class YoutubeCom(Hoster):
         try:
             subs = json.loads(self.player_config['args']['player_response'])['captions']['playerCaptionsTracklistRenderer']['captionTracks']
             subtitles_urls = dict([(_subtitle['languageCode'],
-                                    urllib.unquote(_subtitle['baseUrl']).decode('unicode-escape') + "&fmt=3")
+                                    unquote(_subtitle['baseUrl']).decode('unicode-escape') + "&fmt=3")
                                    for _subtitle in subs])
             self.log_debug("AVAILABLE SUBTITLES: %s" % subtitles_urls.keys() or "None")
 
@@ -738,7 +739,7 @@ class YoutubeCom(Hoster):
             streams = [_s.split('&') for _s in streams.split(',')]
             streams = [dict((_x.split('=', 1)) for _x in _s) for _s in streams]
             streams = [(int(_s['itag']),
-                        urllib.unquote(_s['url']),
+                        unquote(_s['url']),
                         _s.get('s', _s.get('sig', None)),
                         True if 's' in _s else False)
                        for _s in streams]

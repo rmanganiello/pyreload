@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urllib
+
+from six.moves.urllib.parse import unquote
 
 from ..internal.Hoster import Hoster
 
@@ -9,7 +10,7 @@ from ..internal.Hoster import Hoster
 class XVideosCom(Hoster):
     __name__ = "XVideos.com"
     __type__ = "hoster"
-    __version__ = "0.17"
+    __version__ = "0.18"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?xvideos\.com/video(\d+)'
@@ -28,7 +29,7 @@ class XVideosCom(Hoster):
             id_search.group(1),
         )
         self.download(
-            urllib.unquote(
+            unquote(
                 re.search(
                     r'html5player\.setVideoUrlHigh\(\'(.+?)\'\)',
                     site).group(1)))

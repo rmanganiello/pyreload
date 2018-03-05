@@ -2,7 +2,8 @@
 
 import base64
 import re
-import urllib
+
+from six.moves.urllib.parse import unquote
 
 from module.network.RequestFactory import getURL as get_url
 
@@ -19,7 +20,7 @@ def xor_decrypt(data, key):
 class MegadyskPl(SimpleHoster):
     __name__ = "MegadyskPl"
     __type__ = "hoster"
-    __version__ = "0.04"
+    __version__ = "0.05"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?megadysk\.pl/dl/.+'
@@ -63,7 +64,7 @@ class MegadyskPl(SimpleHoster):
         key = m.group(1)
 
         res = xor_decrypt(encrypted_info, key)
-        json_data = json.loads(urllib.unquote(res))
+        json_data = json.loads(unquote(res))
 
         if json_data['app']['maintenance']:
             info['status'] = 6

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urllib
 
 from bs4 import BeautifulSoup
+from six.moves.urllib.parse import unquote
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..internal.SimpleHoster import SimpleHoster
@@ -12,7 +12,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class ZippyshareCom(SimpleHoster):
     __name__ = "ZippyshareCom"
     __type__ = "hoster"
-    __version__ = "0.95"
+    __version__ = "0.96"
     __status__ = "testing"
 
     __pattern__ = r'http://(?P<HOST>www\d{0,3}\.zippyshare\.com)/(?:[vd]/|view\.jsp.*key=)(?P<KEY>[\w^_]+)'
@@ -63,7 +63,7 @@ class ZippyshareCom(SimpleHoster):
                 self.link = self.link.replace(".com/pd/", ".com/d/")
 
         if self.link and pyfile.name == "file.html":
-            pyfile.name = urllib.unquote(self.link.split('/')[-1])
+            pyfile.name = unquote(self.link.split('/')[-1])
 
     def get_link(self):
         #: Get all the scripts inside the html body

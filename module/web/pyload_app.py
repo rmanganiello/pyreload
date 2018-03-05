@@ -25,9 +25,9 @@ import sys
 from os import listdir
 from os.path import isdir, isfile, join, abspath
 from sys import getfilesystemencoding
-from urllib import unquote
 
 from bottle import route, static_file, request, response, redirect, HTTPError, error
+from six.moves.urllib.parse import unquote
 
 from webinterface import PYLOAD, PYLOAD_DIR, PROJECT_DIR, SETUP, PREFIX, env
 
@@ -505,7 +505,7 @@ def admin():
             for perm in perms:
                 user[name]["perms"][perm] = False
 
-            
+
             for perm in request.POST.getall("%s|perms" % name):
                 user[name]["perms"][perm] = True
 

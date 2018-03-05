@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urllib
+
+from six.moves.urllib.parse import unquote
 
 from ..internal.Hoster import Hoster
 
@@ -9,7 +10,7 @@ from ..internal.Hoster import Hoster
 class YourfilesTo(Hoster):
     __name__ = "YourfilesTo"
     __type__ = "hoster"
-    __version__ = "0.28"
+    __version__ = "0.29"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?yourfiles\.(to|biz)/\?d=\w+'
@@ -57,7 +58,7 @@ class YourfilesTo(Hoster):
         url = re.search(r"var bla = '(.*?)';", self.data)
         if url:
             url = url.group(1)
-            url = urllib.unquote(url.replace(
+            url = unquote(url.replace(
                 "http://http:/http://", "http://").replace("dumdidum", ""))
             return url
         else:

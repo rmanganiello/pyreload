@@ -8,7 +8,8 @@ import cStringIO
 import math
 import operator
 import sys
-import urllib
+
+from six.moves.urllib.request import urlopen
 
 import Image
 import ImageDraw
@@ -33,7 +34,7 @@ class ImageSequence:
 class CircleCaptcha(OCR):
     __name__ = "CircleCaptcha"
     __type__ = "ocr"
-    __version__ = "1.11"
+    __version__ = "1.12"
     __status__ = "testing"
 
     __description__ = """Circle captcha ocr plugin"""
@@ -755,7 +756,7 @@ class CircleCaptcha(OCR):
 
     #: Return coordinates of opened circle (eg (x, y))
     def decrypt_from_web(self, url):
-        file = cStringIO.StringIO(urllib.urlopen(url).read())
+        file = cStringIO.StringIO(urlopen(url).read())
         img = Image.open(file)
         coords = self.decrypt(img)
         self.log_info(_("Coords: %s") % coords)

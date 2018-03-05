@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urllib
+
+from six.moves.urllib.parse import unquote
 
 from ..captcha.SolveMedia import SolveMedia
 from ..internal.SimpleHoster import SimpleHoster
@@ -10,7 +11,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class DepositfilesCom(SimpleHoster):
     __name__ = "DepositfilesCom"
     __type__ = "hoster"
-    __version__ = "0.63"
+    __version__ = "0.64"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?(depositfiles\.com|dfiles\.(eu|ru))(/\w{1,3})?/files/(?P<ID>\w+)'
@@ -75,7 +76,7 @@ class DepositfilesCom(SimpleHoster):
 
         m = re.search(self.LINK_FREE_PATTERN, self.data)
         if m is not None:
-            self.link = urllib.unquote(m.group(1))
+            self.link = unquote(m.group(1))
 
     def handle_premium(self, pyfile):
         if '<span class="html_download_api-gold_traffic_limit">' in self.data:

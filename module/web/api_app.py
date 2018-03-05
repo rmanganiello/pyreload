@@ -4,9 +4,9 @@
 from itertools import chain
 import json
 from traceback import format_exc, print_exc
-from urllib import unquote
 
 from bottle import route, request, response, HTTPError
+from six.moves.urllib.parse import unquote
 
 from utils import toDict, set_session
 from webinterface import PYLOAD

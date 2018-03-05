@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urllib
+
+from six.moves.urllib.parse import unquote_plus
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -9,7 +10,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class FlyFilesNet(SimpleHoster):
     __name__ = "FlyFilesNet"
     __type__ = "hoster"
-    __version__ = "0.15"
+    __version__ = "0.16"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?flyfiles\.net/.+'
@@ -29,7 +30,7 @@ class FlyFilesNet(SimpleHoster):
 
     def process(self, pyfile):
         name = re.search(self.NAME_PATTERN, pyfile.url).group(1)
-        pyfile.name = urllib.unquote_plus(name)
+        pyfile.name = unquote_plus(name)
 
         session = re.search(self.SESSION_PATTERN, pyfile.url).group(1)
 

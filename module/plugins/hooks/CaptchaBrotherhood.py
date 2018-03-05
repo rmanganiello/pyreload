@@ -4,9 +4,10 @@ from __future__ import with_statement
 
 import StringIO
 import time
-import urllib
 
 import pycurl
+from six.moves.urllib.parse import urlencode
+
 from module.network.RequestFactory import getRequest as get_request
 
 from ..internal.Addon import Addon
@@ -37,7 +38,7 @@ class CaptchaBrotherhoodException(Exception):
 class CaptchaBrotherhood(Addon):
     __name__ = "CaptchaBrotherhood"
     __type__ = "hook"
-    __version__ = "0.15"
+    __version__ = "0.16"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -83,11 +84,15 @@ class CaptchaBrotherhood(Addon):
 
         req = get_request()
 
-        url = "%ssendNewCaptcha.aspx?%s" % (self.API_URL,
-                                            urllib.urlencode({'username': self.config.get('username'),
-                                                              'password': self.config.get('password'),
-                                                              'captchaSource': "pyLoad",
-                                                              'timeout': "80"}))
+        url = "%ssendNewCaptcha.aspx?%s" % (
+            self.API_URL,
+            urlencode({
+                'username': self.config.get('username'),
+                'password': self.config.get('password'),
+                'captchaSource': "pyLoad",
+                'timeout': "80",
+            }),
+        )
 
         req.c.setopt(pycurl.URL, url)
         req.c.setopt(pycurl.POST, 1)

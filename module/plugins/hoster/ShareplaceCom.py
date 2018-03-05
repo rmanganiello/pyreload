@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urllib
+
+from six.moves.urllib.parse import unquote
 
 from ..internal.Hoster import Hoster
 
@@ -9,7 +10,7 @@ from ..internal.Hoster import Hoster
 class ShareplaceCom(Hoster):
     __name__ = "ShareplaceCom"
     __type__ = "hoster"
-    __version__ = "0.18"
+    __version__ = "0.19"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?shareplace\.(com|org)/\?\w+'
@@ -59,7 +60,7 @@ class ShareplaceCom(Hoster):
         url = re.search(r"var beer = '(.*?)';", self.data)
         if url:
             url = url.group(1)
-            url = urllib.unquote(
+            url = unquote(
                 url.replace("http://http:/", "").replace("vvvvvvvvv", "").replace("lllllllll", "").replace(
                     "teletubbies", ""))
             self.log_debug("URL: %s" % url)

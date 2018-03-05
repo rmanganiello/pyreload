@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 from os.path import join
 import re
-from urllib import unquote
 from base64 import standard_b64decode
 from binascii import unhexlify
 
 from bottle import route, request, HTTPError
+from six.moves.urllib.parse import unquote
+
 from webinterface import PYLOAD, DL_ROOT, JS
 
 try:

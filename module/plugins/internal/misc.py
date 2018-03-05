@@ -18,10 +18,14 @@ import subprocess
 import sys
 import time
 import traceback
-import urllib
 import urlparse
 import xml.sax.saxutils  # @TODO: Remove in 0.4.10
 import zlib
+
+from six.moves.urllib.parse import (
+    quote as url_quote,
+    unquote as url_unquote,
+)
 
 try:
     from functools import reduce
@@ -473,7 +477,7 @@ def remove_chars(value, repl):
 
 def fixurl(url, unquote=None):
     old = url
-    url = urllib.unquote(url)
+    url = url_unquote(url)
 
     if unquote is None:
         unquote = url is old
@@ -488,7 +492,7 @@ def fixurl(url, unquote=None):
     url = re.sub(r'(?<!:)/{2,}', '/', url).strip().lstrip('.')
 
     if not unquote:
-        url = urllib.quote(url)
+        url = url_quote(url)
 
     return url
 
@@ -555,7 +559,7 @@ def parse_name(value, safechar=True):
             url_p.query.split('=', 1)[::-1][0].split('&', 1)[0] or
             url_p.netloc.split('.', 1)[0])
 
-    name = urllib.unquote(name)
+    name = url_unquote(name)
     return safename(name) if safechar else name
 
 

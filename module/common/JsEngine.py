@@ -20,7 +20,8 @@ from __future__ import unicode_literals
 
 from imp import find_module
 from os.path import join, exists
-from urllib import quote
+
+from six.moves.urllib.parse import quote
 
 
 ENGINE = ""

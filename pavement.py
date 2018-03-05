@@ -7,9 +7,11 @@ from paver.doctools import cog
 
 import sys
 import re
-from urllib import urlretrieve
 from subprocess import call, Popen, PIPE
 from zipfile import ZipFile
+
+from six.moves.urllib.request import urlretrieve
+
 
 PROJECT_DIR = path(__file__).dirname()
 sys.path.append(PROJECT_DIR)
