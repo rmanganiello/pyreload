@@ -3,10 +3,11 @@
 from json import loads
 from logging import log
 import unittest
-from urllib2 import urlopen, HTTPError
 
 import pytest
+from six.moves.urllib.error import HTTPError
 from six.moves.urllib.parse import urlencode
+from six.moves.urllib.request import urlopen
 
 
 url = "http://localhost:8001/api/%s"
