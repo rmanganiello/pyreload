@@ -3,7 +3,8 @@
 # Based on 4chandl by Roland Beermann (https://gist.github.com/enkore/3492599)
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.Crypter import Crypter
 
@@ -11,7 +12,7 @@ from ..internal.Crypter import Crypter
 class FourChanOrg(Crypter):
     __name__ = "FourChanOrg"
     __type__ = "crypter"
-    __version__ = "0.38"
+    __version__ = "0.39"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?boards\.4chan\.org/\w+/res/(\d+)'
@@ -29,4 +30,4 @@ class FourChanOrg(Crypter):
             re.findall(
                 r'(images\.4chan\.org/[^/]*/src/[^"<]+)',
                 pagehtml))
-        self.links = [urlparse.urljoin("http://", image) for image in images]
+        self.links = [urljoin("http://", image) for image in images]

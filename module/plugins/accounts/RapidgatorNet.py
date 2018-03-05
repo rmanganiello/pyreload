@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import urlparse
-
 from ..internal.Account import Account
 from ..internal.misc import json
 

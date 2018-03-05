@@ -3,7 +3,11 @@
 from __future__ import unicode_literals
 
 import time
-import urlparse
+
+from six.moves.urllib.parse import (
+    urljoin,
+    urlparse,
+)
 
 from ..internal.misc import json
 from ..internal.SimpleHoster import SimpleHoster
@@ -12,7 +16,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class DatoidCz(SimpleHoster):
     __name__ = "DatoidCz"
     __type__ = "hoster"
-    __version__ = "0.03"
+    __version__ = "0.04"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?datoid\.(?:cz|sk|pl)/(?!slozka)\w{6}'
@@ -36,9 +40,9 @@ class DatoidCz(SimpleHoster):
 
     def handle_free(self, pyfile):
         url = self.req.lastEffectiveURL
-        urlp = urlparse.urlparse(url)
+        urlp = urlparse(url)
 
-        json_data = json.loads(self.load(urlparse.urljoin(
+        json_data = json.loads(self.load(urljoin(
             url, "/f/" + urlp.path + str(int(time.time() * 1000)))))
         self.log_debug(json_data)
 
@@ -49,7 +53,7 @@ class DatoidCz(SimpleHoster):
 
     def handle_premium(self, pyfile):
         url = self.req.lastEffectiveURL
-        urlp = urlparse.urlparse(url)
+        urlp = urlparse(url)
 
-        self.link = urlparse.urljoin(
+        self.link = urljoin(
             url, "/f/" + urlp.path + str(int(time.time() * 1000)))

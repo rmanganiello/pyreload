@@ -4,7 +4,8 @@
 # http://uploadhero.co/dl/wQBRAVSM
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -12,7 +13,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class UploadheroCom(SimpleHoster):
     __name__ = "UploadheroCom"
     __type__ = "hoster"
-    __version__ = "0.23"
+    __version__ = "0.24"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?uploadhero\.com?/dl/\w+'
@@ -48,7 +49,7 @@ class UploadheroCom(SimpleHoster):
             self.error(_("Captcha not found"))
 
         captcha = self.captcha.decrypt(
-            urlparse.urljoin(
+            urljoin(
                 "http://uploadhero.co/",
                 m.group(1)))
 
@@ -64,7 +65,7 @@ class UploadheroCom(SimpleHoster):
         m = re.search(self.IP_BLOCKED_PATTERN, self.data)
         if m is not None:
             self.data = self.load(
-                urlparse.urljoin(
+                urljoin(
                     "http://uploadhero.co/",
                     m.group(1)))
 

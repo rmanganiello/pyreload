@@ -3,7 +3,8 @@
 # JDownloader/src/jd/controlling/LinkGrabberPackager.java
 
 import re
-from urlparse import urlparse
+
+from six.moves.urllib.parse import urlparse
 
 def matchFirst(string, *args):
     """ matches against list of regexp and returns first match"""

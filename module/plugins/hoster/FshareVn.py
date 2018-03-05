@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 
 import re
 import time
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 from ..internal.misc import json
@@ -17,7 +18,7 @@ def double_decode(m):
 class FshareVn(SimpleHoster):
     __name__ = "FshareVn"
     __type__ = "hoster"
-    __version__ = "0.33"
+    __version__ = "0.34"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?fshare\.vn/file/.+'
@@ -50,14 +51,14 @@ class FshareVn(SimpleHoster):
             else:
                 self.fail(_("Download is password protected"))
 
-            url = urlparse.urljoin(pyfile.url, action)
+            url = urljoin(pyfile.url, action)
 
             self.data = self.load(url, post=inputs)
             if r'Sai mật khẩu' in self.data:
                 self.fail(_("Wrong password"))
 
         action, inputs = self.parse_html_form('id="form-download"', input_names={'withFcode5': "0"})
-        url = urlparse.urljoin(pyfile.url, action)
+        url = urljoin(pyfile.url, action)
 
         if not inputs:
             self.error(_("Free Download form not found"))

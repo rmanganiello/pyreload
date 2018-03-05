@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urlsplit
 
 from ..internal.misc import json
 from ..internal.MultiHoster import MultiHoster
@@ -10,7 +11,7 @@ from ..internal.MultiHoster import MultiHoster
 class LinksnappyCom(MultiHoster):
     __name__ = "LinksnappyCom"
     __type__ = "hoster"
-    __version__ = "0.18"
+    __version__ = "0.19"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:[^/]+\.)?linksnappy\.com'
@@ -48,5 +49,5 @@ class LinksnappyCom(MultiHoster):
 
     @staticmethod
     def _get_host(url):
-        host = urlparse.urlsplit(url).netloc
+        host = urlsplit(url).netloc
         return re.search(r'[\w\-]+\.\w+$', host).group(0)

@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.misc import json
 from ..internal.SimpleHoster import SimpleHoster
@@ -12,7 +13,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class YibaishiwuCom(SimpleHoster):
     __name__ = "YibaishiwuCom"
     __type__ = "hoster"
-    __version__ = "0.20"
+    __version__ = "0.21"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?(?:u\.)?115\.com/file/(?P<ID>\w+)'
@@ -46,7 +47,7 @@ class YibaishiwuCom(SimpleHoster):
             url)
 
         html = self.load(
-            urlparse.urljoin(
+            urljoin(
                 "http://115.com/",
                 url),
             decode=False)

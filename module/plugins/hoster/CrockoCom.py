@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..internal.SimpleHoster import SimpleHoster
@@ -10,7 +11,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class CrockoCom(SimpleHoster):
     __name__ = "CrockoCom"
     __type__ = "hoster"
-    __version__ = "0.27"
+    __version__ = "0.28"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?(crocko|easy-share)\.com/\w+'
@@ -43,7 +44,7 @@ class CrockoCom(SimpleHoster):
         for _i in range(5):
             m = re.search(self.CAPTCHA_PATTERN, self.data)
             if m is not None:
-                url = urlparse.urljoin("http://crocko.com/", m.group(1))
+                url = urljoin("http://crocko.com/", m.group(1))
                 self.wait(m.group(2))
                 self.data = self.load(url)
             else:

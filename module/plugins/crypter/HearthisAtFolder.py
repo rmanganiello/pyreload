@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.Crypter import Crypter
 
@@ -9,7 +10,7 @@ from ..internal.Crypter import Crypter
 class HearthisAtFolder(Crypter):
     __name__ = "HearthisAtFolder"
     __type__ = "crypter"
-    __version__ = "0.01"
+    __version__ = "0.02"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?hearthis\.at/.*(?<!#pyload)$'
@@ -44,7 +45,7 @@ class HearthisAtFolder(Crypter):
                                         'min': 0,
                                         'max': 200})
 
-            links = map(lambda x: urlparse.urljoin(pyfile.url, x) + "#pyload",
+            links = map(lambda x: urljoin(pyfile.url, x) + "#pyload",
                         re.findall(r'<a class="player-link".+?href="(.+?)".+?</a>', self.data, re.S))
             self.packages = [(pyfile.package().name, links, pyfile.package().folder)]
 

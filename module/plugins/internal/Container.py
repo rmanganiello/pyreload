@@ -3,7 +3,8 @@
 from __future__ import with_statement
 
 import os
-import urlparse
+
+from six.moves.urllib.parse import urlparse
 
 from .Crypter import Crypter
 from .misc import encode, exists
@@ -12,7 +13,7 @@ from .misc import encode, exists
 class Container(Crypter):
     __name__ = "Container"
     __type__ = "container"
-    __version__ = "0.13"
+    __version__ = "0.14"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -52,7 +53,7 @@ class Container(Crypter):
         Loads container to disk if its stored remotely and overwrite url,
         or check existent on several places at disk
         """
-        remote = bool(urlparse.urlparse(self.pyfile.url).netloc)
+        remote = bool(urlparse(self.pyfile.url).netloc)
 
         if remote:
             content = self.load(self.pyfile.url)

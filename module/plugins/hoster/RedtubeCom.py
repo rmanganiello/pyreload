@@ -2,7 +2,8 @@
 
 import os
 import re
-import urlparse
+
+from six.moves.urllib.parse import urlparse
 
 from ..internal.Hoster import Hoster
 from ..internal.misc import json
@@ -11,7 +12,7 @@ from ..internal.misc import json
 class RedtubeCom(Hoster):
     __name__ = "RedtubeCom"
     __type__ = "hoster"
-    __version__ = "0.27"
+    __version__ = "0.28"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?redtube\.com/\d+'
@@ -39,7 +40,7 @@ class RedtubeCom(Hoster):
         if m is None:
             self.error(_("name pattern not found"))
 
-        ext = os.path.splitext(urlparse.urlparse(link).path)[1]
+        ext = os.path.splitext(urlparse(link).path)[1]
         pyfile.name = m.group(1) + ext
 
         self.download(link)

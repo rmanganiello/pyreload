@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import urlparse
+from six.moves.urllib.parse import (
+    parse_qsl,
+    urlparse,
+)
 
 from ..internal.misc import json
 from ..internal.MultiHoster import MultiHoster
@@ -9,7 +12,7 @@ from ..internal.MultiHoster import MultiHoster
 class PremiumizeMe(MultiHoster):
     __name__ = "PremiumizeMe"
     __type__ = "hoster"
-    __version__ = "0.31"
+    __version__ = "0.32"
     __status__ = "testing"
 
     __pattern__ = r'^unmatchable$'
@@ -51,8 +54,8 @@ class PremiumizeMe(MultiHoster):
             self.pyfile.size = res['result']['filesize']
 
             #@NOTE: Hack to avoid `fixurl()` "fixing" the URL query arguments :(
-            urlp = urlparse.urlparse(res['result']['location'])
-            urlq = urlparse.parse_qsl(urlp.query)
+            urlp = urlparse(res['result']['location'])
+            urlq = parse_qsl(urlp.query)
             self.download("%s://%s%s" % (urlp.scheme, urlp.netloc, urlp.path),
                           get=urlq)
 

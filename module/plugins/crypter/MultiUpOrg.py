@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from module.network.HTTPRequest import BadHeader
 from ..internal.SimpleCrypter import SimpleCrypter
@@ -11,7 +12,7 @@ from ..captcha.ReCaptcha import ReCaptcha
 class MultiUpOrg(SimpleCrypter):
     __name__ = "MultiUpOrg"
     __type__ = "crypter"
-    __version__ = "0.12"
+    __version__ = "0.13"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?multiup\.(?:org|eu)/(?:en/|fr/)?(?:(?P<TYPE>project|download|mirror)/)?\w+(?:/\w+)?'
@@ -52,7 +53,7 @@ class MultiUpOrg(SimpleCrypter):
             if captcha_key is not None:
                 self.captcha = recaptcha
                 url, inputs =  self.parse_html_form()
-                mirror_page = urlparse.urljoin("http://www.multiup.eu/", url)
+                mirror_page = urljoin("http://www.multiup.eu/", url)
                 try:
                     response, challenge = recaptcha.challenge(captcha_key)
                 except BadHeader as e:
@@ -69,7 +70,7 @@ class MultiUpOrg(SimpleCrypter):
 
             else:
                 dl_url = re.search(r'href="(.*)">.*\n.*<h5>DOWNLOAD</h5>', self.data).group(1)
-                mirror_page = urlparse.urljoin("http://www.multiup.eu/", dl_url)
+                mirror_page = urljoin("http://www.multiup.eu/", dl_url)
                 self.data = self.load(mirror_page)
 
         self.check_errors()

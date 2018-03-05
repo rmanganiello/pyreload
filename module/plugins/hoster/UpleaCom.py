@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -19,7 +20,7 @@ def decode_cloudflare_email(value):
 class UpleaCom(SimpleHoster):
     __name__ = "UpleaCom"
     __type__ = "hoster"
-    __version__ = "0.21"
+    __version__ = "0.22"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?uplea\.com/dl/\w{15}'
@@ -64,7 +65,7 @@ class UpleaCom(SimpleHoster):
             self.error(_("STEP_PATTERN not found"))
 
         self.data = self.load(
-            urlparse.urljoin(
+            urljoin(
                 "http://uplea.com/",
                 m.group(1)))
 

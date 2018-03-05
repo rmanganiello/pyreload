@@ -2,7 +2,8 @@
 
 import re
 import time
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.Account import Account
 
@@ -37,7 +38,7 @@ class FilejungleCom(Account):
                 1, 'validuntil': validuntil}
 
     def signin(self, user, password, data):
-        html = self.load(urlparse.urljoin(self.URL, "login.php"),
+        html = self.load(urljoin(self.URL, "login.php"),
                          post={'loginUserName': user,
                                'loginUserPassword': password,
                                'loginFormSubmit': "Login",

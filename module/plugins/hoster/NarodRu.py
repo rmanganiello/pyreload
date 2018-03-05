@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 
 import random
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -12,7 +13,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class NarodRu(SimpleHoster):
     __name__ = "NarodRu"
     __type__ = "hoster"
-    __version__ = "0.18"
+    __version__ = "0.19"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?narod(\.yandex)?\.ru/(disk|start/\d+\.\w+\-narod\.yandex\.ru)/(?P<ID>\d+)/.+'
@@ -55,7 +56,7 @@ class NarodRu(SimpleHoster):
         m = re.search(self.LINK_FREE_PATTERN, self.data)
         if m is not None:
             self.captcha.correct()
-            self.link = urlparse.urljoin("http://narod.ru/", m.group(1))
+            self.link = urljoin("http://narod.ru/", m.group(1))
 
         elif '<b class="error-msg"><strong>Ошиблись?</strong>' in self.data:
             self.retry_captcha()

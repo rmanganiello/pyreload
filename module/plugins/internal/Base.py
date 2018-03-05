@@ -5,7 +5,11 @@ from __future__ import unicode_literals
 import inspect
 import re
 import time
-import urlparse
+
+from six.moves.urllib.parse import (
+    urljoin,
+    urlparse,
+)
 
 from .Captcha import Captcha
 from .misc import (decode, encode, fixurl, format_size, format_time,
@@ -28,7 +32,7 @@ def parse_fileInfo(klass, url="", html=""):
 class Base(Plugin):
     __name__ = "Base"
     __type__ = "base"
-    __version__ = "0.34"
+    __version__ = "0.35"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -487,10 +491,10 @@ class Base(Plugin):
         url = fixurl(url, unquote=True)
         baseurl = fixurl(baseurl or self.pyfile.url, unquote=True)
 
-        if not urlparse.urlparse(url).scheme:
-            url_p = urlparse.urlparse(baseurl)
+        if not urlparse(url).scheme:
+            url_p = urlparse(baseurl)
             baseurl = "%s://%s" % (url_p.scheme, url_p.netloc)
-            url = urlparse.urljoin(baseurl, url)
+            url = urljoin(baseurl, url)
 
         return fixurl(url, unquote)
 

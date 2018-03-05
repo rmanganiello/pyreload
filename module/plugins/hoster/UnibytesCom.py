@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -9,7 +10,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class UnibytesCom(SimpleHoster):
     __name__ = "UnibytesCom"
     __type__ = "hoster"
-    __version__ = "0.21"
+    __version__ = "0.22"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?unibytes\.com/[\w\- .]{11}B'
@@ -37,7 +38,7 @@ class UnibytesCom(SimpleHoster):
 
         for _i in range(3):
             self.log_debug(action, post_data)
-            self.data = self.load(urlparse.urljoin(domain, action),
+            self.data = self.load(urljoin(domain, action),
                                   post=post_data,
                                   redirect=False)
 
@@ -68,4 +69,4 @@ class UnibytesCom(SimpleHoster):
 
             elif last_step in ("captcha", "last"):
                 post_data['captcha'] = self.captcha.decrypt(
-                    urlparse.urljoin(domain, "captcha.jpg"))
+                    urljoin(domain, "captcha.jpg"))

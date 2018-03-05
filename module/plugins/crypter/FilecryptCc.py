@@ -5,9 +5,9 @@
 
 import binascii
 import re
-import urlparse
 
 import Crypto.Cipher.AES
+from six.moves.urllib.parse import urljoin
 
 from module.network.CookieJar import CookieJar
 from module.network.HTTPRequest import BadHeader, HTTPRequest
@@ -45,7 +45,7 @@ class BIGHTTPRequest(HTTPRequest):
 class FilecryptCc(Crypter):
     __name__ = "FilecryptCc"
     __type__ = "crypter"
-    __version__ = "0.36"
+    __version__ = "0.37"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?filecrypt\.cc/Container/\w+'
@@ -137,7 +137,7 @@ class FilecryptCc(Crypter):
             m4 = re.search(self.KEY_CAPTCHA_PATTERN, self.data)
 
             if m1:  #: Normal captcha
-                captcha_url = urlparse.urljoin(self.pyfile.url, m1.group(1))
+                captcha_url = urljoin(self.pyfile.url, m1.group(1))
 
                 self.log_debug("Internal Captcha URL: %s" % captcha_url)
 
@@ -150,9 +150,9 @@ class FilecryptCc(Crypter):
 
             elif m2:  #: Circle captcha
                 self.log_debug("Circle Captcha URL: %s" %
-                               urlparse.urljoin(self.pyfile.url, m2.group(1)))
+                               urljoin(self.pyfile.url, m2.group(1)))
 
-                captcha_code = self.captcha.decrypt(urlparse.urljoin(self.pyfile.url, m2.group(1)),
+                captcha_code = self.captcha.decrypt(urljoin(self.pyfile.url, m2.group(1)),
                                                     input_type="png", output_type='positional')
 
                 self.site_with_links = self._filecrypt_load_url(self.pyfile.url,
@@ -161,7 +161,7 @@ class FilecryptCc(Crypter):
 
             elif m3:  #: Solvemedia captcha
                 self.log_debug("Solvemedia Captcha URL: %s" %
-                               urlparse.urljoin(self.pyfile.url, m3.group(1)))
+                               urljoin(self.pyfile.url, m3.group(1)))
 
                 solvemedia = SolveMedia(self.pyfile)
                 captcha_key = solvemedia.detect_key()
@@ -212,14 +212,14 @@ class FilecryptCc(Crypter):
             return
 
         for _dlc in dlcs:
-            self.urls.append(urlparse.urljoin(self.pyfile.url, "/DLC/%s.dlc" % _dlc))
+            self.urls.append(urljoin(self.pyfile.url, "/DLC/%s.dlc" % _dlc))
 
     def handle_weblinks(self):
         try:
             links = re.findall(self.WEBLINK_PATTERN, self.site_with_links)
 
             for _link in links:
-                res = self._filecrypt_load_url(urlparse.urljoin(self.pyfile.url, "/Link/%s.html" % _link))
+                res = self._filecrypt_load_url(urljoin(self.pyfile.url, "/Link/%s.html" % _link))
                 link2 = re.search('<iframe .* noresize src="(.*)"></iframe>', res)
                 if link2:
                     res2 = self._filecrypt_load_url(link2.group(1), just_header=True)

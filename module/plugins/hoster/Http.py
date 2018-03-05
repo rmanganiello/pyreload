@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urlparse
 
 from ..internal.Hoster import Hoster
 from module.network.HTTPRequest import BadHeader
@@ -10,7 +11,7 @@ from module.network.HTTPRequest import BadHeader
 class Http(Hoster):
     __name__ = "Http"
     __type__ = "hoster"
-    __version__ = "0.10"
+    __version__ = "0.11"
     __status__ = "testing"
 
     __pattern__ = r'(?:jd|pys?)://.+'
@@ -26,7 +27,7 @@ class Http(Hoster):
 
     def process(self, pyfile):
         url = re.sub(r'^(jd|py)', "http", pyfile.url)
-        netloc = urlparse.urlparse(url).netloc
+        netloc = urlparse(url).netloc
 
         for _i in range(2):
             try:

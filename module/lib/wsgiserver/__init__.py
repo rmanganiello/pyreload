@@ -95,10 +95,12 @@ import sys
 import threading
 import time
 import traceback
-from urlparse import urlparse
 import warnings
 
-from six.moves.urllib.parse import unquote
+from six.moves.urllib.parse import (
+    unquote,
+    urlparse,
+)
 
 try:
     from OpenSSL import SSL

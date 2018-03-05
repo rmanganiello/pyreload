@@ -2,7 +2,8 @@
 
 import time
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.misc import json
 from ..internal.XFSAccount import XFSAccount
@@ -11,7 +12,7 @@ from ..internal.XFSAccount import XFSAccount
 class UptoboxCom(XFSAccount):
     __name__ = "UptoboxCom"
     __type__ = "account"
-    __version__ = "0.22"
+    __version__ = "0.23"
     __status__ = "testing"
 
     __description__ = """Uptobox.com account plugin"""
@@ -33,7 +34,7 @@ class UptoboxCom(XFSAccount):
         if re.search(self.LOGIN_SKIP_PATTERN, html):
             self.skip_login()
 
-        html = self.load(urlparse.urljoin(self.LOGIN_URL, "logarithme"),
+        html = self.load(urljoin(self.LOGIN_URL, "logarithme"),
                          post={'op': "login",
                                'redirect': self.PLUGIN_URL,
                                'login': user,

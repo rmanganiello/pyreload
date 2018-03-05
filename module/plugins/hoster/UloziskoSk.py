@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -11,7 +12,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class UloziskoSk(SimpleHoster):
     __name__ = "UloziskoSk"
     __type__ = "hoster"
-    __version__ = "0.32"
+    __version__ = "0.33"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?ulozisko\.sk/.+'
@@ -62,7 +63,7 @@ class UloziskoSk(SimpleHoster):
         if m is None:
             self.error(_("CAPTCHA_PATTERN not found"))
 
-        captcha_url = urlparse.urljoin("http://www.ulozisko.sk/", m.group(1))
+        captcha_url = urljoin("http://www.ulozisko.sk/", m.group(1))
         captcha = self.captcha.decrypt(captcha_url, cookies=True)
 
         self.log_debug("CAPTCHA_URL:" + captcha_url + ' CAPTCHA:' + captcha)

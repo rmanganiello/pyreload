@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.Crypter import Crypter
 
@@ -9,7 +10,7 @@ from ..internal.Crypter import Crypter
 class LixIn(Crypter):
     __name__ = "LixIn"
     __type__ = "crypter"
-    __version__ = "0.28"
+    __version__ = "0.29"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?lix\.in/(?P<ID>.+)'
@@ -44,7 +45,7 @@ class LixIn(Crypter):
         m = re.search(self.CAPTCHA_PATTERN, self.data)
         if m is not None:
             captcharesult = self.captcha.decrypt(
-                urlparse.urljoin("http://lix.in/", m.group(1)))
+                urljoin("http://lix.in/", m.group(1)))
             self.data = self.load(
                 url,
                 post={

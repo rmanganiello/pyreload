@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.Crypter import Crypter
 from ..internal.misc import fsjoin, json
@@ -10,7 +11,7 @@ from ..internal.misc import fsjoin, json
 class YoutubeComFolder(Crypter):
     __name__ = "YoutubeComFolder"
     __type__ = "crypter"
-    __version__ = "1.09"
+    __version__ = "1.10"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.|m\.)?youtube\.com/(?P<TYPE>user|playlist|view_play_list)(/|.*?[?&](?:list|p)=)(?P<ID>[\w\-]+)'
@@ -30,7 +31,7 @@ class YoutubeComFolder(Crypter):
 
     def api_response(self, ref, req):
         req.update({'key': self.API_KEY})
-        url = urlparse.urljoin("https://www.googleapis.com/youtube/v3/", ref)
+        url = urljoin("https://www.googleapis.com/youtube/v3/", ref)
         html = self.load(url, get=req)
         return json.loads(html)
 

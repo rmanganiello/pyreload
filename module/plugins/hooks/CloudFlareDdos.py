@@ -2,7 +2,8 @@
 
 import inspect
 import re
-import urlparse
+
+from six.moves.urllib.parse import urlparse
 
 from module.network.HTTPRequest import BadHeader
 
@@ -81,7 +82,7 @@ class CloudFlare(object):
             owner_plugin.set_wait(5)
 
             last_url = owner_plugin.req.lastEffectiveURL
-            urlp = urlparse.urlparse(last_url)
+            urlp = urlparse(last_url)
             domain = urlp.netloc
             submit_url = "%s://%s/cdn-cgi/l/chk_jschl" % (urlp.scheme, domain)
 
@@ -175,7 +176,7 @@ class PreloadStub(object):
 class CloudFlareDdos(Addon):
     __name__ = "CloudFlareDdos"
     __type__ = "hook"
-    __version__ = "0.13"
+    __version__ = "0.14"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False)]

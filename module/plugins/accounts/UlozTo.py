@@ -3,7 +3,8 @@
 import pycurl
 import re
 import time
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.Account import Account
 from ..internal.misc import json
@@ -12,7 +13,7 @@ from ..internal.misc import json
 class UlozTo(Account):
     __name__ = "UlozTo"
     __type__ = "account"
-    __version__ = "0.28"
+    __version__ = "0.29"
     __status__ = "testing"
 
     __description__ = """Uloz.to account plugin"""
@@ -69,7 +70,7 @@ class UlozTo(Account):
         action = re.findall('<form action="(.+?)"', login_page)[1].replace('&amp;', '&')
         token = re.search('_token_" value="(.+?)"', login_page).group(1)
 
-        html = self.load(urlparse.urljoin("https://www.ulozto.net/", action),
+        html = self.load(urljoin("https://www.ulozto.net/", action),
                          post={'_token_': token,
                                '_do': "loginForm-submit",
                                'login': u"Submit",

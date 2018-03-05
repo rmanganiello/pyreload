@@ -2,7 +2,8 @@
 
 import re
 import time
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from .misc import parse_html_form, parse_time, set_cookie
 from .Account import Account
@@ -11,7 +12,7 @@ from .Account import Account
 class XFSAccount(Account):
     __name__ = "XFSAccount"
     __type__ = "account"
-    __version__ = "0.59"
+    __version__ = "0.60"
     __status__ = "stable"
 
     __config__ = [("activated", "bool", "Activated", True),
@@ -60,7 +61,7 @@ class XFSAccount(Account):
             self.PLUGIN_URL = "http://www.%s/" % self.PLUGIN_DOMAIN
 
         if not self.LOGIN_URL:
-            self.LOGIN_URL = urlparse.urljoin(self.PLUGIN_URL, "login.html")
+            self.LOGIN_URL = urljoin(self.PLUGIN_URL, "login.html")
 
         if self.COOKIES:
             self._set_xfs_cookie()
@@ -185,7 +186,7 @@ class XFSAccount(Account):
                        'password': password})
 
         if action:
-            url = urlparse.urljoin("http://", action)
+            url = urljoin("http://", action)
         else:
             url = self.LOGIN_URL
 

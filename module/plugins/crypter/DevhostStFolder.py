@@ -4,7 +4,8 @@
 # http://d-h.st/users/shine/?fld_id=37263#files
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleCrypter import SimpleCrypter
 
@@ -12,7 +13,7 @@ from ..internal.SimpleCrypter import SimpleCrypter
 class DevhostStFolder(SimpleCrypter):
     __name__ = "DevhostStFolder"
     __type__ = "crypter"
-    __version__ = "0.12"
+    __version__ = "0.13"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?d-h\.st/users/(?P<USER>\w+)(/\?fld_id=(?P<ID>\d+))?'
@@ -43,7 +44,7 @@ class DevhostStFolder(SimpleCrypter):
 
             p = r'href="(.+?)">Back to \w+<'
             m = re.search(p, self.data)
-            html = self.load(urlparse.urljoin("http://d-h.st/", m.group(1)),
+            html = self.load(urljoin("http://d-h.st/", m.group(1)),
                              cookies=False)
 
             p = '\?fld_id=%s.*?">(.+?)<' % self.info['pattern']['ID']

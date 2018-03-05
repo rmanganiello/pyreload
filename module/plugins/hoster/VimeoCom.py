@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.misc import json
 from ..internal.SimpleHoster import SimpleHoster
@@ -10,7 +11,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class VimeoCom(SimpleHoster):
     __name__ = "VimeoCom"
     __type__ = "hoster"
-    __version__ = "0.12"
+    __version__ = "0.13"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?(player\.)?vimeo\.com/(video/)?(?P<ID>\d+)'
@@ -61,7 +62,7 @@ class VimeoCom(SimpleHoster):
             inputs['token'] = token
             inputs['password'] = password
 
-            self.data = self.load(urlparse.urljoin(pyfile.url, url),
+            self.data = self.load(urljoin(pyfile.url, url),
                                   post=inputs)
 
             if "Sorry, that password was incorrect. Please try again." in self.data:

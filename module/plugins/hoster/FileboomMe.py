@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -9,7 +10,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class FileboomMe(SimpleHoster):
     __name__ = "FileboomMe"
     __type__ = "hoster"
-    __version__ = "0.07"
+    __version__ = "0.08"
     __status__ = "testing"
 
     __pattern__ = r'https?://f(?:ile)?boom\.me/file/(?P<ID>\w+)'
@@ -39,7 +40,7 @@ class FileboomMe(SimpleHoster):
         self.chunk_limit = 1
 
     def handle_free(self, pyfile):
-        post_url = urlparse.urljoin(
+        post_url = urljoin(
             pyfile.url, "file/" + self.info['pattern']['ID'])
 
         m = re.search(r'data-slow-id="(\w+)"', self.data)
@@ -49,7 +50,7 @@ class FileboomMe(SimpleHoster):
 
             m = re.search(self.LINK_PATTERN, self.data)
             if m is not None:
-                self.link = urlparse.urljoin(pyfile.url, m.group(0))
+                self.link = urljoin(pyfile.url, m.group(0))
 
             else:
                 m = re.search(
@@ -70,7 +71,7 @@ class FileboomMe(SimpleHoster):
                     m = re.search(self.CAPTCHA_PATTERN, self.data)
                     if m is not None:
                         captcha = self.captcha.decrypt(
-                            urlparse.urljoin(pyfile.url, m.group(1)))
+                            urljoin(pyfile.url, m.group(1)))
                         self.data = self.load(post_url,
                                               post={'CaptchaForm[code]': captcha,
                                                     'free': 1,
@@ -89,5 +90,5 @@ class FileboomMe(SimpleHoster):
 
                             m = re.search(self.LINK_PATTERN, self.data)
                             if m is not None:
-                                self.link = urlparse.urljoin(
+                                self.link = urljoin(
                                     pyfile.url, m.group(0))

@@ -3,7 +3,11 @@
 import random
 import re
 import time
-import urlparse
+
+from six.moves.urllib.parse import (
+    parse_qs,
+    urlparse,
+)
 
 from ..internal.Hoster import Hoster
 from ..internal.misc import json
@@ -12,7 +16,7 @@ from ..internal.misc import json
 class ZbigzCom(Hoster):
     __name__ = "ZbigzCom"
     __type__ = "hoster"
-    __version__ = "0.03"
+    __version__ = "0.04"
     __status__ = "testing"
 
     __pattern__ = r'https?://.+\.torrent|magnet:\?.+'
@@ -26,9 +30,9 @@ class ZbigzCom(Hoster):
         current_millis = int(time.time() * 1000)
         json_callback = "jQuery" + call_id + "_" + str(current_millis)
 
-        urlp = urlparse.urlparse(url)
+        urlp = urlparse(url)
         get_params = kwargs.copy()
-        get_params.update(urlparse.parse_qs(urlp.query))
+        get_params.update(parse_qs(urlp.query))
 
         get_params['hash'] = file_id
         get_params['jsoncallback'] = json_callback

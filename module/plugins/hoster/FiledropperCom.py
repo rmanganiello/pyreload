@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -9,7 +10,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class FiledropperCom(SimpleHoster):
     __name__ = "FiledropperCom"
     __type__ = "hoster"
-    __version__ = "0.06"
+    __version__ = "0.07"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?filedropper\.com/\w+'
@@ -44,5 +45,5 @@ class FiledropperCom(SimpleHoster):
 
         m = re.search(r'method="post" action="(.+?)"', self.data)
         if m is not None:
-            self.download(urlparse.urljoin("http://www.filedropper.com/", m.group(1)),
+            self.download(urljoin("http://www.filedropper.com/", m.group(1)),
                           post={'code': captcha_code})

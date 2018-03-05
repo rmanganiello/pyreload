@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -9,7 +10,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class FileSharkPl(SimpleHoster):
     __name__ = "FileSharkPl"
     __type__ = "hoster"
-    __version__ = "0.22"
+    __version__ = "0.23"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?fileshark\.pl/pobierz/\d+/\w+'
@@ -81,7 +82,7 @@ class FileSharkPl(SimpleHoster):
         if m is None:
             self.error(_("Download url not found"))
 
-        link = urlparse.urljoin("https://fileshark.pl/", m.group(1))
+        link = urljoin("https://fileshark.pl/", m.group(1))
 
         self.data = self.load(link)
 

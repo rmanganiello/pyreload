@@ -18,13 +18,13 @@ import subprocess
 import sys
 import time
 import traceback
-import urlparse
 import xml.sax.saxutils  # @TODO: Remove in 0.4.10
 import zlib
 
 from six.moves.urllib.parse import (
     quote as url_quote,
     unquote as url_unquote,
+    urlparse,
 )
 
 try:
@@ -41,7 +41,7 @@ except ImportError:
 class misc(object):
     __name__ = "misc"
     __type__ = "plugin"
-    __version__ = "0.49"
+    __version__ = "0.50"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -554,7 +554,7 @@ def safename(value):
 
 def parse_name(value, safechar=True):
     path = fixurl(decode(value), unquote=False)
-    url_p = urlparse.urlparse(path.rstrip('/'))
+    url_p = urlparse(path.rstrip('/'))
     name = (url_p.path.split('/')[-1] or
             url_p.query.split('=', 1)[::-1][0].split('&', 1)[0] or
             url_p.netloc.split('.', 1)[0])

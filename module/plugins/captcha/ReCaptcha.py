@@ -3,12 +3,12 @@
 import os
 import re
 import urllib
-import urlparse
 from StringIO import StringIO
 
 from six.moves.urllib.parse import (
     quote_plus,
     unquote,
+    urljoin,
 )
 
 from ..internal.CaptchaService import CaptchaService
@@ -32,7 +32,7 @@ except ImportError:
 class ReCaptcha(CaptchaService):
     __name__ = 'ReCaptcha'
     __type__ = 'captcha'
-    __version__ = '0.38'
+    __version__ = '0.39'
     __status__ = 'testing'
 
     __description__ = 'ReCaptcha captcha service plugin'
@@ -138,7 +138,7 @@ class ReCaptcha(CaptchaService):
             self.fail(_("ReCaptcha second challenge pattern not found"))
 
         self.log_debug("Second challenge: %s" % challenge)
-        result = self.decrypt(urlparse.urljoin(server, "image"),
+        result = self.decrypt(urljoin(server, "image"),
                               get={'c': challenge},
                               cookies=True,
                               input_type="jpg")
@@ -329,7 +329,7 @@ class ReCaptcha(CaptchaService):
 
             challenge_msg = re.sub(r'<.*?>', "", challenge_msg)
 
-            image_url = urlparse.urljoin('http://www.google.com',
+            image_url = urljoin('http://www.google.com',
                                          re.search(r'"(/recaptcha/api2/payload[^"]+)', html).group(1))
 
             img = self.pyfile.plugin.load(

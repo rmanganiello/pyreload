@@ -3,7 +3,8 @@
 import hashlib
 import os
 import time
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.misc import json
 from ..internal.SimpleHoster import SimpleHoster
@@ -53,7 +54,7 @@ def get_link_quality(videos, quality):
 class StreamCz(SimpleHoster):
     __name__ = "StreamCz"
     __type__ = "hoster"
-    __version__ = "0.41"
+    __version__ = "0.42"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?stream\.cz/[^/]+/(?P<EP>\d+).+'
@@ -72,7 +73,7 @@ class StreamCz(SimpleHoster):
         episode = self.info['pattern']['EP']
         api_password = get_api_password(episode)
 
-        api_url = urlparse.urljoin(
+        api_url = urljoin(
             "https://www.stream.cz/API/episode/", episode)
         self.req.putHeader("Api-Password", api_password)
         resp = self.load(api_url)

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import urlparse
+
+from six.moves.urllib.parse import urljoin
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -9,7 +10,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class FastshareCz(SimpleHoster):
     __name__ = "FastshareCz"
     __type__ = "hoster"
-    __version__ = "0.42"
+    __version__ = "0.43"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?fastshare\.cz/\d+/.+'
@@ -58,9 +59,9 @@ class FastshareCz(SimpleHoster):
             self.error(_("LINK_FREE_PATTERN not found"))
 
         baseurl = "https://www.fastshare.cz"
-        captcha = self.captcha.decrypt(urlparse.urljoin(baseurl, captcha_src))
+        captcha = self.captcha.decrypt(urljoin(baseurl, captcha_src))
         self.download(
-            urlparse.urljoin(
+            urljoin(
                 baseurl,
                 action),
             post={

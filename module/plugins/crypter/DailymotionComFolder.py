@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import urlparse
+from six.moves.urllib.parse import urljoin
 
 from ..internal.Crypter import Crypter
 from ..internal.misc import fsjoin, json
@@ -9,7 +9,7 @@ from ..internal.misc import fsjoin, json
 class DailymotionComFolder(Crypter):
     __name__ = "DailymotionComFolder"
     __type__ = "crypter"
-    __version__ = "0.08"
+    __version__ = "0.09"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?dailymotion\.com/((playlists/)?(?P<TYPE>playlist|user)/)?(?P<ID>[\w^_]+)(?(TYPE)|#)'
@@ -22,7 +22,7 @@ class DailymotionComFolder(Crypter):
     __authors__ = [("Walter Purcaro", "vuolter@gmail.com")]
 
     def api_response(self, ref, data=None):
-        url = urlparse.urljoin("https://api.dailymotion.com/", ref)
+        url = urljoin("https://api.dailymotion.com/", ref)
         html = self.load(url, get=data)
         return json.loads(html)
 
