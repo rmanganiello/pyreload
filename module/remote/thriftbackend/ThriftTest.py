@@ -7,14 +7,14 @@ from os.path import join,abspath,dirname
 path = join((abspath(dirname(__file__))), "..","..", "lib")
 sys.path.append(path)
 
-from thriftgen.pyload import Pyload
-from thriftgen.pyload.ttypes import *
-from Socket import Socket
+from .thriftgen.pyload import Pyload
+from .thriftgen.pyload.ttypes import *
+from .Socket import Socket
 
 from thrift import Thrift
 from thrift.transport import TTransport
 
-from Protocol import Protocol
+from .Protocol import Protocol
 
 from time import time
 

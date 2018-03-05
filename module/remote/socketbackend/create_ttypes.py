@@ -11,8 +11,8 @@ module = join(path, "..", "..")
 sys.path.append(join(module, "lib"))
 sys.path.append(join(module, "remote"))
 
-from thriftbackend.thriftgen.pyload import ttypes
-from thriftbackend.thriftgen.pyload.Pyload import Iface
+from .thriftbackend.thriftgen.pyload import ttypes
+from .thriftbackend.thriftgen.pyload.Pyload import Iface
 
 
 def main():

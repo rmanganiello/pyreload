@@ -27,7 +27,7 @@ try:
 except:
     pass
 
-from RemoteManager import BackendBase
+from .RemoteManager import BackendBase
 
 core = None
 js = None

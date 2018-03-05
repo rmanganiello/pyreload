@@ -12,13 +12,13 @@ except ImportError:
 
 from thrift.transport import TTransport
 #from thrift.transport.TZlibTransport import TZlibTransport
-from Socket import Socket
-from Protocol import Protocol
+from .Socket import Socket
+from .Protocol import Protocol
 
 # modules should import ttypes from here, when want to avoid importing API
 
-from thriftgen.pyload import Pyload
-from thriftgen.pyload.ttypes import *
+from .thriftgen.pyload import Pyload
+from .thriftgen.pyload.ttypes import *
 
 ConnectionClosed = TTransport.TTransportException
 

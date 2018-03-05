@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import SocketServer
+from . import SocketServer
 
-from RemoteManager import BackendBase
+from .RemoteManager import BackendBase
 
 class RequestHandler(SocketServer.BaseRequestHandler):
 
