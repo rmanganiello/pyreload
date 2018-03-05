@@ -32,11 +32,11 @@ from types import MethodType
 from pycurl import error
 import six
 
-from PyFile import PyFile
-from plugins.Plugin import Abort, Fail, Reconnect, Retry, SkipDownload
-from common.packagetools import parseNames
-from utils import save_join
-from Api import OnlineStatus
+from .PyFile import PyFile
+from .plugins.Plugin import Abort, Fail, Reconnect, Retry, SkipDownload
+from .common.packagetools import parseNames
+from .utils import save_join
+from .Api import OnlineStatus
 
 class PluginThread(Thread):
     """abstract base class for thread types"""

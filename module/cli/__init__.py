@@ -1,2 +1,2 @@
-from AddPackage import AddPackage
-from ManageFiles import ManageFiles
+from .AddPackage import AddPackage
+from .ManageFiles import ManageFiles

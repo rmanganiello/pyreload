@@ -9,8 +9,8 @@ from bottle import route, request, response, HTTPError
 import six
 from six.moves.urllib.parse import unquote
 
-from utils import toDict, set_session
-from webinterface import PYLOAD
+from .utils import toDict, set_session
+from .webinterface import PYLOAD
 
 from module.lib.SafeEval import const_eval as literal_eval
 from module.Api import BaseObject

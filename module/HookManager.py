@@ -29,7 +29,7 @@ import six
 
 from module.PluginThread import HookThread
 from module.plugins.PluginManager import literal_eval
-from utils import lock
+from .utils import lock
 
 class HookManager:
     """Manages hooks, delegates and handles Events.

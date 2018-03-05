@@ -8,7 +8,7 @@ from binascii import unhexlify
 from bottle import route, request, HTTPError
 from six.moves.urllib.parse import unquote
 
-from webinterface import PYLOAD, DL_ROOT, JS
+from .webinterface import PYLOAD, DL_ROOT, JS
 
 try:
     from Crypto.Cipher import AES

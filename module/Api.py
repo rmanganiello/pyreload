@@ -24,22 +24,22 @@ import re
 
 import six
 
-from PyFile import PyFile
-from utils import freeSpace, compare_time
-from common.packagetools import parseNames
-from network.RequestFactory import getURL
-from remote import activated
+from .PyFile import PyFile
+from .utils import freeSpace, compare_time
+from .common.packagetools import parseNames
+from .network.RequestFactory import getURL
+from .remote import activated
 
 if activated:
     try:
-        from remote.thriftbackend.thriftgen.pyload.ttypes import *
-        from remote.thriftbackend.thriftgen.pyload.Pyload import Iface
+        from .remote.thriftbackend.thriftgen.pyload.ttypes import *
+        from .remote.thriftbackend.thriftgen.pyload.Pyload import Iface
         BaseObject = TBase
     except ImportError:
         print("Thrift not imported")
-        from remote.socketbackend.ttypes import *
+        from .remote.socketbackend.ttypes import *
 else:
-    from remote.socketbackend.ttypes import *
+    from .remote.socketbackend.ttypes import *
 
 # contains function names mapped to their permissions
 # unlisted functions are for admins only

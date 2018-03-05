@@ -25,8 +25,8 @@ from logging import getLogger
 
 import pycurl
 
-from HTTPChunk import ChunkInfo, HTTPChunk
-from HTTPRequest import BadHeader
+from .HTTPChunk import ChunkInfo, HTTPChunk
+from .HTTPRequest import BadHeader
 
 from module.plugins.Plugin import Abort
 from module.utils import save_join, fs_encode
@@ -328,7 +328,7 @@ class HTTPDownload():
 if __name__ == "__main__":
     url = "http://speedtest.netcologne.de/test_100mb.bin"
 
-    from Bucket import Bucket
+    from .Bucket import Bucket
 
     bucket = Bucket()
     bucket.setRate(200 * 1024)

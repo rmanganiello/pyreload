@@ -30,12 +30,12 @@ from bottle import route, static_file, request, response, redirect, HTTPError, e
 import six
 from six.moves.urllib.parse import unquote
 
-from webinterface import PYLOAD, PYLOAD_DIR, PROJECT_DIR, SETUP, PREFIX, env
+from .webinterface import PYLOAD, PYLOAD_DIR, PROJECT_DIR, SETUP, PREFIX, env
 
-from utils import render_to_response, parse_permissions, parse_userdata, \
+from .utils import render_to_response, parse_permissions, parse_userdata, \
     login_required, get_permission, set_permission, permlist, toDict, set_session
 
-from filters import relpath, unquotepath
+from .filters import relpath, unquotepath
 
 from module.utils import formatSize, save_join, fs_encode, fs_decode
 

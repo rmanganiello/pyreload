@@ -11,7 +11,7 @@ from traceback import print_exc
 
 import six
 
-from utils import chmod
+from .utils import chmod
 
 # ignore these plugin configs, mainly because plugins were wiped out
 IGNORE = (
