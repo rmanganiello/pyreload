@@ -1392,13 +1392,13 @@ class SSLConnection:
               'sock_shutdown', 'get_peer_certificate', 'want_read',
               'want_write', 'set_connect_state', 'set_accept_state',
               'connect_ex', 'sendall', 'settimeout'):
-        exec """def %s(self, *args):
+        exec("""def %s(self, *args):
         self._lock.acquire()
         try:
             return self._ssl_conn.%s(*args)
         finally:
             self._lock.release()
-""" % (f, f)
+""" % (f, f))
 
 
 try:
