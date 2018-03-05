@@ -3,7 +3,7 @@
 import re
 import urllib
 
-import BeautifulSoup
+from bs4 import BeautifulSoup
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..internal.SimpleHoster import SimpleHoster
@@ -12,7 +12,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class ZippyshareCom(SimpleHoster):
     __name__ = "ZippyshareCom"
     __type__ = "hoster"
-    __version__ = "0.94"
+    __version__ = "0.95"
     __status__ = "testing"
 
     __pattern__ = r'http://(?P<HOST>www\d{0,3}\.zippyshare\.com)/(?:[vd]/|view\.jsp.*key=)(?P<KEY>[\w^_]+)'
@@ -67,11 +67,12 @@ class ZippyshareCom(SimpleHoster):
 
     def get_link(self):
         #: Get all the scripts inside the html body
-        soup = BeautifulSoup.BeautifulSoup(self.data)
+        soup = BeautifulSoup(self.data)
         scripts = [
-            s.getText() for s in soup.body.findAll(
-                'script',
-                type='text/javascript') if "('dlbutton').href =" in s.getText()]
+            s.getText()
+            for s in soup.body.find_all('script', type='text/javascript')
+            if "('dlbutton').href =" in s.getText()
+        ]
 
         #: Emulate a document in JS
         inits = ['''
@@ -88,8 +89,10 @@ class ZippyshareCom(SimpleHoster):
         eltRE = r'getElementById\([\'"](.+?)[\'"]\)(\.)?(getAttribute\([\'"])?(\w+)?([\'"]\))?'
         for m in re.findall(eltRE, ' '.join(scripts)):
             JSid, JSattr = m[0], m[3]
-            values = filter(None, (elt.get(JSattr, None)
-                                   for elt in soup.findAll(id=JSid)))
+            values = filter(None, (
+                elt.get(JSattr, None)
+                for elt in soup.find_all(id=JSid)
+            ))
             if values:
                 inits.append('document.getElementById("%s")["%s"] = "%s"' % (
                     JSid, JSattr, values[-1]))

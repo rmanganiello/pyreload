@@ -2,7 +2,7 @@
 
 import re
 
-import BeautifulSoup
+from bs4 import BeautifulSoup
 
 from ..internal.Crypter import Crypter
 
@@ -10,7 +10,7 @@ from ..internal.Crypter import Crypter
 class DuckCryptInfo(Crypter):
     __name__ = "DuckCryptInfo"
     __type__ = "crypter"
-    __version__ = "0.08"
+    __version__ = "0.09"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?duckcrypt\.info/(folder|wait|link)/(\w+)/?(\w*)'
@@ -41,8 +41,8 @@ class DuckCryptInfo(Crypter):
         m = re.match(self.__pattern__, html)
         self.log_debug("Redirect to " + m.group(0))
         html = self.load(str(m.group(0)))
-        soup = BeautifulSoup.BeautifulSoup(html)
-        cryptlinks = soup.findAll("div", attrs={'class': "folderbox"})
+        soup = BeautifulSoup(html)
+        cryptlinks = soup.find_all("div", attrs={'class': "folderbox"})
         self.log_debug("Redirect to " + cryptlinks)
         if not cryptlinks:
             self.error(_("No link found"))

@@ -2,7 +2,10 @@
 
 import re
 
-import BeautifulSoup
+from bs4 import (
+    BeautifulSoup,
+    BeautifulStoneSoup,
+)
 
 from ..internal.Crypter import Crypter
 
@@ -10,7 +13,7 @@ from ..internal.Crypter import Crypter
 class HoerbuchIn(Crypter):
     __name__ = "HoerbuchIn"
     __type__ = "crypter"
-    __version__ = "0.67"
+    __version__ = "0.68"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?hoerbuch\.us/(wp/horbucher/\d+/|tp/out\.php\?.+|protection/folder_\d+\.html)'
@@ -36,11 +39,10 @@ class HoerbuchIn(Crypter):
 
         if self.article.match(pyfile.url):
             html = self.load(pyfile.url)
-            soup = BeautifulSoup.BeautifulSoup(
-                html, convertEntities=BeautifulSoup.BeautifulStoneSoup.HTML_ENTITIES)
+            soup = BeautifulSoup(html)
 
             links = []
-            for a in soup.findAll("a", attrs={'href': self.hoster_links}):
+            for a in soup.find_all("a", attrs={'href': self.hoster_links}):
                 for decrypted_link in self.decrypt_folder(a.get('href')):
                     links.append(decrypted_link)
 
@@ -66,10 +68,9 @@ class HoerbuchIn(Crypter):
 
         links = []
 
-        soup = BeautifulSoup.BeautifulSoup(
-            html, convertEntities=BeautifulSoup.BeautifulStoneSoup.HTML_ENTITIES)
+        soup = BeautifulSoup(html)
 
-        for container in soup.findAll("div", attrs={'class': "container"}):
+        for container in soup.find_all("div", attrs={'class': "container"}):
             href = container.a.get("href")
 
             uploaded = self.uploaded.search(href)
