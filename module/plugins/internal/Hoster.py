@@ -2,9 +2,10 @@
 
 from __future__ import with_statement
 
-import __builtin__
 import os
 import re
+
+from six.moves import builtins
 
 import mimetypes
 from module.network.HTTPRequest import BadHeader
@@ -14,8 +15,8 @@ from .misc import compute_checksum, encode, exists, fixurl, fsjoin, parse_name, 
 from .Plugin import Fail
 
 # Python 2.5 compatibility hack for property.setter, property.deleter
-if not hasattr(__builtin__.property, "setter"):
-    class property(__builtin__.property):
+if not hasattr(builtins.property, "setter"):
+    class property(builtins.property):
         __metaclass__ = type
 
         def setter(self, method):
@@ -24,7 +25,7 @@ if not hasattr(__builtin__.property, "setter"):
         def deleter(self, method):
             return property(self.fget, self.fset, method)
 
-        @__builtin__.property
+        @builtins.property
         def __doc__(self):
             """Doc seems not to be set correctly when subclassing"""
             return self.fget.__doc__

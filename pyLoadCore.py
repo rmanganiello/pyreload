@@ -22,8 +22,6 @@
 """
 CURRENT_VERSION = '0.4.9'
 
-import __builtin__
-
 from getopt import getopt, GetoptError
 import module.common.pylgettext as gettext
 from imp import find_module
@@ -40,6 +38,7 @@ from time import time, sleep
 from traceback import print_exc
 
 import six
+from six.moves import builtins
 
 from module import InitHomeDir
 from module.plugins.AccountManager import AccountManager
@@ -65,7 +64,6 @@ sys.stdout = getwriter(enc)(sys.stdout, errors="replace")
 # TODO List
 # - configurable auth system ldap/mysql
 # - cron job like sheduler
-
 
 def exceptHook(exc_type, exc_value, exc_traceback):
     logger = logging.getLogger("log")
@@ -386,7 +384,7 @@ class Core(object):
             self.db.purgeLinks()
 
         self.requestFactory = RequestFactory(self)
-        __builtin__.pyreq = self.requestFactory
+        builtins.pyreq = self.requestFactory
 
         self.lastClientConnected = 0
 

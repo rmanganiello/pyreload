@@ -24,9 +24,9 @@ from os.path import join
 import sys
 from sys import argv, platform
 
-import __builtin__
-__builtin__.owd = path.abspath("") #original working directory
-__builtin__.pypath = path.abspath(path.join(__file__, "..", ".."))
+from six.moves import builtins
+builtins.owd = path.abspath("") #original working directory
+builtins.pypath = path.abspath(path.join(__file__, "..", ".."))
 
 sys.path.append(join(pypath, "module", "lib"))
 
@@ -50,7 +50,7 @@ if platform == 'nt':
 else:
     homedir = path.expanduser("~")
 
-__builtin__.homedir = homedir
+builtins.homedir = homedir
 
 args = " ".join(argv[1:])
 
@@ -77,7 +77,7 @@ else:
 if not path.exists(configdir):
     makedirs(configdir, 0o700)
 
-__builtin__.configdir = configdir
+builtins.configdir = configdir
 chdir(configdir)
 
 #print "Using %s as working directory." % configdir

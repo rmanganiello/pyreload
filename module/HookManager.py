@@ -17,7 +17,6 @@
     @author: RaNaN, mkaay
     @interface-version: 0.1
 """
-import __builtin__
 
 import traceback
 from thread import start_new_thread
@@ -26,6 +25,7 @@ from threading import RLock
 from types import MethodType
 
 import six
+from six.moves import builtins
 
 from module.PluginThread import HookThread
 from module.plugins.PluginManager import literal_eval
@@ -67,7 +67,7 @@ class HookManager:
         self.core = core
         self.config = self.core.config
 
-        __builtin__.hookManager = self #needed to let hooks register themself
+        builtins.hookManager = self #needed to let hooks register themself
 
         self.log = self.core.log
         self.plugins = []
