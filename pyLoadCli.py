@@ -31,8 +31,7 @@ from time import sleep
 from traceback import print_exc
 
 import six
-
-import ConfigParser
+from six.moves.configparser import ConfigParser
 
 from codecs import getwriter
 

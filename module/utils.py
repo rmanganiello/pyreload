@@ -7,8 +7,10 @@ import sys
 import time
 import re
 from os.path import join
-from string import maketrans
 from htmlentitydefs import name2codepoint
+
+from module.common.compatibility import maketrans
+
 
 def chmod(*args):
     try:

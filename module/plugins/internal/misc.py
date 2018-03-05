@@ -13,7 +13,6 @@ import os
 import re
 import shutil
 import socket
-import string
 import subprocess
 import sys
 import time
@@ -26,6 +25,8 @@ from six.moves.urllib.parse import (
     unquote as url_unquote,
     urlparse,
 )
+
+from module.common.compatibility import maketrans
 
 try:
     from functools import reduce
@@ -472,7 +473,7 @@ def remove_chars(value, repl):
         return value.translate(dict((ord(s), None) for s in repl))
 
     elif isinstance(value, str):
-        return value.translate(string.maketrans("", ""), repl)
+        return value.translate(maketrans("", ""), repl)
 
 
 def fixurl(url, unquote=None):
