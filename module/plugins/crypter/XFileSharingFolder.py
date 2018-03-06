@@ -2,13 +2,15 @@
 
 import re
 
+from module.singletons import get_request_factory
+
 from ..internal.XFSCrypter import XFSCrypter
 
 
 class XFileSharingFolder(XFSCrypter):
     __name__ = "XFileSharingFolder"
     __type__ = "crypter"
-    __version__ = "0.25"
+    __version__ = "0.26"
     __status__ = "testing"
 
     __pattern__ = r'^unmatchable$'
@@ -41,13 +43,15 @@ class XFileSharingFolder(XFSCrypter):
     def setup_base(self):
         XFSCrypter.setup_base(self)
 
+        request_factory = get_request_factory()
+
         if self.account:
-            self.req = self.pyload.requestFactory.getRequest(
+            self.req = request_factory.getRequest(
                 self.PLUGIN_NAME, self.account.user)
             # @NOTE: Don't call get_info here to reduce overhead
             self.premium = self.account.info['data']['premium']
         else:
-            self.req = self.pyload.requestFactory.getRequest(self.classname)
+            self.req = request_factory.getRequest(self.classname)
             self.premium = False
 
     #@TODO: Recheck in 0.4.10

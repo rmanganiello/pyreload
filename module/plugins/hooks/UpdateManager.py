@@ -8,6 +8,8 @@ import re
 import sys
 import time
 
+from module.singletons import get_request_factory
+
 from ..internal.Addon import Addon
 from ..internal.misc import Expose, encode, exists, fsjoin, threaded
 
@@ -15,7 +17,7 @@ from ..internal.misc import Expose, encode, exists, fsjoin, threaded
 class UpdateManager(Addon):
     __name__ = "UpdateManager"
     __type__ = "hook"
-    __version__ = "1.20"
+    __version__ = "1.21"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", True),
@@ -253,7 +255,7 @@ class UpdateManager(Addon):
         updatelist, blacklist = self.parse_updates(server_data)
 
         url = server_data[1]
-        req = self.pyload.requestFactory.getRequest(self.classname)
+        req = get_request_factory().getRequest(self.classname)
 
         if blacklist:
             #@NOTE: Protect UpdateManager from self-removing

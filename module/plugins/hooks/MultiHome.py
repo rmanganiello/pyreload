@@ -2,6 +2,8 @@
 
 import time
 
+from module.singletons import get_request_factory
+
 from ..internal.Addon import Addon
 
 
@@ -27,7 +29,7 @@ class Interface(object):
 class MultiHome(Addon):
     __name__ = "MultiHome"
     __type__ = "hook"
-    __version__ = "0.21"
+    __version__ = "0.22"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -59,11 +61,12 @@ class MultiHome(Addon):
             self.interfaces.append(Interface(interface))
 
     def activate(self):
-        self.old_get_request = self.pyload.requestFactory.getRequest
+        request_factory = get_request_factory()
+
+        self.old_get_request = request_factory.getRequest
 
         new_get_request = self.build_get_request()
-        self.pyload.requestFactory.getRequest = lambda *args: new_get_request(
-            *args)
+        request_factory.getRequest = lambda *args: new_get_request(*args)
 
     def best_interface(self, plugin_name, account):
         best = None
@@ -82,7 +85,10 @@ class MultiHome(Addon):
             return self.old_get_request(plugin_name, account)
 
         iface.use_for(plugin_name, account)
-        self.pyload.requestFactory.iface = lambda: iface.address
+
+        request_factory = get_request_factory()
+        request_factory.iface = lambda: iface.address
+
         self.log_debug("Using address", iface.address)
 
         return self.old_get_request(plugin_name, account)

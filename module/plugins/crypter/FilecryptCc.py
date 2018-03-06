@@ -11,6 +11,7 @@ from six.moves.urllib.parse import urljoin
 
 from module.network.CookieJar import CookieJar
 from module.network.HTTPRequest import BadHeader, HTTPRequest
+from module.singletons import get_request_factory
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..captcha.SolveMedia import SolveMedia
@@ -45,7 +46,7 @@ class BIGHTTPRequest(HTTPRequest):
 class FilecryptCc(Crypter):
     __name__ = "FilecryptCc"
     __type__ = "crypter"
-    __version__ = "0.37"
+    __version__ = "0.38"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?filecrypt\.cc/Container/\w+'
@@ -82,7 +83,7 @@ class FilecryptCc(Crypter):
 
         self.req.http = BIGHTTPRequest(
             cookies=CookieJar(None),
-            options=self.pyload.requestFactory.getOptions(),
+            options=get_request_factory().getOptions(),
             limit=2000000)
 
     def decrypt(self, pyfile):

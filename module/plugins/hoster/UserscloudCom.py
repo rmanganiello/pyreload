@@ -4,6 +4,7 @@ import re
 
 from module.network.CookieJar import CookieJar
 from module.network.HTTPRequest import HTTPRequest
+from module.singletons import get_request_factory
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -36,7 +37,7 @@ class BIGHTTPRequest(HTTPRequest):
 class UserscloudCom(SimpleHoster):
     __name__ = "UserscloudCom"
     __type__ = "hoster"
-    __version__ = "0.09"
+    __version__ = "0.10"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?userscloud\.com/(?P<ID>\w{12})'
@@ -68,7 +69,7 @@ class UserscloudCom(SimpleHoster):
 
         self.req.http = BIGHTTPRequest(
             cookies=CookieJar(None),
-            options=self.pyload.requestFactory.getOptions(),
+            options=get_request_factory().getOptions(),
             limit=300000)
 
 

@@ -9,10 +9,10 @@ import sys
 import time
 import threading
 
-
 from module.plugins.Plugin import Abort
 from module.plugins.internal.Hoster import Hoster
 from module.plugins.internal.misc import encode, exists, fsjoin, lock, threaded
+from module.singletons import get_request_factory
 
 
 class IRC(object):
@@ -445,7 +445,7 @@ class IRC(object):
 class XDCC(Hoster):
     __name__    = "XDCC"
     __type__    = "hoster"
-    __version__ = "0.48"
+    __version__ = "0.49"
     __status__  = "testing"
 
     __pattern__ = r'xdcc://(?P<SERVER>.*?)/#?(?P<CHAN>.*?)/(?P<BOT>.*?)/#?(?P<PACK>\d+)/?'
@@ -518,7 +518,7 @@ class XDCC(Hoster):
 
         #: Change request type
         self.req.close()
-        self.req = self.pyload.requestFactory.getRequest(self.classname, type="XDCC")
+        self.req = get_request_factory().getRequest(self.classname, type="XDCC")
 
         self.pyfile.setCustomStatus("connect irc")
 

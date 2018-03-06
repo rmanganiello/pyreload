@@ -11,6 +11,7 @@ from module.network.RequestFactory import getRequest as get_request
 from module.plugins.Plugin import SkipDownload as Skip
 # @TODO: Remove in 0.4.10
 from module.plugins.Plugin import Abort, Fail, Reconnect, Retry
+from module.singletons import get_request_factory
 from .misc import (DB, Config, decode, encode, exists, fixurl, format_exc,
                    fsjoin, html_unescape, parse_html_header, remove,
                    set_cookies)
@@ -58,7 +59,7 @@ class Plugin(object):
         self.info = {}
 
         #: Browser instance, see `network.Browser`
-        self.req = self.pyload.requestFactory.getRequest(self.classname)
+        self.req = get_request_factory().getRequest(self.classname)
         self.req.setOption("timeout", 60)  # @TODO: Remove in 0.4.10
 
         #: Last loaded html

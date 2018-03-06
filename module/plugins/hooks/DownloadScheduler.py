@@ -3,13 +3,15 @@
 import re
 import time
 
+from module.singletons import get_request_factory
+
 from ..internal.Addon import Addon
 
 
 class DownloadScheduler(Addon):
     __name__ = "DownloadScheduler"
     __type__ = "hook"
-    __version__ = "0.30"
+    __version__ = "0.31"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -91,4 +93,4 @@ class DownloadScheduler(Addon):
                 self.pyload.config.set('download', 'max_speed', -1)
 
             # Make new speed values take effect
-            self.pyload.requestFactory.updateBucket()
+            get_request_factory().updateBucket()

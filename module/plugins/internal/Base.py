@@ -11,6 +11,8 @@ from six.moves.urllib.parse import (
     urlparse,
 )
 
+from module.singletons import get_request_factory
+
 from .Captcha import Captcha
 from .misc import (decode, encode, fixurl, format_size, format_time,
                    parse_html_form, parse_name, replace_patterns)
@@ -32,7 +34,7 @@ def parse_fileInfo(klass, url="", html=""):
 class Base(Plugin):
     __name__ = "Base"
     __type__ = "base"
-    __version__ = "0.35"
+    __version__ = "0.36"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -158,12 +160,12 @@ class Base(Plugin):
             pass
 
         if self.account:
-            self.req = self.pyload.requestFactory.getRequest(
+            self.req = get_request_factory().getRequest(
                 self.classname, self.account.user)
             # @NOTE: Avoid one unnecessary get_info call by `self.account.premium` here
             self.premium = self.account.info['data']['premium']
         else:
-            self.req = self.pyload.requestFactory.getRequest(self.classname)
+            self.req = get_request_factory().getRequest(self.classname)
             self.premium = False
 
         self.req.setOption("timeout", 60)  # @TODO: Remove in 0.4.10

@@ -389,8 +389,7 @@ class Core(object):
             self.log.info(_("All links removed"))
             self.db.purgeLinks()
 
-        self.requestFactory = RequestFactory(self)
-        set_request_factory(self.requestFactory)
+        set_request_factory(RequestFactory(self))
 
         self.lastClientConnected = 0
 

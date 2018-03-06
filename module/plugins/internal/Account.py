@@ -6,6 +6,8 @@ import random
 import threading
 import time
 
+from module.singletons import get_request_factory
+
 from .misc import (Periodical, compare_time, decode, isiterable, lock,
                    parse_size)
 from .Plugin import Plugin, Skip
@@ -14,7 +16,7 @@ from .Plugin import Plugin, Skip
 class Account(Plugin):
     __name__ = "Account"
     __type__ = "account"
-    __version__ = "0.84"
+    __version__ = "0.85"
     __status__ = "stable"
 
     __description__ = """Base account plugin"""
@@ -105,8 +107,7 @@ class Account(Plugin):
             self.log_info(_("Relogin user `%s`...") % self.user)
             self.clean()
 
-        self.req = self.pyload.requestFactory.getRequest(
-            self.classname, self.user)
+        self.req = get_request_factory().getRequest(self.classname, self.user)
 
         self.sync()
         self.setup()
@@ -431,8 +432,7 @@ class Account(Plugin):
             if not self.logged:
                 self.relogin()
             else:
-                self.req = self.pyload.requestFactory.getRequest(
-                    self.classname, self.user)
+                self.req = get_request_factory().getRequest(self.classname, self.user)
 
             return True
 

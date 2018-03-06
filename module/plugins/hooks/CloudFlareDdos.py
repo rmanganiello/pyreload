@@ -7,6 +7,7 @@ import six
 from six.moves.urllib.parse import urlparse
 
 from module.network.HTTPRequest import BadHeader
+from module.singletons import get_request_factory
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..internal.Addon import Addon
@@ -177,7 +178,7 @@ class PreloadStub(object):
 class CloudFlareDdos(Addon):
     __name__ = "CloudFlareDdos"
     __type__ = "hook"
-    __version__ = "0.15"
+    __version__ = "0.16"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False)]
@@ -227,13 +228,16 @@ class CloudFlareDdos(Addon):
     def _override_get_url(self):
         self.log_debug("Overriding get_url()")
 
-        self.old_get_url = self.pyload.requestFactory.getURL
-        self.pyload.requestFactory.getURL = self.my_get_url
+        request_factory = get_request_factory()
+
+        self.old_get_url = request_factory.getURL
+        request_factory.getURL = self.my_get_url
 
     def _unoverride_get_url(self):
         self.log_debug("Unoverriding get_url()")
 
-        self.pyload.requestFactory.getURL = self.old_get_url
+        request_factory = get_request_factory()
+        request_factory.getURL = self.old_get_url
 
     def _find_owner_plugin(self):
         """

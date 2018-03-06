@@ -2,13 +2,15 @@
 
 import re
 
+from module.singletons import get_request_factory
+
 from ..internal.XFSHoster import XFSHoster
 
 
 class XFileSharing(XFSHoster):
     __name__ = "XFileSharing"
     __type__ = "hoster"
-    __version__ = "0.65"
+    __version__ = "0.66"
     __status__ = "testing"
 
     __pattern__ = r'^unmatchable$'
@@ -50,13 +52,15 @@ class XFileSharing(XFSHoster):
     def setup_base(self):
         XFSHoster.setup_base(self)
 
+        request_factory = get_request_factory()
+
         if self.account:
-            self.req = self.pyload.requestFactory.getRequest(
+            self.req = request_factory.getRequest(
                 self.PLUGIN_NAME, self.account.user)
             # @NOTE: Don't call get_info here to reduce overhead
             self.premium = self.account.info['data']['premium']
         else:
-            self.req = self.pyload.requestFactory.getRequest(self.classname)
+            self.req = request_factory.getRequest(self.classname)
             self.premium = False
 
     #@TODO: Recheck in 0.4.10

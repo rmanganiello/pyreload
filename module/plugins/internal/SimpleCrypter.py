@@ -4,6 +4,7 @@ import re
 
 from module.network.HTTPRequest import BadHeader
 from module.network.RequestFactory import getURL as get_url
+from module.singletons import get_request_factory
 
 from .Crypter import Crypter
 from .misc import parse_name, parse_time, replace_patterns
@@ -12,7 +13,7 @@ from .misc import parse_name, parse_time, replace_patterns
 class SimpleCrypter(Crypter):
     __name__ = "SimpleCrypter"
     __type__ = "crypter"
-    __version__ = "0.93"
+    __version__ = "0.94"
     __status__ = "testing"
 
     __pattern__ = r'^unmatchable$'
@@ -132,14 +133,15 @@ class SimpleCrypter(Crypter):
     #@TODO: Remove in 0.4.10
     def setup_base(self):
         account_name = self.classname.rsplit("Folder", 1)[0]
+        request_factory = get_request_factory()
 
         if self.account:
-            self.req = self.pyload.requestFactory.getRequest(
+            self.req = request_factory.getRequest(
                 account_name, self.account.user)
             # @NOTE: Don't call get_info here to reduce overhead
             self.premium = self.account.info['data']['premium']
         else:
-            self.req = self.pyload.requestFactory.getRequest(account_name)
+            self.req = request_factory.getRequest(account_name)
             self.premium = False
 
         Crypter.setup_base(self)

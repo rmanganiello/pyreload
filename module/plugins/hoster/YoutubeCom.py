@@ -13,6 +13,7 @@ from six.moves.urllib.parse import unquote
 
 from module.network.CookieJar import CookieJar
 from module.network.HTTPRequest import HTTPRequest
+from module.singletons import get_request_factory
 
 from ..internal.Hoster import Hoster
 from ..internal.misc import exists, isexecutable, json, reduce, renice, replace_patterns, which
@@ -209,7 +210,7 @@ class Ffmpeg(object):
 class YoutubeCom(Hoster):
     __name__ = "YoutubeCom"
     __type__ = "hoster"
-    __version__ = "0.68"
+    __version__ = "0.69"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:[^/]*\.)?(?:youtu\.be/|youtube\.com/watch\?(?:.*&)?v=)[\w\-]+'
@@ -691,7 +692,7 @@ class YoutubeCom(Hoster):
 
         self.req.http = BIGHTTPRequest(
             cookies=CookieJar(None),
-            options=self.pyload.requestFactory.getOptions(),
+            options=get_request_factory().getOptions(),
             limit=2000000)
 
     def process(self, pyfile):

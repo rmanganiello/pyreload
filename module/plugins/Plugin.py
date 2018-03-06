@@ -33,6 +33,7 @@ from itertools import islice
 
 import six
 
+from module.singletons import get_request_factory
 from module.utils import save_join, save_path, fs_encode, fs_decode
 
 def chunks(iterable, size):
@@ -188,7 +189,7 @@ class Plugin(Base):
             #: premium status
             self.premium = self.account.isPremium(self.user)
         else:
-            self.req = pyfile.m.core.requestFactory.getRequest(self.__name__)
+            self.req = get_request_factory().getRequest(self.__name__)
 
         #: associated pyfile instance, see `PyFile`
         self.pyfile = pyfile
@@ -246,7 +247,7 @@ class Plugin(Base):
     def resetAccount(self):
         """ dont use account and retry download """
         self.account = None
-        self.req = self.core.requestFactory.getRequest(self.__name__)
+        self.req = get_request_factory().getRequest(self.__name__)
         self.retry()
 
     def checksum(self, local_file=None):

@@ -4,6 +4,7 @@ import re
 
 from module.network.CookieJar import CookieJar
 from module.network.HTTPRequest import HTTPRequest
+from module.singletons import get_request_factory
 
 from ..internal.misc import json
 from ..internal.SimpleHoster import SimpleHoster
@@ -38,7 +39,7 @@ class BIGHTTPRequest(HTTPRequest):
 class PornhubCom(SimpleHoster):
     __name__ = "PornhubCom"
     __type__ = "hoster"
-    __version__ = "0.60"
+    __version__ = "0.61"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?pornhub\.com/view_video\.php\?viewkey=\w+'
@@ -80,7 +81,7 @@ class PornhubCom(SimpleHoster):
 
         self.req.http = BIGHTTPRequest(
             cookies=CookieJar(None),
-            options=self.pyload.requestFactory.getOptions(),
+            options=get_request_factory().getOptions(),
             limit=2000000)
 
     def handle_free(self, pyfile):

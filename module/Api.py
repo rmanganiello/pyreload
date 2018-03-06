@@ -24,6 +24,8 @@ import re
 
 import six
 
+from module.singletons import get_request_factory
+
 from .PyFile import PyFile
 from .utils import freeSpace, compare_time
 from .common.packagetools import parseNames
@@ -153,8 +155,8 @@ class Api(Iface):
         if section == "core":
             self.core.config[category][option] = value
 
-            if option in ("limit_speed", "max_speed"): #not so nice to update the limit
-                self.core.requestFactory.updateBucket()
+            if option in ("limit_speed", "max_speed"):  # not so nice to update the limit
+                get_request_factory().updateBucket()
 
         elif section == "plugin":
             self.core.config.setPlugin(category, option, value)
