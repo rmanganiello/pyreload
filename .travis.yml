@@ -7,7 +7,7 @@ python:
   - "3.6"
 
 install:
-  - pip install pytest
+  - pip install mock pytest
   - python setup.py -q install
 
 script:
