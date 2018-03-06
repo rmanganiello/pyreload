@@ -20,7 +20,6 @@
     @author: mkaay
     @version: v0.4.9
 """
-CURRENT_VERSION = '0.4.9'
 
 from getopt import getopt, GetoptError
 import module.common.pylgettext as gettext
@@ -38,9 +37,12 @@ from time import time, sleep
 from traceback import print_exc
 
 import six
-from six.moves import builtins
 
 from module import InitHomeDir
+from module.singletons import (
+    set_hook_manager,
+    set_request_factory,
+)
 from module.plugins.AccountManager import AccountManager
 from module.CaptchaManager import CaptchaManager
 from module.ConfigParser import ConfigParser
@@ -58,12 +60,16 @@ from module.utils import freeSpace, formatSize, get_console_encoding
 
 from codecs import getwriter
 
+
+CURRENT_VERSION = '0.4.9'
+
 enc = get_console_encoding(sys.stdout.encoding)
 sys.stdout = getwriter(enc)(sys.stdout, errors="replace")
 
 # TODO List
 # - configurable auth system ldap/mysql
 # - cron job like sheduler
+
 
 def exceptHook(exc_type, exc_value, exc_traceback):
     logger = logging.getLogger("log")
@@ -384,7 +390,7 @@ class Core(object):
             self.db.purgeLinks()
 
         self.requestFactory = RequestFactory(self)
-        builtins.pyreq = self.requestFactory
+        set_request_factory(self.requestFactory)
 
         self.lastClientConnected = 0
 
@@ -406,7 +412,10 @@ class Core(object):
         self.accountManager = AccountManager(self)
         self.threadManager = ThreadManager(self)
         self.captchaManager = CaptchaManager(self)
+
         self.hookManager = HookManager(self)
+        set_hook_manager(self.hookManager)
+
         self.remoteManager = RemoteManager(self)
 
         self.js = JsEngine()

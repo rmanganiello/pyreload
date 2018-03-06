@@ -27,6 +27,7 @@ from six.moves.urllib.parse import (
 )
 
 from module.common.compatibility import maketrans
+from module.singletons import get_hook_manager
 
 try:
     from functools import reduce
@@ -131,7 +132,7 @@ class Expose(object):
     Used for decoration to declare rpc services
     """
     def __new__(cls, fn, *args, **kwargs):
-        hookManager.addRPC(fn.__module__, fn.__name__, fn.__doc__)
+        get_hook_manager().addRPC(fn.__module__, fn.__name__, fn.__doc__)
         return fn
 
 
@@ -239,7 +240,7 @@ def lock(fn):
 
 def threaded(fn):
     def run(*args, **kwargs):
-        hookManager.startThread(fn, *args, **kwargs)
+        get_hook_manager().startThread(fn, *args, **kwargs)
 
     return run
 

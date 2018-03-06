@@ -24,14 +24,12 @@ from threading import RLock
 from types import MethodType
 
 import six
-from six.moves import (
-    builtins,
-    _thread as thread,
-)
+from six.moves import _thread as thread
 
 from module.PluginThread import HookThread
 from module.plugins.PluginManager import literal_eval
 from .utils import lock
+
 
 class HookManager:
     """Manages hooks, delegates and handles Events.
@@ -68,8 +66,6 @@ class HookManager:
     def __init__(self, core):
         self.core = core
         self.config = self.core.config
-
-        builtins.hookManager = self #needed to let hooks register themself
 
         self.log = self.core.log
         self.plugins = []

@@ -19,6 +19,8 @@
 
 from threading import Lock
 
+from module.singletons import get_request_factory
+
 from .Browser import Browser
 from .Bucket import Bucket
 from .HTTPRequest import HTTPRequest
@@ -111,7 +113,6 @@ class RequestFactory():
                 "password": pw,
             }
 
-
     def getOptions(self):
         """returns options needed for pycurl"""
         return {"interface": self.iface(),
@@ -126,10 +127,9 @@ class RequestFactory():
             self.bucket.setRate(self.core.config["download"]["max_speed"] * 1024)
 
 
-# needs pyreq in global namespace
 def getURL(*args, **kwargs):
-    return pyreq.getURL(*args, **kwargs)
+    return get_request_factory().getURL(*args, **kwargs)
 
 
 def getRequest(*args, **kwargs):
-    return pyreq.getHTTPRequest()
+    return get_request_factory().getHTTPRequest()
