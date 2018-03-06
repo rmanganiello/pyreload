@@ -56,11 +56,8 @@ def main():
     core_err = []
     core_info = []
 
-    if sys.version_info > (2, 8):
-        core_err.append("Your python version is to new, Please use Python 2.6/2.7")
-
-    if sys.version_info < (2, 5):
-        core_err.append("Your python version is to old, Please use at least Python 2.5")
+    if sys.version_info < (2, 7):
+        core_err.append("Your Python version is too old. Please use at least Python 2.7")
 
     try:
         import pycurl
@@ -147,5 +144,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    raw_input("Press Enter to Exit.")
