@@ -18,7 +18,6 @@
     @author: RaNaN
 """
 
-from Queue import Queue
 from threading import Thread
 from os import listdir, stat
 from os.path import join
@@ -31,6 +30,7 @@ from types import MethodType
 
 from pycurl import error
 import six
+from six.moves import queue
 
 from .PyFile import PyFile
 from .plugins.Plugin import Abort, Fail, Reconnect, Retry, SkipDownload
@@ -156,7 +156,7 @@ class DownloadThread(PluginThread):
         """Constructor"""
         PluginThread.__init__(self, manager)
 
-        self.queue = Queue() # job queue
+        self.queue = queue.Queue()  # job queue
         self.active = False
 
         self.start()

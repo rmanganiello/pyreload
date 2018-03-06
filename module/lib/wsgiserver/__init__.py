@@ -79,7 +79,6 @@ number of requests and their responses, so we run a nested loop:
 
 import base64
 import os
-import Queue
 import re
 quoted_slash = re.compile("(?i)%2F")
 import rfc822
@@ -93,7 +92,10 @@ import time
 import traceback
 import warnings
 
-from six.moves import cStringIO
+from six.moves import (
+    cStringIO,
+    queue,
+)
 from six.moves.urllib.parse import (
     unquote,
     urlparse,
@@ -1288,7 +1290,7 @@ class ThreadPool(object):
         self.min = min
         self.max = max
         self._threads = []
-        self._queue = Queue.Queue()
+        self._queue = queue.Queue()
         self.get = self._queue.get
 
     def start(self):
