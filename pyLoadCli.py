@@ -23,7 +23,7 @@ from getopt import GetoptError, getopt
 import module.common.pylgettext as gettext
 import os
 from os import _exit
-from os.path import join, exists, abspath, basename
+from os.path import join, exists, basename
 import sys
 from sys import exit
 from threading import Thread, Lock
@@ -31,7 +31,7 @@ from time import sleep
 from traceback import print_exc
 
 import six
-from six.moves.configparser import ConfigParser
+from six.moves import configparser
 
 from codecs import getwriter
 
@@ -484,7 +484,7 @@ def main():
     if (not exists(join(pypath, "locale", config["language"]))) or config["language"] == "":
         config["language"] = "en"
 
-    configFile = ConfigParser.ConfigParser()
+    configFile = configparser.ConfigParser()
     configFile.read(join(homedir, ".pyloadcli"))
 
     if configFile.has_section("cli"):
