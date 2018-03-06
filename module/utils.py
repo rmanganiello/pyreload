@@ -7,7 +7,8 @@ import sys
 import time
 import re
 from os.path import join
-from htmlentitydefs import name2codepoint
+
+from six.moves.html_entities import name2codepoint
 
 from module.common.compatibility import maketrans
 
