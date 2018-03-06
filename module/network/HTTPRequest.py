@@ -20,11 +20,13 @@
 import pycurl
 
 from codecs import getincrementaldecoder, lookup, BOM_UTF8
-from httplib import responses
 from logging import getLogger
 
 import six
-from six.moves import cStringIO
+from six.moves import (
+    cStringIO,
+    http_client,
+)
 from six.moves.urllib.parse import (
     quote,
     urlencode,
@@ -65,8 +67,15 @@ unofficial_responses = {
 class BadHeader(Exception):
     def __init__(self, code, header="", content=""):
         int_code = int(code)
-        Exception.__init__(self, "Bad server response: %s %s" %
-                           (code, responses.get(int_code, unofficial_responses.get(int_code, "unknown error code"))))
+        Exception.__init__(
+            self, "Bad server response: %s %s" % (
+                code,
+                http_client.responses.get(
+                    int_code,
+                    unofficial_responses.get(int_code, "unknown error code"),
+                ),
+            ),
+        )
         self.code = int_code
         self.header = header
         self.content = content
