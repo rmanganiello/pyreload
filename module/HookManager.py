@@ -19,13 +19,15 @@
 """
 
 import traceback
-from thread import start_new_thread
 from threading import RLock
 
 from types import MethodType
 
 import six
-from six.moves import builtins
+from six.moves import (
+    builtins,
+    _thread as thread,
+)
 
 from module.PluginThread import HookThread
 from module.plugins.PluginManager import literal_eval
@@ -172,7 +174,7 @@ class HookManager:
         self.pluginMap[pluginClass.__name__] = plugin
 
         # call core Ready
-        start_new_thread(plugin.coreReady, tuple())
+        thread.start_new_thread(plugin.coreReady, tuple())
 
     def deactivateHook(self, plugin):
 

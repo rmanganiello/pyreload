@@ -47,7 +47,12 @@ def myurlencode(data):
         for x, y in six.iteritems(data)
     ))
 
-bad_headers = range(400, 404) + range(405, 418) + range(500, 506)
+bad_headers = {
+    # 400's error codes
+    400, 401, 402, 403, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417,
+    # 500's error codes
+    500, 501, 502, 503, 504, 505,
+}
 
 unofficial_responses = {
     440: "Login Timeout - The client's session has expired and must log in again.",

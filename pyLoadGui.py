@@ -36,6 +36,8 @@ from os.path import join
 from os.path import basename
 from os.path import commonprefix
 
+from six.moves import _thread as thread
+
 from module import InitHomeDir
 from module.gui.ConnectionManager import *
 from module.gui.Connector import Connector
@@ -421,7 +423,6 @@ class main(QObject):
         elif data["type"] == "internal":
             from pyLoadCore import Core
             from module.ConfigParser import ConfigParser as CoreConfig
-            import thread
 
             if not self.core:
 

@@ -13,14 +13,16 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
     @author: mkaay
 """
 
 from time import time
 from heapq import heappop, heappush
-from thread import start_new_thread
 from threading import Lock
+
+from six.moves import _thread as thread
+
 
 class AlreadyCalled(Exception):
     pass
@@ -106,7 +108,7 @@ class Job():
 
     def start(self):
         if self.threaded:
-            start_new_thread(self.run, ())
+            thread.start_new_thread(self.run, ())
         else:
             self.run()
 

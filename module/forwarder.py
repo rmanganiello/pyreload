@@ -17,13 +17,15 @@
     @author: RaNaN
 """
 
-from sys import argv
-from sys import exit
-
 import socket
-import thread
-
+from sys import (
+    argv,
+    exit,
+)
 from traceback import print_exc
+
+from six.moves import _thread as thread
+
 
 class Forwarder():
 
@@ -49,8 +51,8 @@ def server(*settings):
             thread.start_new_thread(forward, (server_socket, client_socket))
     except Exception:
         print_exc()
-        
-        
+
+
 def forward(source, destination):
     string = ' '
     while string:
@@ -68,6 +70,6 @@ if __name__ == "__main__":
         exit()
     if len(args) == 1:
         args.append(9666)
-        
+
     f = Forwarder(args[0], int(args[1]))
-            
+
