@@ -43,8 +43,8 @@ Further Example:
 
 import mimetools, mimetypes
 from os import write, remove
-from cStringIO import StringIO
 
+from six.moves import cStringIO
 from six.moves.urllib.parse import urlencode
 from six.moves.urllib.request import (
     BaseHandler,
@@ -98,7 +98,7 @@ class MultipartPostHandler(BaseHandler):
         if boundary is None:
             boundary = mimetools.choose_boundary()
         if buf is None:
-            buf = StringIO()
+            buf = cStringIO()
         for(key, value) in vars:
             buf.write('--%s\r\n' % boundary)
             buf.write('Content-Disposition: form-data; name="%s"' % key)

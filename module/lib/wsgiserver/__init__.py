@@ -84,10 +84,6 @@ import re
 quoted_slash = re.compile("(?i)%2F")
 import rfc822
 import socket
-try:
-    import cStringIO as StringIO
-except ImportError:
-    import StringIO
 
 _fileobject_uses_str_type = isinstance(socket._fileobject(None)._rbuf, basestring)
 
@@ -97,6 +93,7 @@ import time
 import traceback
 import warnings
 
+from six.moves import cStringIO
 from six.moves.urllib.parse import (
     unquote,
     urlparse,
@@ -503,7 +500,7 @@ class HTTPRequest(object):
     def decode_chunked(self):
         """Decode the 'chunked' transfer coding."""
         cl = 0
-        data = StringIO.StringIO()
+        data = cStringIO()
         while True:
             line = self.rfile.readline().strip().split(";", 1)
             chunk_size = int(line.pop(0), 16)
@@ -765,7 +762,7 @@ if not _fileobject_uses_str_type:
             buf.seek(0, 2)  # seek end
             if size < 0:
                 # Read until EOF
-                self._rbuf = StringIO.StringIO()  # reset _rbuf.  we consume it via buf.
+                self._rbuf = cStringIO()  # reset _rbuf.  we consume it via buf.
                 while True:
                     data = self.recv(rbufsize)
                     if not data:
@@ -779,11 +776,11 @@ if not _fileobject_uses_str_type:
                     # Already have size bytes in our buffer?  Extract and return.
                     buf.seek(0)
                     rv = buf.read(size)
-                    self._rbuf = StringIO.StringIO()
+                    self._rbuf = cStringIO()
                     self._rbuf.write(buf.read())
                     return rv
 
-                self._rbuf = StringIO.StringIO()  # reset _rbuf.  we consume it via buf.
+                self._rbuf = cStringIO()  # reset _rbuf.  we consume it via buf.
                 while True:
                     left = size - buf_len
                     # recv() will malloc the amount of memory given as its
@@ -821,7 +818,7 @@ if not _fileobject_uses_str_type:
                 buf.seek(0)
                 bline = buf.readline(size)
                 if bline.endswith('\n') or len(bline) == size:
-                    self._rbuf = StringIO.StringIO()
+                    self._rbuf = cStringIO()
                     self._rbuf.write(buf.read())
                     return bline
                 del bline
@@ -831,7 +828,7 @@ if not _fileobject_uses_str_type:
                     # Speed up unbuffered case
                     buf.seek(0)
                     buffers = [buf.read()]
-                    self._rbuf = StringIO.StringIO()  # reset _rbuf.  we consume it via buf.
+                    self._rbuf = cStringIO()  # reset _rbuf.  we consume it via buf.
                     data = None
                     recv = self.recv
                     while data != "\n":
@@ -842,7 +839,7 @@ if not _fileobject_uses_str_type:
                     return "".join(buffers)
 
                 buf.seek(0, 2)  # seek end
-                self._rbuf = StringIO.StringIO()  # reset _rbuf.  we consume it via buf.
+                self._rbuf = cStringIO()  # reset _rbuf.  we consume it via buf.
                 while True:
                     data = self.recv(self._rbufsize)
                     if not data:
@@ -863,10 +860,10 @@ if not _fileobject_uses_str_type:
                 if buf_len >= size:
                     buf.seek(0)
                     rv = buf.read(size)
-                    self._rbuf = StringIO.StringIO()
+                    self._rbuf = cStringIO()
                     self._rbuf.write(buf.read())
                     return rv
-                self._rbuf = StringIO.StringIO()  # reset _rbuf.  we consume it via buf.
+                self._rbuf = cStringIO()  # reset _rbuf.  we consume it via buf.
                 while True:
                     data = self.recv(self._rbufsize)
                     if not data:

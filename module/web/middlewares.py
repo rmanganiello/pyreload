@@ -3,10 +3,8 @@
 
 import gzip
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+from six.moves import cStringIO
+
 
 class StripPathMiddleware(object):
     def __init__(self, app):
@@ -76,7 +74,7 @@ class GzipResponse(object):
     def __init__(self, start_response, compress_level):
         self.start_response = start_response
         self.compress_level = compress_level
-        self.buffer = StringIO()
+        self.buffer = cStringIO()
         self.compressible = False
         self.content_length = None
         self.headers = ()

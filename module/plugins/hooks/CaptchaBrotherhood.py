@@ -2,10 +2,10 @@
 
 from __future__ import with_statement
 
-import StringIO
 import time
 
 import pycurl
+from six.moves import cStringIO
 from six.moves.urllib.parse import urlencode
 
 from module.network.RequestFactory import getRequest as get_request
@@ -67,7 +67,7 @@ class CaptchaBrotherhood(Addon):
     def submit(self, captcha, captchaType="file", match=None):
         try:
             img = Image.open(captcha)
-            output = StringIO.StringIO()
+            output = cStringIO()
             self.log_debug("CAPTCHA IMAGE", img, img.format, img.mode)
             if img.format in ("GIF", "JPEG"):
                 img.save(output, img.format)

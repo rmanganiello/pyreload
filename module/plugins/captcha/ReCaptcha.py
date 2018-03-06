@@ -3,8 +3,8 @@
 import os
 import re
 import urllib
-from StringIO import StringIO
 
+from six.moves import cStringIO
 from six.moves.urllib.parse import (
     quote_plus,
     unquote,
@@ -178,7 +178,7 @@ class ReCaptcha(CaptchaService):
         # points in a text font (see typography) and thus we can hereby calculate
         # the biggest text height of a given font
 
-        s = StringIO()
+        s = cStringIO()
         s.write(image)
         s.seek(0)
 

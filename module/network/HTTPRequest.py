@@ -17,7 +17,6 @@
     @author: RaNaN
 """
 
-import cStringIO
 import pycurl
 
 from codecs import getincrementaldecoder, lookup, BOM_UTF8
@@ -25,6 +24,7 @@ from httplib import responses
 from logging import getLogger
 
 import six
+from six.moves import cStringIO
 from six.moves.urllib.parse import (
     quote,
     urlencode,
@@ -174,7 +174,7 @@ class HTTPRequest():
     def setRequestContext(self, url, get, post, referer, cookies, multipart=False):
         """ sets everything needed for the request """
 
-        self.rep = cStringIO.StringIO()
+        self.rep = cStringIO()
 
         url = myquote(url)
 

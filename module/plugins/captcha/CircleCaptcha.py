@@ -4,11 +4,11 @@
 
 from __future__ import division
 
-import cStringIO
 import math
 import operator
 import sys
 
+from six.moves import cStringIO
 from six.moves.urllib.request import urlopen
 
 import Image
@@ -756,7 +756,7 @@ class CircleCaptcha(OCR):
 
     #: Return coordinates of opened circle (eg (x, y))
     def decrypt_from_web(self, url):
-        file = cStringIO.StringIO(urlopen(url).read())
+        file = cStringIO(urlopen(url).read())
         img = Image.open(file)
         coords = self.decrypt(img)
         self.log_info(_("Coords: %s") % coords)
