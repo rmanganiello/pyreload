@@ -42,11 +42,15 @@ from module import InitHomeDir
 from module.singletons import (
     get_account_manager,
     get_hook_manager,
+    get_remote_manager,
+    get_thread_manager,
     set_account_manager,
     set_captcha_manager,
     set_hook_manager,
     set_pull_manager,
+    set_remote_manager,
     set_request_factory,
+    set_thread_manager,
 )
 from module.plugins.AccountManager import AccountManager
 from module.CaptchaManager import CaptchaManager
@@ -191,12 +195,10 @@ class Core(object):
         print("")
 
     def toggle_pause(self):
-        if self.threadManager.pause:
-            self.threadManager.pause = False
-            return False
-        elif not self.threadManager.pause:
-            self.threadManager.pause = True
-            return True
+        thread_manager = get_thread_manager()
+
+        thread_manager.pause = not thread_manager.pause
+        return thread_manager.pause
 
     def quit(self, a, b):
         self.shutdown()
@@ -414,23 +416,21 @@ class Core(object):
         self.pluginManager = PluginManager(self)
 
         set_pull_manager(PullManager(self))
-
-        self.threadManager = ThreadManager(self)
-
+        set_thread_manager(ThreadManager(self))
         set_account_manager(AccountManager(self))
         set_captcha_manager(CaptchaManager(self))
-
         # HookManager sets itself as a singleton
         HookManager(self)
+        set_remote_manager(RemoteManager(self))
 
-        self.remoteManager = RemoteManager(self)
+        thread_manager = get_thread_manager()
 
         self.js = JsEngine()
 
         self.log.info(_("Downloadtime: %s") % self.api.isTimeDownload())
 
         if rpc:
-            self.remoteManager.startBackends()
+            get_remote_manager().startBackends()
 
         if web:
             self.init_webserver()
@@ -460,7 +460,7 @@ class Core(object):
         self.log.info(_("Activating Accounts..."))
         get_account_manager().getAccountInfos()
 
-        self.threadManager.pause = False
+        thread_manager.pause = False
         self.running = True
 
         self.log.info(_("Activating Plugins..."))
@@ -499,7 +499,7 @@ class Core(object):
                 self.removeLogger()
                 _exit(0) #@TODO thrift blocks shutdown
 
-            self.threadManager.work()
+            thread_manager.work()
             self.scheduler.work()
 
     def setupDB(self):
@@ -616,7 +616,7 @@ class Core(object):
             if self.config['webinterface']['activated'] and hasattr(self, "webserver"):
                 self.webserver.quit()
 
-            for thread in self.threadManager.threads:
+            for thread in get_thread_manager().threads:
                 thread.put("quit")
             pyfiles = self.files.cache.values()
 

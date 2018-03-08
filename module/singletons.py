@@ -2,14 +2,18 @@ ACCOUNT_MANAGER_SINGLETON = 'account_manager_singleton'
 CAPTCHA_MANAGER_SINGLETON = 'captcha_manager_singleton'
 HOOK_MANAGER_SINGLETON = 'hook_manager_singleton'
 PULL_MANAGER_SINGLETON = 'pull_manager_singleton'
+REMOTE_MANAGER_SINGLETON = 'remote_manager_singleton'
 REQUEST_FACTORY_SINGLETON = 'request_factory_singleton'
+THREAD_MANAGER_SINGLETON = 'thread_manager_singleton'
 
 ALLOWED_SINGLETONS = frozenset({
     ACCOUNT_MANAGER_SINGLETON,
     CAPTCHA_MANAGER_SINGLETON,
     HOOK_MANAGER_SINGLETON,
     PULL_MANAGER_SINGLETON,
+    REMOTE_MANAGER_SINGLETON,
     REQUEST_FACTORY_SINGLETON,
+    THREAD_MANAGER_SINGLETON,
 })
 
 
@@ -63,9 +67,25 @@ def set_pull_manager(instance):
     SingletonFactory.set_instance(PULL_MANAGER_SINGLETON, instance=instance)
 
 
+def get_remote_manager():
+    return SingletonFactory.get_instance(REMOTE_MANAGER_SINGLETON)
+
+
+def set_remote_manager(instance):
+    SingletonFactory.set_instance(REMOTE_MANAGER_SINGLETON, instance=instance)
+
+
 def get_request_factory():
     return SingletonFactory.get_instance(REQUEST_FACTORY_SINGLETON)
 
 
 def set_request_factory(instance):
     SingletonFactory.set_instance(REQUEST_FACTORY_SINGLETON, instance=instance)
+
+
+def get_thread_manager():
+    return SingletonFactory.get_instance(THREAD_MANAGER_SINGLETON)
+
+
+def set_thread_manager(instance):
+    SingletonFactory.set_instance(THREAD_MANAGER_SINGLETON, instance=instance)

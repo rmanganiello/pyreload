@@ -21,7 +21,10 @@ from threading import RLock
 from time import sleep, time
 
 from module.PullEvents import UpdateEvent
-from module.singletons import get_pull_manager
+from module.singletons import (
+    get_thread_manager,
+    get_pull_manager,
+)
 from module.utils import formatSize, lock
 
 
@@ -186,7 +189,7 @@ class PyFile(object):
 
     def abortDownload(self):
         """abort pyfile if possible"""
-        while self.id in self.m.core.threadManager.processingIds():
+        while self.id in get_thread_manager().processingIds():
             self.abort = True
             if self.plugin and self.plugin.req:
                 self.plugin.req.abortDownloads()
@@ -201,7 +204,7 @@ class PyFile(object):
     def finishIfDone(self):
         """set status to finish and release file if every thread is finished with it"""
 
-        if self.id in self.m.core.threadManager.processingIds():
+        if self.id in get_thread_manager().processingIds():
             return False
 
         self.setStatus("finished")

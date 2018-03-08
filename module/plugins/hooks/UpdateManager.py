@@ -8,7 +8,10 @@ import re
 import sys
 import time
 
-from module.singletons import get_request_factory
+from module.singletons import (
+    get_request_factory,
+    get_thread_manager,
+)
 
 from ..internal.Addon import Addon
 from ..internal.misc import Expose, encode, exists, fsjoin, threaded
@@ -82,7 +85,7 @@ class UpdateManager(Addon):
             self.update()
 
         if self.do_restart is True:
-            if self.pyload.threadManager.pause and not self.pyload.api.statusDownloads():
+            if get_thread_manager().pause and not self.pyload.api.statusDownloads():
                 self.pyload.api.restart()
 
     #: Deprecated method, use `autoreload_plugins` instead
@@ -207,7 +210,7 @@ class UpdateManager(Addon):
                 self.info['plugins'] = True
                 exitcode = 2
 
-            paused = self.pyload.threadManager.pause
+            paused = get_thread_manager().pause
             self.pyload.api.pauseServer()
             self.manager.dispatchEvent("plugin_updated", updated)
             if not paused:

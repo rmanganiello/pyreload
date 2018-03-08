@@ -7,6 +7,8 @@ import subprocess
 import sys
 import time
 
+from module.singletons import get_thread_manager
+
 from ..internal.Addon import Addon
 from ..internal.misc import Expose, encode, fsjoin
 
@@ -27,7 +29,7 @@ class Kernel32(object):
 class AntiStandby(Addon):
     __name__ = "AntiStandby"
     __type__ = "hook"
-    __version__ = "0.18"
+    __version__ = "0.19"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -148,9 +150,13 @@ class AntiStandby(Addon):
         if self.config.get('hdd') is False:
             return
 
-        if (self.pyload.threadManager.pause or
+        thread_manager = get_thread_manager()
+
+        if (
+            thread_manager.pause or
             not self.pyload.api.isTimeDownload() or
-                not self.pyload.threadManager.getActiveFiles()):
+            not thread_manager.getActiveFiles()
+        ):
             return
 
         dl_folder = self.pyload.config.get('general', 'download_folder')

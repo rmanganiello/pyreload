@@ -29,6 +29,7 @@ from module.PyPackage import PyPackage
 from module.singletons import (
     get_hook_manager,
     get_pull_manager,
+    get_thread_manager,
 )
 from module.utils import formatSize, lock
 
@@ -126,7 +127,7 @@ class FileHandler:
         data = self.core.pluginManager.parseUrls(urls)
 
         self.db.addLinks(data, package)
-        self.core.threadManager.createInfoThread(data, package)
+        get_thread_manager().createInfoThread(data, package)
 
         #@TODO change from reloadAll event to package update event
         get_pull_manager().addEvent(ReloadAllEvent("collector"))
@@ -193,7 +194,7 @@ class FileHandler:
 
         oldorder = f.order
 
-        if id in self.core.threadManager.processingIds():
+        if id in get_thread_manager().processingIds():
             self.cache[id].abortDownload()
 
         if id in self.cache:
@@ -543,7 +544,7 @@ class FileHandler:
             if pyfile["status"] not in  (0, 12, 13):
                 urls.append((pyfile["url"], pyfile["plugin"]))
 
-        self.core.threadManager.createInfoThread(urls, pid)
+        get_thread_manager().createInfoThread(urls, pid)
 
     @lock
     @change

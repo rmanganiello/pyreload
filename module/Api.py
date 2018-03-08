@@ -30,6 +30,7 @@ from module.singletons import (
     get_hook_manager,
     get_pull_manager,
     get_request_factory,
+    get_thread_manager,
 )
 
 from .PyFile import PyFile
@@ -201,12 +202,12 @@ class Api(Iface):
     @permission(PERMS.STATUS)
     def pauseServer(self):
         """Pause server: Tt wont start any new downloads, but nothing gets aborted."""
-        self.core.threadManager.pause = True
+        get_thread_manager().pause = True
 
     @permission(PERMS.STATUS)
     def unpauseServer(self):
         """Unpause server: New Downloads will be started."""
-        self.core.threadManager.pause = False
+        get_thread_manager().pause = False
 
     @permission(PERMS.STATUS)
     def togglePause(self):
@@ -214,8 +215,10 @@ class Api(Iface):
 
         :return: new pause state
         """
-        self.core.threadManager.pause ^= True
-        return self.core.threadManager.pause
+        thread_manager = get_thread_manager()
+
+        thread_manager.pause ^= True
+        return thread_manager.pause
 
     @permission(PERMS.STATUS)
     def toggleReconnect(self):
@@ -232,13 +235,20 @@ class Api(Iface):
 
         :return: `ServerStatus`
         """
-        serverStatus = ServerStatus(self.core.threadManager.pause, len(self.core.threadManager.processingIds()),
-                                    self.core.files.getQueueCount(), self.core.files.getFileCount(), 0,
-                                    not self.core.threadManager.pause and self.isTimeDownload(),
-                                    self.core.config['reconnect']['activated'] and self.isTimeReconnect())
+        thread_manager = get_thread_manager()
 
-        for pyfile in [x.active for x in self.core.threadManager.threads if x.active and isinstance(x.active, PyFile)]:
-            serverStatus.speed += pyfile.getSpeed() #bytes/s
+        serverStatus = ServerStatus(
+            thread_manager.pause,
+            len(thread_manager.processingIds()),
+            self.core.files.getQueueCount(),
+            self.core.files.getFileCount(),
+            0,
+            not thread_manager.pause and self.isTimeDownload(),
+            self.core.config['reconnect']['activated'] and self.isTimeReconnect(),
+        )
+
+        for pyfile in [x.active for x in thread_manager.threads if x.active and isinstance(x.active, PyFile)]:
+            serverStatus.speed += pyfile.getSpeed()  #bytes/s
 
         return serverStatus
 
@@ -305,7 +315,7 @@ class Api(Iface):
         :return: list of `DownloadStatus`
         """
         data = []
-        for pyfile in self.core.threadManager.getActiveFiles():
+        for pyfile in get_thread_manager().getActiveFiles():
             if not isinstance(pyfile, PyFile):
                 continue
 
@@ -390,7 +400,7 @@ class Api(Iface):
         """
         data = self.core.pluginManager.parseUrls(urls)
 
-        rid = self.core.threadManager.createResultThread(data, False)
+        rid = get_thread_manager().createResultThread(data, False)
 
         tmp = [(url, (url, OnlineStatus(url, pluginname, "unknown", 3, 0))) for url, pluginname in data]
         data = parseNames(tmp)
@@ -425,7 +435,7 @@ class Api(Iface):
         :param rid: `ResultID`
         :return: `OnlineCheck`, if rid is -1 then no more data available
         """
-        result = self.core.threadManager.getInfoResult(rid)
+        result = get_thread_manager().getInfoResult(rid)
 
         if "ALL_INFO_FETCHED" in result:
             del result["ALL_INFO_FETCHED"]
@@ -465,7 +475,7 @@ class Api(Iface):
         :return: None
         """
         data = self.core.pluginManager.parseUrls(links)
-        self.core.threadManager.createResultThread(data, True)
+        get_thread_manager().createResultThread(data, True)
 
 
     @permission(PERMS.LIST)

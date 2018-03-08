@@ -28,7 +28,10 @@ from six.moves import _thread as thread
 
 from module.PluginThread import HookThread
 from module.plugins.PluginManager import literal_eval
-from module.singletons import set_hook_manager
+from module.singletons import (
+    get_thread_manager,
+    set_hook_manager,
+)
 
 from .utils import lock
 
@@ -269,7 +272,7 @@ class HookManager:
         self.dispatchEvent("afterReconnecting", ip)
 
     def startThread(self, function, *args, **kwargs):
-        t = HookThread(self.core.threadManager, function, args, kwargs)
+        t = HookThread(get_thread_manager(), function, args, kwargs)
 
     def activePlugins(self):
         """ returns all active plugins """
