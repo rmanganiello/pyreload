@@ -28,15 +28,16 @@ from random import choice
 
 import pycurl
 
-from . import PluginThread
 from module.PyFile import PyFile
 from module.network.RequestFactory import getURL
+from module.singletons import get_hook_manager
 from module.utils import freeSpace, lock
+
+from . import PluginThread
 
 
 class ThreadManager:
     """manages the download threads, assign jobs, reconnect etc"""
-
 
     def __init__(self, core):
         """Constructor"""
@@ -146,7 +147,7 @@ class ThreadManager:
             self.log.warning("Assign job error", e)
             if self.core.debug:
                 print_exc()
-            
+
             sleep(0.5)
             self.assignJob()
             #it may be failed non critical so we try it again
@@ -178,7 +179,7 @@ class ThreadManager:
 
         self.reconnecting.set()
 
-        #Do reconnect
+        # Do reconnect
         self.log.info(_("Starting reconnect"))
 
         while [x.active.plugin.waiting for x in self.threads if x.active].count(True) != 0:
@@ -186,7 +187,9 @@ class ThreadManager:
 
         ip = self.getIP()
 
-        self.core.hookManager.beforeReconnecting(ip)
+        hook_manager = get_hook_manager()
+
+        hook_manager.beforeReconnecting(ip)
 
         self.log.debug("Old IP: %s" % ip)
 
@@ -203,7 +206,7 @@ class ThreadManager:
         reconn.wait()
         sleep(1)
         ip = self.getIP()
-        self.core.hookManager.afterReconnecting(ip)
+        hook_manager.afterReconnecting(ip)
 
         self.log.info(_("Reconnected, new IP: %s") % ip)
 
@@ -267,7 +270,7 @@ class ThreadManager:
         onlimit = [x[0] for x in inuse if x[1] > 0 and x[2] >= x[1]]
 
         occ = [x.active.pluginname for x in self.threads if x.active and x.active.hasPlugin() and not x.active.plugin.multiDL] + onlimit
-        
+
         occ.sort()
         occ = tuple(set(occ))
         job = self.core.files.getJob(occ)

@@ -17,24 +17,28 @@
     @author: RaNaN, spoob, mkaay
 """
 
-from time import time, sleep
-from random import randint
-
+from itertools import islice
 import os
 from os import remove, makedirs, chmod, stat
 from os.path import exists, join
+from random import randint
+from time import time, sleep
+
+import six
+
+from module.singletons import (
+    get_account_manager,
+    get_captcha_manager,
+    get_hook_manager,
+    get_request_factory,
+)
+from module.utils import save_join, save_path, fs_encode, fs_decode
 
 if os.name != "nt":
     from os import chown
     from pwd import getpwnam
     from grp import getgrnam
 
-from itertools import islice
-
-import six
-
-from module.singletons import get_request_factory
-from module.utils import save_join, save_path, fs_encode, fs_decode
 
 def chunks(iterable, size):
     it = iter(iterable)
@@ -170,7 +174,7 @@ class Plugin(Base):
 
         self.ocr = None  #captcha reader instance
         #: account handler instance, see :py:class:`Account`
-        self.account = pyfile.m.core.accountManager.getAccountPlugin(self.__name__)
+        self.account = get_account_manager().getAccountPlugin(self.__name__)
 
         #: premium status
         self.premium = False
@@ -362,23 +366,24 @@ class Plugin(Base):
 
         if Ocr and not forceUser:
             sleep(randint(3000, 5000) / 1000.0)
-            if self.pyfile.abort: raise Abort
+            if self.pyfile.abort:
+                raise Abort
 
             ocr = Ocr()
             result = ocr.get_captcha(temp_file.name)
         else:
-            captchaManager = self.core.captchaManager
-            task = captchaManager.newTask(img, imgtype, temp_file.name, result_type)
+            captcha_manager = get_captcha_manager()
+            task = captcha_manager.newTask(img, imgtype, temp_file.name, result_type)
             self.cTask = task
-            captchaManager.handleCaptcha(task)
+            captcha_manager.handleCaptcha(task)
 
             while task.isWaiting():
                 if self.pyfile.abort:
-                    captchaManager.removeTask(task)
+                    captcha_manager.removeTask(task)
                     raise Abort
                 sleep(1)
 
-            captchaManager.removeTask(task)
+            captcha_manager.removeTask(task)
 
             if task.error and has_plugin: #ignore default error message since the user could use OCR
                 self.fail(_("Pil and tesseract not installed and no Client connected for captcha decrypting"))
@@ -498,7 +503,7 @@ class Plugin(Base):
 
         filename = join(location, name)
 
-        self.core.hookManager.dispatchEvent("downloadStarts", self.pyfile, url, filename)
+        get_hook_manager().dispatchEvent("downloadStarts", self.pyfile, url, filename)
 
         try:
             newname = self.req.httpDownload(url, filename, get=get, post=post, ref=ref, cookies=cookies,

@@ -40,7 +40,12 @@ import six
 
 from module import InitHomeDir
 from module.singletons import (
+    get_account_manager,
+    get_hook_manager,
+    set_account_manager,
+    set_captcha_manager,
     set_hook_manager,
+    set_pull_manager,
     set_request_factory,
 )
 from module.plugins.AccountManager import AccountManager
@@ -407,13 +412,16 @@ class Core(object):
 
         #hell yeah, so many important managers :D
         self.pluginManager = PluginManager(self)
-        self.pullManager = PullManager(self)
-        self.accountManager = AccountManager(self)
-        self.threadManager = ThreadManager(self)
-        self.captchaManager = CaptchaManager(self)
 
-        self.hookManager = HookManager(self)
-        set_hook_manager(self.hookManager)
+        set_pull_manager(PullManager(self))
+
+        self.threadManager = ThreadManager(self)
+
+        set_account_manager(AccountManager(self))
+        set_captcha_manager(CaptchaManager(self))
+
+        # HookManager sets itself as a singleton
+        HookManager(self)
 
         self.remoteManager = RemoteManager(self)
 
@@ -448,15 +456,15 @@ class Core(object):
                 self.api.addPackage("links.txt", [link_file], 1)
             f.close()
 
-        #self.scheduler.addJob(0, self.accountManager.getAccountInfos)
+        #self.scheduler.addJob(0, get_account_manager().getAccountInfos)
         self.log.info(_("Activating Accounts..."))
-        self.accountManager.getAccountInfos()
+        get_account_manager().getAccountInfos()
 
         self.threadManager.pause = False
         self.running = True
 
         self.log.info(_("Activating Plugins..."))
-        self.hookManager.coreReady()
+        get_hook_manager().coreReady()
 
         self.log.info(_("pyLoad is up and running"))
 
@@ -615,7 +623,7 @@ class Core(object):
             for pyfile in pyfiles:
                 pyfile.abortDownload()
 
-            self.hookManager.coreExiting()
+            get_hook_manager().coreExiting()
 
         except:
             if self.debug:

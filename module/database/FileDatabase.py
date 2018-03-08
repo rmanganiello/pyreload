@@ -17,22 +17,20 @@
     @author: mkaay
 """
 
-
 from threading import RLock
 from time import time
 
 import six
 
-from module.utils import formatSize, lock
-from module.PullEvents import InsertEvent, ReloadAllEvent, RemoveEvent, UpdateEvent
-from module.PyPackage import PyPackage
-from module.PyFile import PyFile
 from module.database import style, DatabaseBackend
-
-try:
-    from pysqlite2 import dbapi2 as sqlite3
-except:
-    import sqlite3
+from module.PullEvents import InsertEvent, ReloadAllEvent, RemoveEvent, UpdateEvent
+from module.PyFile import PyFile
+from module.PyPackage import PyPackage
+from module.singletons import (
+    get_hook_manager,
+    get_pull_manager,
+)
+from module.utils import formatSize, lock
 
 
 class FileHandler:
@@ -123,7 +121,7 @@ class FileHandler:
     def addLinks(self, urls, package):
         """adds links"""
 
-        self.core.hookManager.dispatchEvent("linksAdded", urls, package)
+        get_hook_manager().dispatchEvent("linksAdded", urls, package)
 
         data = self.core.pluginManager.parseUrls(urls)
 
@@ -131,7 +129,7 @@ class FileHandler:
         self.core.threadManager.createInfoThread(data, package)
 
         #@TODO change from reloadAll event to package update event
-        self.core.pullManager.addEvent(ReloadAllEvent("collector"))
+        get_pull_manager().addEvent(ReloadAllEvent("collector"))
 
     #----------------------------------------------------------------------
     @lock
@@ -141,7 +139,7 @@ class FileHandler:
         lastID = self.db.addPackage(name, folder, queue)
         p = self.db.getPackage(lastID)
         e = InsertEvent("pack", lastID, p.order, "collector" if not queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
         return lastID
 
     #----------------------------------------------------------------------
@@ -168,8 +166,8 @@ class FileHandler:
                 pyfile.release()
 
         self.db.deletePackage(p)
-        self.core.pullManager.addEvent(e)
-        self.core.hookManager.dispatchEvent("packageDeleted", id)
+        get_pull_manager().addEvent(e)
+        get_hook_manager().dispatchEvent("packageDeleted", id)
 
         if id in self.packageCache:
             del self.packageCache[id]
@@ -203,7 +201,7 @@ class FileHandler:
 
         self.db.deleteLink(f)
 
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
         p = self.getPackage(pid)
         if not len(p.getChildren()):
@@ -233,7 +231,7 @@ class FileHandler:
         self.db.updateLink(pyfile)
 
         e = UpdateEvent("file", pyfile.id, "collector" if not pyfile.package().queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
     #----------------------------------------------------------------------
     def updatePackage(self, pypack):
@@ -241,7 +239,7 @@ class FileHandler:
         self.db.updatePackage(pypack)
 
         e = UpdateEvent("pack", pypack.id, "collector" if not pypack.queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
     #----------------------------------------------------------------------
     def getPackage(self, id):
@@ -371,7 +369,7 @@ class FileHandler:
         """checks if all files are finished and dispatch event"""
 
         if not self.getQueueCount(True):
-            self.core.hookManager.dispatchEvent("allDownloadsFinished")
+            get_hook_manager().dispatchEvent("allDownloadsFinished")
             self.core.log.debug("All downloads finished")
             return True
 
@@ -384,7 +382,7 @@ class FileHandler:
         self.resetCount()
 
         if not self.db.processcount(1, fid):
-            self.core.hookManager.dispatchEvent("allDownloadsProcessed")
+            get_hook_manager().dispatchEvent("allDownloadsProcessed")
             self.core.log.debug("All downloads processed")
             return True
 
@@ -408,7 +406,7 @@ class FileHandler:
             self.packageCache[id].setFinished = False
 
         e = UpdateEvent("pack", id, "collector" if not self.getPackage(id).queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
     @lock
     @change
@@ -424,7 +422,7 @@ class FileHandler:
         self.db.restartFile(id)
 
         e = UpdateEvent("file", id, "collector" if not self.getFile(id).package().queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
     @lock
     @change
@@ -435,7 +433,7 @@ class FileHandler:
         oldorder = p.order
 
         e = RemoveEvent("pack", id, "collector" if not p.queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
         self.db.clearPackageOrder(p)
 
@@ -457,7 +455,7 @@ class FileHandler:
         p = self.getPackage(id)
 
         e = InsertEvent("pack", id, p.order, "collector" if not p.queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
     @lock
     @change
@@ -465,7 +463,7 @@ class FileHandler:
         p = self.getPackage(id)
 
         e = RemoveEvent("pack", id, "collector" if not p.queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
         self.db.reorderPackage(p, position)
 
         packs = self.packageCache.values()
@@ -484,7 +482,7 @@ class FileHandler:
         self.db.commit()
 
         e = InsertEvent("pack", id, position, "collector" if not p.queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
     @lock
     @change
@@ -493,7 +491,7 @@ class FileHandler:
         f = f[id]
 
         e = RemoveEvent("file", id, "collector" if not self.getPackage(f["package"]).queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
         self.db.reorderLink(f, position)
 
@@ -515,14 +513,14 @@ class FileHandler:
         self.db.commit()
 
         e = InsertEvent("file", id, position, "collector" if not self.getPackage(f["package"]).queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
     @change
     def updateFileInfo(self, data, pid):
         """ updates file info (name, size, status, url)"""
         ids = self.db.updateLinkInfo(data)
         e = UpdateEvent("pack", pid, "collector" if not self.getPackage(pid).queue else "queue")
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
 
     def checkPackageFinished(self, pyfile):
         """ checks if package is finished and calls hookmanager """
@@ -531,7 +529,7 @@ class FileHandler:
         if not ids or (pyfile.id in ids and len(ids) == 1):
             if not pyfile.package().setFinished:
                 self.core.log.info(_("Package finished: %s") % pyfile.package().name)
-                self.core.hookManager.packageFinished(pyfile.package())
+                get_hook_manager().packageFinished(pyfile.package())
                 pyfile.package().setFinished = True
 
 

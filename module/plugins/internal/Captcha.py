@@ -5,6 +5,8 @@ from __future__ import with_statement
 import os
 import time
 
+from module.singletons import get_captcha_manager
+
 from .Plugin import Plugin
 
 
@@ -22,7 +24,7 @@ class Captcha(Plugin):
         self._init(pyfile.m.core)
 
         self.pyfile = pyfile
-        self.task = None  #: captchaManager task
+        self.task = None  #: captcha_manager task
 
         self.init()
 
@@ -86,13 +88,13 @@ class Captcha(Plugin):
                     self.log_warning(_("No OCR result"))
 
         if not result:
-            captchaManager = self.pyload.captchaManager
+            captcha_manager = get_captcha_manager()
 
             try:
-                self.task = captchaManager.newTask(
+                self.task = captcha_manager.newTask(
                     img, input_type, img_f.name, output_type)
 
-                captchaManager.handleCaptcha(self.task)
+                captcha_manager.handleCaptcha(self.task)
 
                 # @TODO: Move to `CaptchaManager` in 0.4.10
                 self.task.setWaiting(max(timeout, 50))
@@ -101,7 +103,7 @@ class Captcha(Plugin):
                     time.sleep(1)
 
             finally:
-                captchaManager.removeTask(self.task)
+                captcha_manager.removeTask(self.task)
 
             result = self.task.result
 

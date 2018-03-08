@@ -11,7 +11,11 @@ from six.moves.urllib.parse import (
     urlparse,
 )
 
-from module.singletons import get_request_factory
+from module.singletons import (
+    get_account_manager,
+    get_hook_manager,
+    get_request_factory,
+)
 
 from .Captcha import Captcha
 from .misc import (decode, encode, fixurl, format_size, format_time,
@@ -177,7 +181,7 @@ class Base(Plugin):
 
     def load_account(self):
         if not self.account:
-            self.account = self.pyload.accountManager.getAccountPlugin(
+            self.account = get_account_manager().getAccountPlugin(
                 self.classname)
 
         if not self.account:
@@ -278,12 +282,12 @@ class Base(Plugin):
         self._setup()
 
         #@TODO: Enable in 0.4.10
-        # self.pyload.hookManager.downloadPreparing(self.pyfile)
+        # get_hook_manager().downloadPreparing(self.pyfile)
         # self.check_status()
 
         #@TODO: Remove in 0.4.10
         if self.__type__ == "crypter":
-            self.pyload.hookManager.downloadPreparing(self.pyfile)
+            get_hook_manager().downloadPreparing(self.pyfile)
             self.check_status()
 
         self.pyfile.setStatus("starting")

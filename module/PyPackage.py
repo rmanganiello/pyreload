@@ -18,7 +18,9 @@
 """
 
 from module.PullEvents import UpdateEvent
+from module.singletons import get_pull_manager
 from module.utils import save_path
+
 
 class PyPackage():
     """
@@ -74,7 +76,7 @@ class PyPackage():
 
     def delete(self):
         self.m.deletePackage(self.id)
-                
+
     def notifyChange(self):
         e = UpdateEvent("pack", self.id, "collector" if not self.queue else "queue")
-        self.m.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)

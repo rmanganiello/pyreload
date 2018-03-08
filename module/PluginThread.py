@@ -32,6 +32,8 @@ from pycurl import error
 import six
 from six.moves import queue
 
+from module.singletons import get_hook_manager
+
 from .PyFile import PyFile
 from .plugins.Plugin import Abort, Fail, Reconnect, Retry, SkipDownload
 from .common.packagetools import parseNames
@@ -176,6 +178,8 @@ class DownloadThread(PluginThread):
                 self.m.threads.remove(self)
                 return True
 
+            hook_manager = get_hook_manager()
+
             try:
                 if not pyfile.hasPlugin(): continue
                 #this pyfile was deleted while queueing
@@ -184,11 +188,11 @@ class DownloadThread(PluginThread):
                 self.m.log.info(_("Download starts: %s" % pyfile.name))
 
                 # start download
-                self.m.core.hookManager.downloadPreparing(pyfile)
+                hook_manager.downloadPreparing(pyfile)
                 pyfile.plugin.preprocessing(self)
 
                 self.m.log.info(_("Download finished: %s") % pyfile.name)
-                self.m.core.hookManager.downloadFinished(pyfile)
+                hook_manager.downloadFinished(pyfile)
                 self.m.core.files.checkPackageFinished(pyfile)
 
             except NotImplementedError:
@@ -238,7 +242,7 @@ class DownloadThread(PluginThread):
                     self.m.log.warning(_("Download failed: %(name)s | %(msg)s") % {"name": pyfile.name, "msg": msg})
                     pyfile.error = msg
 
-                self.m.core.hookManager.downloadFailed(pyfile)
+                hook_manager.downloadFailed(pyfile)
                 self.clean(pyfile)
                 continue
 
@@ -279,7 +283,7 @@ class DownloadThread(PluginThread):
                         print_exc()
                         self.writeDebugReport(pyfile)
 
-                    self.m.core.hookManager.downloadFailed(pyfile)
+                    hook_manager.downloadFailed(pyfile)
 
                 self.clean(pyfile)
                 continue
@@ -309,7 +313,7 @@ class DownloadThread(PluginThread):
                     print_exc()
                     self.writeDebugReport(pyfile)
 
-                self.m.core.hookManager.downloadFailed(pyfile)
+                hook_manager.downloadFailed(pyfile)
                 self.clean(pyfile)
                 continue
 
@@ -411,12 +415,10 @@ class DecrypterThread(PluginThread):
                 self.m.localThreads.remove(self)
                 exc_clear()
 
+        # get_hook_manager().downloadFinished(pyfile)
 
-        #self.m.core.hookManager.downloadFinished(pyfile)
-
-
-        #self.m.localThreads.remove(self)
-        #self.active.finishIfDone()
+        # self.m.localThreads.remove(self)
+        # self.active.finishIfDone()
         if not retry:
             pyfile.delete()
 

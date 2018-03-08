@@ -12,7 +12,10 @@ import threading
 from module.plugins.Plugin import Abort
 from module.plugins.internal.Hoster import Hoster
 from module.plugins.internal.misc import encode, exists, fsjoin, lock, threaded
-from module.singletons import get_request_factory
+from module.singletons import (
+    get_hook_manager,
+    get_request_factory,
+)
 
 
 class IRC(object):
@@ -670,7 +673,7 @@ class XDCC(Hoster):
 
             self.log_debug(_("DOWNLOAD XDCC '%s' from %s:%d") % (file_name, ip, port))
 
-            self.pyload.hookManager.dispatchEvent("download_start", self.pyfile, "%s:%s" % (ip, port), dl_file)
+            get_hook_manager().dispatchEvent("download_start", self.pyfile, "%s:%s" % (ip, port), dl_file)
 
             newname = self.req.download(ip, port, dl_file, progressNotify=self.pyfile.setProgress, resume=self.xdcc_send_resume)
             if newname and newname != dl_file:

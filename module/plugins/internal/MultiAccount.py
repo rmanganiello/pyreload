@@ -3,6 +3,8 @@
 import re
 import time
 
+from module.singletons import get_hook_manager
+
 from .Account import Account
 from .misc import decode, remove_chars, uniqify
 
@@ -71,7 +73,7 @@ class MultiAccount(Account):
             self.pluginmodule = self.pyload.pluginManager.loadModule(self.plugintype, self.classname)
             self.pluginclass = self.pyload.pluginManager.loadClass(self.plugintype, self.classname)
 
-            self.pyload.hookManager.addEvent("plugin_updated", self.plugins_updated)
+            get_hook_manager().addEvent("plugin_updated", self.plugins_updated)
 
             interval = self.config.get('mh_interval', 12) * 60 * 60
             self.periodical.start(interval, threaded=True, delay=2)
@@ -299,13 +301,14 @@ class MultiAccount(Account):
                 return
 
         #: Make sure we have one active hook
+        hook_manager = get_hook_manager()
         try:
-            self.pyload.hookManager.removeEvent("plugin_updated", self.plugins_updated)
+            hook_manager.removeEvent("plugin_updated", self.plugins_updated)
 
         except ValueError:
             pass
 
-        self.pyload.hookManager.addEvent("plugin_updated", self.plugins_updated)
+        hook_manager.addEvent("plugin_updated", self.plugins_updated)
 
         if refresh or not reloading:
             if not self.get_plugins(cached=False):
@@ -335,7 +338,7 @@ class MultiAccount(Account):
         self.log_info(_("Reverting back to default hosters"))
 
         try:
-            self.pyload.hookManager.removeEvent("plugin_updated", self.plugins_updated)
+            get_hook_manager().removeEvent("plugin_updated", self.plugins_updated)
 
         except ValueError:
             pass

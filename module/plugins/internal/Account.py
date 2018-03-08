@@ -6,7 +6,10 @@ import random
 import threading
 import time
 
-from module.singletons import get_request_factory
+from module.singletons import (
+    get_account_manager,
+    get_request_factory,
+)
 
 from .misc import (Periodical, compare_time, decode, isiterable, lock,
                    parse_size)
@@ -304,7 +307,7 @@ class Account(Plugin):
              'maxtraffic': None,
              'options': options or {'limitdl': ['0']},
              'password': password or "",
-             'plugin': self.pyload.accountManager.getAccountPlugin(self.classname),
+             'plugin': get_account_manager().getAccountPlugin(self.classname),
              'premium': None,
              'timestamp': 0,
              'trafficleft': None,

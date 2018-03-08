@@ -25,6 +25,10 @@ from threading import Lock
 import six
 
 from module.PullEvents import AccountUpdateEvent
+from module.singletons import (
+    get_account_manager,
+    get_pull_manager,
+)
 from module.utils import chmod, lock
 
 
@@ -34,7 +38,6 @@ ACC_VERSION = 1
 class AccountManager():
     """manages all accounts"""
 
-    #----------------------------------------------------------------------
     def __init__(self, core):
         """Constructor"""
 
@@ -171,7 +174,7 @@ class AccountManager():
         data = {}
 
         if refresh:
-            self.core.scheduler.addJob(0, self.core.accountManager.getAccountInfos)
+            self.core.scheduler.addJob(0, get_account_manager().getAccountInfos)
             force = False
 
         for p in self.accounts.keys():
@@ -181,9 +184,9 @@ class AccountManager():
             else:
                 data[p] = []
         e = AccountUpdateEvent()
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)
         return data
 
     def sendChange(self):
         e = AccountUpdateEvent()
-        self.core.pullManager.addEvent(e)
+        get_pull_manager().addEvent(e)

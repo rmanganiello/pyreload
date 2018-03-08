@@ -24,7 +24,13 @@ import re
 
 import six
 
-from module.singletons import get_request_factory
+from module.singletons import (
+    get_account_manager,
+    get_captcha_manager,
+    get_hook_manager,
+    get_pull_manager,
+    get_request_factory,
+)
 
 from .PyFile import PyFile
 from .utils import freeSpace, compare_time
@@ -150,7 +156,7 @@ class Api(Iface):
         :param value: new config value
         :param section: 'plugin' or 'core
         """
-        self.core.hookManager.dispatchEvent("configChanged", category, option, value, section)
+        get_hook_manager().dispatchEvent("configChanged", category, option, value, section)
 
         if section == "core":
             self.core.config[category][option] = value
@@ -794,8 +800,8 @@ class Api(Iface):
         :return: bool
         """
         self.core.lastClientConnected = time()
-        task = self.core.captchaManager.getTask()
-        return not task is None
+        task = get_captcha_manager().getTask()
+        return task is not None
 
     @permission(PERMS.STATUS)
     def getCaptchaTask(self, exclusive=False):
@@ -805,7 +811,7 @@ class Api(Iface):
         :return: `CaptchaTask`
         """
         self.core.lastClientConnected = time()
-        task = self.core.captchaManager.getTask()
+        task = get_captcha_manager().getTask()
         if task:
             task.setWatingForUser(exclusive=exclusive)
             data, type, result = task.getCaptcha()
@@ -822,7 +828,7 @@ class Api(Iface):
         :return: string
         """
         self.core.lastClientConnected = time()
-        t = self.core.captchaManager.getTaskByID(tid)
+        t = get_captcha_manager().getTaskByID(tid)
         return t.getStatus() if t else ""
 
     @permission(PERMS.STATUS)
@@ -833,10 +839,13 @@ class Api(Iface):
         :param result: captcha result
         """
         self.core.lastClientConnected = time()
-        task = self.core.captchaManager.getTaskByID(tid)
+
+        captcha_manager = get_captcha_manager()
+
+        task = captcha_manager.getTaskByID(tid)
         if task:
             task.setResult(result)
-            self.core.captchaManager.removeTask(task)
+            captcha_manager.removeTask(task)
 
 
     @permission(PERMS.STATUS)
@@ -846,7 +855,7 @@ class Api(Iface):
         :param uuid:
         :return: list of `Events`
         """
-        events = self.core.pullManager.getEvents(uuid)
+        events = get_pull_manager().getEvents(uuid)
         newEvents = []
 
         def convDest(d):
@@ -876,7 +885,7 @@ class Api(Iface):
         :param refresh: reload account info
         :return: list of `AccountInfo`
         """
-        accs = self.core.accountManager.getAccountInfos(False, refresh)
+        accs = get_account_manager().getAccountInfos(False, refresh)
         accounts = []
         for group in accs.values():
             accounts.extend([AccountInfo(acc["validuntil"], acc["login"], acc["options"], acc["valid"],
@@ -890,12 +899,12 @@ class Api(Iface):
 
         :return: list
         """
-        return self.core.accountManager.accounts.keys()
+        return get_account_manager().accounts.keys()
 
     @permission(PERMS.ACCOUNTS)
     def updateAccount(self, plugin, account, password=None, options={}):
         """Changes pw/options for specific account."""
-        self.core.accountManager.updateAccount(plugin, account, password, options)
+        get_account_manager().updateAccount(plugin, account, password, options)
 
     @permission(PERMS.ACCOUNTS)
     def removeAccount(self, plugin, account):
@@ -904,7 +913,7 @@ class Api(Iface):
         :param plugin: pluginname
         :param account: accountname
         """
-        self.core.accountManager.removeAccount(plugin, account)
+        get_account_manager().removeAccount(plugin, account)
 
     @permission(PERMS.ALL)
     def login(self, username, password, remoteip=None):
@@ -972,7 +981,7 @@ class Api(Iface):
         :return: dict with this style: {"plugin": {"method": "description"}}
         """
         data = {}
-        for plugin, funcs in six.iteritems(self.core.hookManager.methods):
+        for plugin, funcs in six.iteritems(get_hook_manager().methods):
             data[plugin] = funcs
 
         return data
@@ -985,7 +994,7 @@ class Api(Iface):
         :param func:
         :return: bool
         """
-        cont = self.core.hookManager.methods
+        cont = get_hook_manager().methods
         return plugin in cont and func in cont[plugin]
 
     @permission(PERMS.STATUS)
@@ -1006,7 +1015,7 @@ class Api(Iface):
             raise ServiceDoesNotExists(plugin, func)
 
         try:
-            ret = self.core.hookManager.callRPC(plugin, func, args, parse)
+            ret = get_hook_manager().callRPC(plugin, func, args, parse)
             return str(ret)
         except Exception as e:
             raise ServiceException(e.message)
@@ -1017,7 +1026,7 @@ class Api(Iface):
 
         :return: {"plugin": {"name": value } }
         """
-        return self.core.hookManager.getAllInfo()
+        return get_hook_manager().getAllInfo()
 
     @permission(PERMS.STATUS)
     def getInfoByPlugin(self, plugin):
@@ -1026,7 +1035,7 @@ class Api(Iface):
         :param plugin: pluginname
         :return: dict of attr names mapped to value {"name": value}
         """
-        return self.core.hookManager.getInfo(plugin)
+        return get_hook_manager().getInfo(plugin)
 
     def changePassword(self, user, oldpw, newpw):
         """ changes password for specific user """

@@ -9,7 +9,9 @@ from threading import Thread
 
 import pycurl
 import ssl
+
 from module.Api import FileDoesNotExists, PackageDoesNotExists
+from module.singletons import get_captcha_manager
 
 from ..internal.misc import format_size
 from ..internal.Notifier import Notifier
@@ -394,7 +396,7 @@ class IRC(Thread, Notifier):
         if not args:
             return ["ERROR: Captcha ID missing."]
 
-        task = self.pyload.captchaManager.getTaskByID(args[0])
+        task = get_captcha_manager().getTaskByID(args[0])
         if not task:
             return ["ERROR: Captcha Task with ID %s does not exists." % args[0]]
 

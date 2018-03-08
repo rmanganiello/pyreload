@@ -13,13 +13,16 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
     @author: mkaay, RaNaN
 """
 
+from threading import Lock
 from time import time
 from traceback import print_exc
-from threading import Lock
+
+from module.singletons import get_hook_manager
+
 
 class CaptchaManager():
     def __init__(self, core):
@@ -64,13 +67,13 @@ class CaptchaManager():
         if cli: #client connected -> should solve the captcha
             task.setWaiting(50) #wait 50 sec for response
 
-        for plugin in self.core.hookManager.activePlugins():
+        for plugin in get_hook_manager().activePlugins():
             try:
                 plugin.newCaptchaTask(task)
             except:
                 if self.core.debug:
                     print_exc()
-            
+
         if task.handler or cli: #the captcha was handled
             self.tasks.append(task)
             return True

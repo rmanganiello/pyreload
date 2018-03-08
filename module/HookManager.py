@@ -28,6 +28,8 @@ from six.moves import _thread as thread
 
 from module.PluginThread import HookThread
 from module.plugins.PluginManager import literal_eval
+from module.singletons import set_hook_manager
+
 from .utils import lock
 
 
@@ -66,6 +68,8 @@ class HookManager:
     def __init__(self, core):
         self.core = core
         self.config = self.core.config
+
+        set_hook_manager(self)
 
         self.log = self.core.log
         self.plugins = []

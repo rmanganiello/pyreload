@@ -1,8 +1,14 @@
+ACCOUNT_MANAGER_SINGLETON = 'account_manager_singleton'
+CAPTCHA_MANAGER_SINGLETON = 'captcha_manager_singleton'
 HOOK_MANAGER_SINGLETON = 'hook_manager_singleton'
+PULL_MANAGER_SINGLETON = 'pull_manager_singleton'
 REQUEST_FACTORY_SINGLETON = 'request_factory_singleton'
 
 ALLOWED_SINGLETONS = frozenset({
+    ACCOUNT_MANAGER_SINGLETON,
+    CAPTCHA_MANAGER_SINGLETON,
     HOOK_MANAGER_SINGLETON,
+    PULL_MANAGER_SINGLETON,
     REQUEST_FACTORY_SINGLETON,
 })
 
@@ -25,12 +31,20 @@ class SingletonFactory(object):
         cls.instances[name] = instance
 
 
-def get_request_factory():
-    return SingletonFactory.get_instance(REQUEST_FACTORY_SINGLETON)
+def get_account_manager():
+    return SingletonFactory.get_instance(ACCOUNT_MANAGER_SINGLETON)
 
 
-def set_request_factory(instance):
-    SingletonFactory.set_instance(REQUEST_FACTORY_SINGLETON, instance=instance)
+def set_account_manager(instance):
+    SingletonFactory.set_instance(ACCOUNT_MANAGER_SINGLETON, instance=instance)
+
+
+def get_captcha_manager():
+    return SingletonFactory.get_instance(CAPTCHA_MANAGER_SINGLETON)
+
+
+def set_captcha_manager(instance):
+    SingletonFactory.set_instance(CAPTCHA_MANAGER_SINGLETON, instance=instance)
 
 
 def get_hook_manager():
@@ -39,3 +53,19 @@ def get_hook_manager():
 
 def set_hook_manager(instance):
     SingletonFactory.set_instance(HOOK_MANAGER_SINGLETON, instance=instance)
+
+
+def get_pull_manager():
+    return SingletonFactory.get_instance(PULL_MANAGER_SINGLETON)
+
+
+def set_pull_manager(instance):
+    SingletonFactory.set_instance(PULL_MANAGER_SINGLETON, instance=instance)
+
+
+def get_request_factory():
+    return SingletonFactory.get_instance(REQUEST_FACTORY_SINGLETON)
+
+
+def set_request_factory(instance):
+    SingletonFactory.set_instance(REQUEST_FACTORY_SINGLETON, instance=instance)

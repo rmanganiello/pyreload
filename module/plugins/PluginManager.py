@@ -30,6 +30,8 @@ import six
 
 from module.lib.SafeEval import const_eval as literal_eval
 from module.ConfigParser import IGNORE
+from module.singletons import get_account_manager
+
 
 class PluginManager:
     ROOT = "module.plugins."
@@ -40,7 +42,6 @@ class PluginManager:
     VERSION = re.compile(r'__version__.*=.*("|\')([0-9.]+)')
     CONFIG = re.compile(r'__config__.*=.*(\[[^\]]+\])', re.MULTILINE)
     DESC = re.compile(r'__description__.?=.?("|"""|\')([^"\']+)')
-
 
     def __init__(self, core):
         self.core = core
@@ -431,8 +432,10 @@ class PluginManager:
                 self.log.error("Invalid config in %s: %s" % (name, config))
 
         if "accounts" in as_dict: #accounts needs to be reloaded
-            self.core.accountManager.initPlugins()
-            self.core.scheduler.addJob(0, self.core.accountManager.getAccountInfos)
+            account_manager = get_account_manager()
+
+            account_manager.initPlugins()
+            self.core.scheduler.addJob(0, account_manager.getAccountInfos)
 
         return True
 
