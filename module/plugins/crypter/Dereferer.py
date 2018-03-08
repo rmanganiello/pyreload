@@ -2,13 +2,15 @@
 
 import re
 
+from module.singletons import get_plugin_manager
+
 from ..internal.SimpleCrypter import SimpleCrypter
 
 
 class Dereferer(SimpleCrypter):
     __name__ = "Dereferer"
     __type__ = "crypter"
-    __version__ = "0.26"
+    __version__ = "0.27"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?(?:\w+\.)*?(?P<DOMAIN>(?:[\d.]+|[\w\-]{3,63}(?:\.[a-zA-Z]{2,}){1,2})(?:\:\d+)?)/.*?(?P<LINK>[\w^_]+://.+)'
@@ -33,7 +35,7 @@ class Dereferer(SimpleCrypter):
             self, level, plugintype, pluginname, messages)
 
     def init(self):
-        self.__pattern__ = self.pyload.pluginManager.crypterPlugins[
+        self.__pattern__ = get_plugin_manager().crypterPlugins[
             self.classname]['pattern']  # @TODO: Recheck in 0.4.10
 
         self.PLUGIN_DOMAIN = re.match(

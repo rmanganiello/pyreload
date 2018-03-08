@@ -5,13 +5,15 @@ from __future__ import unicode_literals
 import inspect
 import re
 
+from module.singletons import get_plugin_manager
+
 from ..internal.Addon import Addon
 
 
 class XFileSharing(Addon):
     __name__ = "XFileSharing"
     __type__ = "hook"
-    __version__ = "0.57"
+    __version__ = "0.58"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -89,10 +91,11 @@ class XFileSharing(Addon):
             isXFS = lambda klass: any(k.__name__.startswith("XFS")
                                       for k in inspect.getmro(klass))
 
-            for p in self.pyload.pluginManager.plugins[type].values():
+            plugin_manager = get_plugin_manager()
+
+            for p in plugin_manager.plugins[type].values():
                 try:
-                    klass = self.pyload.pluginManager.loadClass(type, p[
-                                                                'name'])
+                    klass = plugin_manager.loadClass(type, p['name'])
 
                 except AttributeError as e:
                     self.log_debug(e, trace=True)
@@ -113,7 +116,7 @@ class XFileSharing(Addon):
         return pattern
 
     def _load(self, type, plugin):
-        dict = self.pyload.pluginManager.plugins[type][plugin]
+        dict = get_plugin_manager().plugins[type][plugin]
         pattern = self.get_pattern(type, plugin)
 
         if not pattern:
@@ -125,6 +128,6 @@ class XFileSharing(Addon):
         self.log_debug("Pattern for %ss: %s" % (type, pattern))
 
     def _unload(self, type, plugin):
-        dict = self.pyload.pluginManager.plugins[type][plugin]
+        dict = get_plugin_manager().plugins[type][plugin]
         dict['pattern'] = r'^unmatchable$'
         dict['re'] = re.compile(dict['pattern'])

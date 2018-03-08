@@ -27,6 +27,7 @@ import six
 from module.PullEvents import AccountUpdateEvent
 from module.singletons import (
     get_account_manager,
+    get_plugin_manager,
     get_pull_manager,
 )
 from module.utils import chmod, lock
@@ -59,7 +60,7 @@ class AccountManager():
         """get account instance for plugin or None if anonymous"""
         if plugin in self.accounts:
             if plugin not in self.plugins:
-                self.plugins[plugin] = self.core.pluginManager.loadClass("accounts", plugin)(self, self.accounts[plugin])
+                self.plugins[plugin] = get_plugin_manager().loadClass("accounts", plugin)(self, self.accounts[plugin])
 
             return self.plugins[plugin]
         else:
@@ -145,7 +146,7 @@ class AccountManager():
     #----------------------------------------------------------------------
     def initAccountPlugins(self):
         """init names"""
-        for name in self.core.pluginManager.getAccountPlugins():
+        for name in get_plugin_manager().getAccountPlugins():
             self.accounts[name] = {}
 
     @lock

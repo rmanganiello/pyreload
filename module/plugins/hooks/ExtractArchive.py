@@ -5,6 +5,8 @@ from __future__ import with_statement
 import os
 import sys
 
+from module.singletons import get_plugin_manager
+
 from ..internal.Addon import Addon
 from ..internal.Extractor import ArchiveError, CRCError, PasswordError
 from ..internal.misc import Expose, encode, exists, fsjoin, safename, threaded, uniqify
@@ -54,7 +56,7 @@ class ArchiveQueue(object):
 class ExtractArchive(Addon):
     __name__ = "ExtractArchive"
     __type__ = "hook"
-    __version__ = "1.66"
+    __version__ = "1.67"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", True),
@@ -96,9 +98,11 @@ class ExtractArchive(Addon):
         self.repair = False
 
     def activate(self):
+        plugin_manager = get_plugin_manager()
+
         for p in ("UnRar", "SevenZip", "UnZip", "UnTar"):
             try:
-                module = self.pyload.pluginManager.loadModule("internal", p)
+                module = plugin_manager.loadModule("internal", p)
                 klass = getattr(module, p)
                 if klass.find():
                     self.extractors.append(klass)

@@ -9,6 +9,7 @@ import sys
 import time
 
 from module.singletons import (
+    get_plugin_manager,
     get_request_factory,
     get_thread_manager,
 )
@@ -20,7 +21,7 @@ from ..internal.misc import Expose, encode, exists, fsjoin, threaded
 class UpdateManager(Addon):
     __name__ = "UpdateManager"
     __type__ = "hook"
-    __version__ = "1.21"
+    __version__ = "1.22"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", True),
@@ -107,10 +108,13 @@ class UpdateManager(Addon):
                              m.__name__.startswith("userplugins.")) and
             m.__name__.count(".") >= 2, sys.modules.values()
         )
+
+        plugin_manager = get_plugin_manager()
+
         for m in modules:
             root, plugin_type, plugin_name = m.__name__.rsplit(".", 2)
             plugin_id = (plugin_type, plugin_name)
-            if plugin_type in self.pyload.pluginManager.plugins:
+            if plugin_type in plugin_manager.plugins:
                 f = m.__file__.replace(".pyc", ".py")
                 if not os.path.isfile(f):
                     continue
@@ -124,7 +128,7 @@ class UpdateManager(Addon):
                     reloads.append(plugin_id)
                     self.mtimes[plugin_id] = mtime
 
-        return True if self.pyload.pluginManager.reloadPlugins(reloads) else False
+        return bool(plugin_manager.reloadPlugins(reloads))
 
     def server_response(self, line=None):
         try:
@@ -203,7 +207,7 @@ class UpdateManager(Addon):
         if updated:
             self.log_info(_("*** Plugins updated ***"))
 
-            if self.pyload.pluginManager.reloadPlugins(updated):
+            if get_plugin_manager().reloadPlugins(updated):
                 exitcode = 1
             else:
                 self.log_warning(_("You have to restart pyLoad to use the updated plugins"))
@@ -292,13 +296,15 @@ class UpdateManager(Addon):
                               {'type': t.upper(),
                                'name': n,})
 
+        plugin_manager = get_plugin_manager()
+
         for plugin in updatelist:
             plugin_name = plugin['name']
             plugin_type = plugin['type']
             plugin_version = plugin['version']
 
-            plugins = getattr(self.pyload.pluginManager,
-                              "%sPlugins" % plugin_type.rstrip('s'))  # @TODO: Remove rstrip in 0.4.10
+            # @TODO: Remove rstrip in 0.4.10
+            plugins = getattr(plugin_manager, "%sPlugins" % plugin_type.rstrip('s'))
 
             oldver = float(plugins[plugin_name]['v']) if plugin_name in plugins else None
             try:

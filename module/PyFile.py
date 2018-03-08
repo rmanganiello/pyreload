@@ -22,8 +22,9 @@ from time import sleep, time
 
 from module.PullEvents import UpdateEvent
 from module.singletons import (
-    get_thread_manager,
+    get_plugin_manager,
     get_pull_manager,
+    get_thread_manager,
 )
 from module.utils import formatSize, lock
 
@@ -103,8 +104,10 @@ class PyFile(object):
     def initPlugin(self):
         """ inits plugin instance """
         if not self.plugin:
-            self.pluginmodule = self.m.core.pluginManager.getPlugin(self.pluginname)
-            self.pluginclass = getattr(self.pluginmodule, self.m.core.pluginManager.getPluginName(self.pluginname))
+            plugin_manager = get_plugin_manager()
+
+            self.pluginmodule = plugin_manager.getPlugin(self.pluginname)
+            self.pluginclass = getattr(self.pluginmodule, plugin_manager.getPluginName(self.pluginname))
             self.plugin = self.pluginclass(self)
 
     @lock

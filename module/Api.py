@@ -28,6 +28,7 @@ from module.singletons import (
     get_account_manager,
     get_captcha_manager,
     get_hook_manager,
+    get_plugin_manager,
     get_pull_manager,
     get_request_factory,
     get_thread_manager,
@@ -380,7 +381,7 @@ class Api(Iface):
         :param urls:
         :return: {plugin: urls}
         """
-        data = self.core.pluginManager.parseUrls(urls)
+        data = get_plugin_manager().parseUrls(urls)
         plugins = {}
 
         for url, plugin in data:
@@ -398,7 +399,7 @@ class Api(Iface):
         :param urls:
         :return: initial set of data as `OnlineCheck` instance containing the result id
         """
-        data = self.core.pluginManager.parseUrls(urls)
+        data = get_plugin_manager().parseUrls(urls)
 
         rid = get_thread_manager().createResultThread(data, False)
 
@@ -474,7 +475,7 @@ class Api(Iface):
         :param dest: `Destination`
         :return: None
         """
-        data = self.core.pluginManager.parseUrls(links)
+        data = get_plugin_manager().parseUrls(links)
         get_thread_manager().createResultThread(data, True)
 
 

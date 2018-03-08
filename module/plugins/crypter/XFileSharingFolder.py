@@ -2,7 +2,10 @@
 
 import re
 
-from module.singletons import get_request_factory
+from module.singletons import (
+    get_plugin_manager,
+    get_request_factory,
+)
 
 from ..internal.XFSCrypter import XFSCrypter
 
@@ -10,7 +13,7 @@ from ..internal.XFSCrypter import XFSCrypter
 class XFileSharingFolder(XFSCrypter):
     __name__ = "XFileSharingFolder"
     __type__ = "crypter"
-    __version__ = "0.26"
+    __version__ = "0.27"
     __status__ = "testing"
 
     __pattern__ = r'^unmatchable$'
@@ -29,7 +32,7 @@ class XFileSharingFolder(XFSCrypter):
         return XFSCrypter._log(self, level, plugintype, pluginname, messages)
 
     def init(self):
-        self.__pattern__ = self.pyload.pluginManager.crypterPlugins[
+        self.__pattern__ = get_plugin_manager().crypterPlugins[
             self.classname]['pattern']
 
         self.PLUGIN_DOMAIN = re.match(

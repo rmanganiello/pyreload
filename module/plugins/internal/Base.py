@@ -97,7 +97,7 @@ class Base(Plugin):
 
         #: Captcha stuff
         #@TODO: Replace in 0.4.10:
-        #_Captcha = self.pyload.pluginManager.loadClass("captcha", self.classname) or Captcha
+        # _Captcha = get_plugin_manager().loadClass("captcha", self.classname) or Captcha
         # self.captcha = _Captcha(pyfile)
         self.captcha = Captcha(pyfile)
 

@@ -2,13 +2,15 @@
 
 import re
 
+from module.singletons import get_plugin_manager
+
 from ..internal.Addon import Addon
 
 
 class JustPremium(Addon):
     __name__ = "JustPremium"
     __type__ = "hook"
-    __version__ = "0.27"
+    __version__ = "0.28"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -25,14 +27,21 @@ class JustPremium(Addon):
         self.event_map = {'linksAdded': "links_added"}
 
     def links_added(self, links, pid):
-        hosterdict = self.pyload.pluginManager.hosterPlugins
+        plugin_manager = get_plugin_manager()
+
+        hosterdict = plugin_manager.hosterPlugins
         linkdict = self.pyload.api.checkURLs(links)
 
-        premiumplugins = set(account.type for account in self.pyload.api.getAccounts(False)
-                             if account.valid and account.premium)
-        multihosters = set(hoster for hoster in self.pyload.pluginManager.hosterPlugins
-                           if 'new_name' in hosterdict[hoster]
-                           and hosterdict[hoster]['new_name'] in premiumplugins)
+        premiumplugins = {
+            account.type
+            for account in self.pyload.api.getAccounts(False)
+            if account.valid and account.premium
+        }
+        multihosters = {
+            hoster
+            for hoster in plugin_manager.hosterPlugins
+            if 'new_name' in hosterdict[hoster] and hosterdict[hoster]['new_name'] in premiumplugins
+        }
 
         excluded = map(lambda domain: "".join(part.capitalize() for part in re.split(r'(\.|\d+)', domain) if part != '.'),
                        self.config.get('excluded').replace(' ', '').replace(',', '|').replace(';', '|').split('|'))

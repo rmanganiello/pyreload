@@ -30,6 +30,7 @@ from module.singletons import (
     get_account_manager,
     get_captcha_manager,
     get_hook_manager,
+    get_plugin_manager,
     get_request_factory,
 )
 from module.utils import save_join, save_path, fs_encode, fs_decode
@@ -357,10 +358,12 @@ class Plugin(Base):
         temp_file.write(img)
         temp_file.close()
 
-        has_plugin = self.__name__ in self.core.pluginManager.captchaPlugins
+        plugin_manager = get_plugin_manager()
+
+        has_plugin = self.__name__ in plugin_manager.captchaPlugins
 
         if self.core.captcha:
-            Ocr = self.core.pluginManager.loadClass("captcha", self.__name__)
+            Ocr = plugin_manager.loadClass("captcha", self.__name__)
         else:
             Ocr = None
 

@@ -3,7 +3,10 @@
 import re
 import time
 
-from module.singletons import get_hook_manager
+from module.singletons import (
+    get_hook_manager,
+    get_plugin_manager,
+)
 
 from .Account import Account
 from .misc import decode, remove_chars, uniqify
@@ -12,7 +15,7 @@ from .misc import decode, remove_chars, uniqify
 class MultiAccount(Account):
     __name__ = "MultiAccount"
     __type__ = "account"
-    __version__ = "0.22"
+    __version__ = "0.23"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", True),
@@ -67,11 +70,13 @@ class MultiAccount(Account):
         self.init_plugin()
 
     def init_plugin(self):
-        plugin, self.plugintype = self.pyload.pluginManager.findPlugin(self.classname)
+        plugin_manager = get_plugin_manager()
+
+        plugin, self.plugintype = plugin_manager.findPlugin(self.classname)
 
         if plugin:
-            self.pluginmodule = self.pyload.pluginManager.loadModule(self.plugintype, self.classname)
-            self.pluginclass = self.pyload.pluginManager.loadClass(self.plugintype, self.classname)
+            self.pluginmodule = plugin_manager.loadModule(self.plugintype, self.classname)
+            self.pluginclass = plugin_manager.loadClass(self.plugintype, self.classname)
 
             get_hook_manager().addEvent("plugin_updated", self.plugins_updated)
 
@@ -138,18 +143,22 @@ class MultiAccount(Account):
         excluded = []
         self.supported = []
 
+        plugin_manager = get_plugin_manager()
+
         if self.plugintype == "hoster":
-            plugin_map = dict((name.lower(), name)
-                              for name in self.pyload.pluginManager.hosterPlugins.keys())
+            plugin_map = {name.lower(): name for name in plugin_manager.hosterPlugins.keys()}
 
-            account_list = [account.type.lower()
-                            for account in self.pyload.api.getAccounts(False)
-                            if account.valid and account.premium]
-
+            account_list = [
+                account.type.lower()
+                for account in self.pyload.api.getAccounts(False)
+                if account.valid and account.premium
+            ]
         else:
             plugin_map = {}
-            account_list = [name[::-1].replace("Folder"[::-1], "", 1).lower()[::-1]
-                            for name in self.pyload.pluginManager.crypterPlugins.keys()]
+            account_list = [
+                name[::-1].replace("Folder"[::-1], "", 1).lower()[::-1]
+                for name in plugin_manager.crypterPlugins.keys()
+            ]
 
         for plugin in self.get_plugins():
             name = remove_chars(plugin, "-.")
@@ -178,7 +187,7 @@ class MultiAccount(Account):
         self.log_debug("Overwritten %ss: %s" % (self.plugintype, ", ".join(sorted(self.supported))))
 
         for plugin in self.supported:
-            hdict = self.pyload.pluginManager.plugins[self.plugintype][plugin]
+            hdict = plugin_manager.plugins[self.plugintype][plugin]
             hdict['new_module'] = self.pluginmodule
             hdict['new_name'] = self.classname
 
@@ -201,7 +210,7 @@ class MultiAccount(Account):
 
             self.log_debug("Pattern: %s" % pattern)
 
-            hdict = self.pyload.pluginManager.plugins[self.plugintype][self.classname]
+            hdict = plugin_manager.plugins[self.plugintype][self.classname]
             hdict['pattern'] = pattern
             hdict['re'] = re.compile(pattern)
 
@@ -243,7 +252,7 @@ class MultiAccount(Account):
 
     def unload_plugin(self, plugin):
         #: Reset module
-        hdict = self.pyload.pluginManager.plugins[self.plugintype][plugin]
+        hdict = get_plugin_manager().plugins[self.plugintype][plugin]
         if "module" in hdict:
             hdict.pop('module', None)
 
@@ -353,7 +362,7 @@ class MultiAccount(Account):
                 self.unload_plugin(plugin)
 
         #: Reset pattern
-        hdict = self.pyload.pluginManager.plugins[self.plugintype][self.classname]
+        hdict = get_plugin_manager().plugins[self.plugintype][self.classname]
 
         hdict['pattern'] = getattr(self.pluginclass, "__pattern__", r'^unmatchable$')
         hdict['re'] = re.compile(hdict['pattern'])

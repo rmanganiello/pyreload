@@ -47,6 +47,7 @@ from module.singletons import (
     set_account_manager,
     set_captcha_manager,
     set_hook_manager,
+    set_plugin_manager,
     set_pull_manager,
     set_remote_manager,
     set_request_factory,
@@ -413,8 +414,7 @@ class Core(object):
         self.scheduler = Scheduler(self)
 
         #hell yeah, so many important managers :D
-        self.pluginManager = PluginManager(self)
-
+        set_plugin_manager(PluginManager(self))
         set_pull_manager(PullManager(self))
         set_thread_manager(ThreadManager(self))
         set_account_manager(AccountManager(self))

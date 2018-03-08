@@ -1,6 +1,7 @@
 ACCOUNT_MANAGER_SINGLETON = 'account_manager_singleton'
 CAPTCHA_MANAGER_SINGLETON = 'captcha_manager_singleton'
 HOOK_MANAGER_SINGLETON = 'hook_manager_singleton'
+PLUGIN_MANAGER_SINGLETON = 'plugin_manager_singleton'
 PULL_MANAGER_SINGLETON = 'pull_manager_singleton'
 REMOTE_MANAGER_SINGLETON = 'remote_manager_singleton'
 REQUEST_FACTORY_SINGLETON = 'request_factory_singleton'
@@ -10,6 +11,7 @@ ALLOWED_SINGLETONS = frozenset({
     ACCOUNT_MANAGER_SINGLETON,
     CAPTCHA_MANAGER_SINGLETON,
     HOOK_MANAGER_SINGLETON,
+    PLUGIN_MANAGER_SINGLETON,
     PULL_MANAGER_SINGLETON,
     REMOTE_MANAGER_SINGLETON,
     REQUEST_FACTORY_SINGLETON,
@@ -57,6 +59,14 @@ def get_hook_manager():
 
 def set_hook_manager(instance):
     SingletonFactory.set_instance(HOOK_MANAGER_SINGLETON, instance=instance)
+
+
+def get_plugin_manager():
+    return SingletonFactory.get_instance(PLUGIN_MANAGER_SINGLETON)
+
+
+def set_plugin_manager(instance):
+    SingletonFactory.set_instance(PLUGIN_MANAGER_SINGLETON, instance=instance)
 
 
 def get_pull_manager():

@@ -29,6 +29,7 @@ from six.moves import _thread as thread
 from module.PluginThread import HookThread
 from module.plugins.PluginManager import literal_eval
 from module.singletons import (
+    get_plugin_manager,
     get_thread_manager,
     set_hook_manager,
 )
@@ -126,12 +127,14 @@ class HookManager:
         active = []
         deactive = []
 
-        for pluginname in self.core.pluginManager.hookPlugins:
+        plugin_manager = get_plugin_manager()
+
+        for pluginname in plugin_manager.hookPlugins:
             try:
-                #hookClass = getattr(plugin, plugin.__name__)
+                # hookClass = getattr(plugin, plugin.__name__)
 
                 if self.core.config.getPlugin(pluginname, "activated"):
-                    pluginClass = self.core.pluginManager.loadClass("hooks", pluginname)
+                    pluginClass = plugin_manager.loadClass("hooks", pluginname)
                     if not pluginClass: continue
 
                     plugin = pluginClass(self.core, self)
@@ -166,7 +169,7 @@ class HookManager:
             if inst.__name__ == plugin:
                 return
 
-        pluginClass = self.core.pluginManager.loadClass("hooks", plugin)
+        pluginClass = get_plugin_manager().loadClass("hooks", plugin)
 
         if not pluginClass: return
 

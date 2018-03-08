@@ -32,7 +32,10 @@ from pycurl import error
 import six
 from six.moves import queue
 
-from module.singletons import get_hook_manager
+from module.singletons import (
+    get_hook_manager,
+    get_plugin_manager,
+)
 
 from .PyFile import PyFile
 from .plugins.Plugin import Abort, Fail, Reconnect, Retry, SkipDownload
@@ -503,9 +506,10 @@ class InfoThread(PluginThread):
             else:
                 plugins[plugin] = [url]
 
+        plugin_manager = get_plugin_manager()
 
         # filter out container plugins
-        for name in self.m.core.pluginManager.containerPlugins:
+        for name in plugin_manager.containerPlugins:
             if name in plugins:
                 container.extend([(name, url) for url in plugins[name]])
 
@@ -514,14 +518,14 @@ class InfoThread(PluginThread):
         #directly write to database
         if self.pid > -1:
             for pluginname, urls in six.iteritems(plugins):
-                plugin = self.m.core.pluginManager.getPlugin(pluginname, True)
+                plugin = plugin_manager.getPlugin(pluginname, True)
                 if hasattr(plugin, "getInfo"):
                     self.fetchForPlugin(pluginname, plugin, urls, self.updateDB)
                     self.m.core.files.save()
 
         elif self.add:
             for pluginname, urls in six.iteritems(plugins):
-                plugin = self.m.core.pluginManager.getPlugin(pluginname, True)
+                plugin = plugin_manager.getPlugin(pluginname, True)
                 if hasattr(plugin, "getInfo"):
                     self.fetchForPlugin(pluginname, plugin, urls, self.updateCache, True)
 
@@ -562,7 +566,7 @@ class InfoThread(PluginThread):
             self.m.infoResults[self.rid] = {}
 
             for pluginname, urls in six.iteritems(plugins):
-                plugin = self.m.core.pluginManager.getPlugin(pluginname, True)
+                plugin = plugin_manager.getPlugin(pluginname, True)
                 if hasattr(plugin, "getInfo"):
                     self.fetchForPlugin(pluginname, plugin, urls, self.updateResult, True)
 
@@ -668,7 +672,7 @@ class InfoThread(PluginThread):
             for pack in pyfile.plugin.packages:
                 pyfile.plugin.urls.extend(pack[1])
 
-            data = self.m.core.pluginManager.parseUrls(pyfile.plugin.urls)
+            data = get_plugin_manager().parseUrls(pyfile.plugin.urls)
 
             self.m.log.debug("Got %d links." % len(data))
 

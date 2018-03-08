@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
+from module.singletons import get_plugin_manager
+
 from .SimpleCrypter import SimpleCrypter
 
 
 class MultiCrypter(SimpleCrypter):
     __name__ = "MultiCrypter"
     __type__ = "hoster"
-    __version__ = "0.10"
+    __version__ = "0.11"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -19,7 +21,7 @@ class MultiCrypter(SimpleCrypter):
     __authors__ = [("Walter Purcaro", "vuolter@gmail.com")]
 
     def init(self):
-        self.PLUGIN_NAME = self.pyload.pluginManager.crypterPlugins.get(self.classname)[
+        self.PLUGIN_NAME = get_plugin_manager().crypterPlugins.get(self.classname)[
             'name']
 
     def _log(self, level, plugintype, pluginname, messages):

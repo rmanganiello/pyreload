@@ -2,7 +2,10 @@
 
 import re
 
-from module.singletons import get_request_factory
+from module.singletons import (
+    get_plugin_manager,
+    get_request_factory,
+)
 
 from ..internal.XFSHoster import XFSHoster
 
@@ -10,7 +13,7 @@ from ..internal.XFSHoster import XFSHoster
 class XFileSharing(XFSHoster):
     __name__ = "XFileSharing"
     __type__ = "hoster"
-    __version__ = "0.66"
+    __version__ = "0.67"
     __status__ = "testing"
 
     __pattern__ = r'^unmatchable$'
@@ -33,8 +36,7 @@ class XFileSharing(XFSHoster):
             self, level, plugintype, pluginname, messages)
 
     def init(self):
-        self.__pattern__ = self.pyload.pluginManager.hosterPlugins[
-            self.classname]['pattern']
+        self.__pattern__ = get_plugin_manager().hosterPlugins[self.classname]['pattern']
 
         self.PLUGIN_DOMAIN = re.match(
             self.__pattern__,

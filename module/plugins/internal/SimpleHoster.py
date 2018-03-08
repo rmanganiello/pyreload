@@ -6,6 +6,7 @@ import re
 
 from module.network.HTTPRequest import BadHeader
 from module.network.RequestFactory import getURL as get_url
+from module.singletons import get_plugin_manager
 
 from .Hoster import Hoster
 from .misc import encode, parse_name, parse_size, parse_time, replace_patterns
@@ -228,7 +229,7 @@ class SimpleHoster(Hoster):
                 self.LINK_PREMIUM_PATTERN = self.LINK_PATTERN
 
         if self.LEECH_HOSTER:
-            pattern = self.pyload.pluginManager.hosterPlugins.get(self.classname)[
+            pattern = get_plugin_manager().hosterPlugins.get(self.classname)[
                 'pattern']
             if self.__pattern__ != pattern and re.match(
                     self.__pattern__, self.pyfile.url) is None:

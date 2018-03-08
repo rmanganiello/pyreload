@@ -2,6 +2,8 @@
 
 import re
 
+from module.singletons import get_plugin_manager
+
 from .Plugin import Fail
 from .SimpleHoster import SimpleHoster
 
@@ -9,7 +11,7 @@ from .SimpleHoster import SimpleHoster
 class MultiHoster(SimpleHoster):
     __name__ = "MultiHoster"
     __type__ = "hoster"
-    __version__ = "0.67"
+    __version__ = "0.68"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -31,7 +33,7 @@ class MultiHoster(SimpleHoster):
     LEECH_HOSTER = False
 
     def init(self):
-        self.PLUGIN_NAME = self.pyload.pluginManager.hosterPlugins.get(self.classname)['name']
+        self.PLUGIN_NAME = get_plugin_manager().hosterPlugins.get(self.classname)['name']
 
     def _log(self, level, plugintype, pluginname, messages):
         messages = (self.PLUGIN_NAME,) + messages
@@ -45,7 +47,7 @@ class MultiHoster(SimpleHoster):
 
     #@TODO: Recheck in 0.4.10
     def setup_base(self):
-        klass = self.pyload.pluginManager.loadClass("hoster", self.classname)
+        klass = get_plugin_manager().loadClass("hoster", self.classname)
         self.get_info = klass.get_info
 
         SimpleHoster.setup_base(self)
@@ -64,7 +66,7 @@ class MultiHoster(SimpleHoster):
             SimpleHoster._process(self, thread)
 
         except Fail as e:
-            hdict = self.pyload.pluginManager.hosterPlugins.get(self.pyfile.pluginname, {})
+            hdict = plugin_manager.get(self.pyfile.pluginname, {})
             if self.config.get('revert_failed', True) and hdict.get('new_module'):
                 tmp_module = hdict.pop('new_module', None)
                 tmp_name = hdict.pop('new_name', None)

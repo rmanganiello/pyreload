@@ -28,6 +28,7 @@ from module.PyFile import PyFile
 from module.PyPackage import PyPackage
 from module.singletons import (
     get_hook_manager,
+    get_plugin_manager,
     get_pull_manager,
     get_thread_manager,
 )
@@ -124,7 +125,7 @@ class FileHandler:
 
         get_hook_manager().dispatchEvent("linksAdded", urls, package)
 
-        data = self.core.pluginManager.parseUrls(urls)
+        data = get_plugin_manager().parseUrls(urls)
 
         self.db.addLinks(data, package)
         get_thread_manager().createInfoThread(data, package)
@@ -341,7 +342,9 @@ class FileHandler:
         if "decrypt" in self.jobCache:
             return None
 
-        plugins = self.core.pluginManager.crypterPlugins.keys() + self.core.pluginManager.containerPlugins.keys()
+        plugin_manager = get_plugin_manager()
+
+        plugins = plugin_manager.crypterPlugins.keys() + plugin_manager.containerPlugins.keys()
         plugins = str(tuple(plugins))
 
         jobs = self.db.getPluginJob(plugins)
