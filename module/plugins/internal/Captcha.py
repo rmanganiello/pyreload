@@ -5,6 +5,8 @@ from __future__ import with_statement
 import os
 import time
 
+import six
+
 from module.singletons import (
     get_captcha_manager,
     get_plugin_manager,
@@ -80,7 +82,7 @@ class Captcha(Plugin):
         if ocr:
             self.log_info(_("Using OCR to decrypt captcha..."))
 
-            if isinstance(ocr, basestring):
+            if isinstance(ocr, six.string_types):
                 _OCR = get_plugin_manager().loadClass(
                     "captcha", ocr)  #: Rename `captcha` to `ocr` in 0.4.10
                 result = _OCR(self.pyfile).recognize(img_f.name)

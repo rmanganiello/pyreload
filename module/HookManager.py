@@ -78,12 +78,12 @@ class HookManager:
         self.log = self.core.log
         self.plugins = []
         self.pluginMap = {}
-        self.methods = {} #dict of names and list of methods usable by rpc
+        self.methods = {}  # dict of names and list of methods usable by rpc
 
-        self.events = {} # contains events
+        self.events = {}  # contains events
 
-        #registering callback for config event
-        self.config.pluginCB = MethodType(self.dispatchEvent, "pluginConfigChanged", basestring)
+        # Registering callback for config event
+        self.config.pluginCB = MethodType(self.dispatchEvent, "pluginConfigChanged", six.string_types)
 
         self.addEvent("pluginConfigChanged", self.manageHooks)
 
@@ -286,16 +286,20 @@ class HookManager:
         info = {}
         for name, plugin in six.iteritems(self.pluginMap):
             if plugin.info:
-                #copy and convert so str
-                info[name] = dict([(x, str(y) if not isinstance(y, basestring) else y) for x, y in six.iteritems(plugin.info)])
+                # copy and convert to str
+                info[name] = {
+                    x: str(y) if not isinstance(y, six.string_types) else y
+                    for x, y in six.iteritems(plugin.info)
+                }
         return info
-
 
     def getInfo(self, plugin):
         info = {}
         if plugin in self.pluginMap and self.pluginMap[plugin].info:
-            info = dict([(x, str(y) if not isinstance(y, basestring) else y)
-                for x, y in six.iteritems(self.pluginMap[plugin].info)])
+            info = {
+                x: str(y) if not isinstance(y, six.string_types) else y
+                for x, y in six.iteritems(self.pluginMap[plugin].info)
+            }
 
         return info
 

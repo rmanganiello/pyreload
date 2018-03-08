@@ -20,6 +20,7 @@ import traceback
 import xml.sax.saxutils  # @TODO: Remove in 0.4.10
 import zlib
 
+import six
 from six.moves.urllib.parse import (
     quote as url_quote,
     unquote as url_unquote,
@@ -823,7 +824,7 @@ def parse_html_form(attr_str, html, input_names={}):
             #: Check input attributes
             for key, value in input_names.items():
                 if key in inputs:
-                    if isinstance(value, basestring) and inputs[key] == value:
+                    if isinstance(value, six.string_types) and inputs[key] == value:
                         continue
                     elif isinstance(value, tuple) and inputs[key] in value:
                         continue

@@ -5,6 +5,7 @@ from __future__ import with_statement
 import os
 import re
 
+import six
 from six.moves import builtins
 
 import mimetypes
@@ -359,7 +360,7 @@ class Hoster(Base):
         #: Produces encoding errors, better log to other file in the future?
         # self.log_debug("Content: %s" % content)
         for name, rule in rules.items():
-            if isinstance(rule, basestring):
+            if isinstance(rule, six.string_types):
                 if rule in content:
                     return name
 

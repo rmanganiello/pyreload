@@ -4,6 +4,8 @@ from __future__ import with_statement
 
 import re
 
+import six
+
 from module.network.HTTPRequest import BadHeader
 from module.network.RequestFactory import getURL as get_url
 from module.singletons import get_plugin_manager
@@ -192,7 +194,7 @@ class SimpleHoster(Hoster):
                                     cls.SIZE_REPLACEMENTS)
             info['size'] = parse_size(size)
 
-        elif isinstance(info['size'], basestring):
+        elif isinstance(info['size'], six.string_types):
             unit = info['units'] if 'units' in info else ""
             info['size'] = parse_size(info['size'], unit)
 

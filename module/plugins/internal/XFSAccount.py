@@ -3,6 +3,7 @@
 import re
 import time
 
+import six
 from six.moves.urllib.parse import urljoin
 
 from .misc import parse_html_form, parse_time, set_cookie
@@ -123,7 +124,7 @@ class XFSAccount(Account):
                     if 'U' in traffic:
                         unit = traffic['U']
 
-                    elif isinstance(self.TRAFFIC_LEFT_UNIT, basestring):
+                    elif isinstance(self.TRAFFIC_LEFT_UNIT, six.string_types):
                         unit = self.TRAFFIC_LEFT_UNIT
 
                     else:
@@ -154,7 +155,7 @@ class XFSAccount(Account):
                     else:
                         if 'U' in traffic:
                             unit = traffic['U']
-                        elif isinstance(self.LEECH_TRAFFIC_UNIT, basestring):
+                        elif isinstance(self.LEECH_TRAFFIC_UNIT, six.string_types):
                             unit = self.LEECH_TRAFFIC_UNIT
                         else:
                             unit = ""

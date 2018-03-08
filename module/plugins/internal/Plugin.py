@@ -6,8 +6,9 @@ import inspect
 import os
 
 import pycurl
-from module.network.RequestFactory import getRequest as get_request
+import six
 
+from module.network.RequestFactory import getRequest as get_request
 from module.plugins.Plugin import SkipDownload as Skip
 # @TODO: Remove in 0.4.10
 from module.plugins.Plugin import Abort, Fail, Reconnect, Retry
@@ -200,7 +201,7 @@ class Plugin(object):
             (req.http if hasattr(req, "http") else req).c.setopt(pycurl.MAXREDIRS, redirect)
 
         #@TODO: Move to network in 0.4.10
-        if isinstance(ref, basestring):
+        if isinstance(ref, six.string_types):
             req.lastURL = ref
 
         html = req.load(
@@ -234,7 +235,7 @@ class Plugin(object):
             html = html_unescape(html)
 
         #@TODO: Move to network in 0.4.10
-        if isinstance(decode, basestring):
+        if isinstance(decode, six.string_types):
             html = _decode(html, decode)
 
         self.last_html = html

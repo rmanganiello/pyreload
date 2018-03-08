@@ -82,18 +82,26 @@ class Base(object):
         #: core config
         self.config = core.config
 
-    #log functions
+    # Log functions
     def logInfo(self, *args):
-        self.log.info("%s: %s" % (self.__name__, " | ".join([a if isinstance(a, basestring) else str(a) for a in args])))
+        self.log.info("%s: %s" % (self.__name__, " | ".join(
+            [a if isinstance(a, six.string_types) else str(a) for a in args]
+        )))
 
     def logWarning(self, *args):
-        self.log.warning("%s: %s" % (self.__name__, " | ".join([a if isinstance(a, basestring) else str(a) for a in args])))
+        self.log.warning("%s: %s" % (self.__name__, " | ".join(
+            [a if isinstance(a, six.string_types) else str(a) for a in args]
+        )))
 
     def logError(self, *args):
-        self.log.error("%s: %s" % (self.__name__, " | ".join([a if isinstance(a, basestring) else str(a) for a in args])))
+        self.log.error("%s: %s" % (self.__name__, " | ".join(
+            [a if isinstance(a, six.string_types) else str(a) for a in args]
+        )))
 
     def logDebug(self, *args):
-        self.log.debug("%s: %s" % (self.__name__, " | ".join([a if isinstance(a, basestring) else str(a) for a in args])))
+        self.log.debug("%s: %s" % (self.__name__, " | ".join(
+            [a if isinstance(a, six.string_types) else str(a) for a in args]
+        )))
 
 
     def setConf(self, option, value):

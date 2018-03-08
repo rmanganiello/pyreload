@@ -3,6 +3,8 @@
 import re
 import time
 
+import six
+
 from module.singletons import (
     get_hook_manager,
     get_plugin_manager,
@@ -203,9 +205,11 @@ class MultiAccount(Account):
             pattern = r'.*(?P<DOMAIN>%s).*' % "|".join(x.replace('.', '\.')
                                                        for x in plugins)
 
-            if hasattr(self.pluginclass, "__pattern__") and \
-                    isinstance(self.pluginclass.__pattern__, basestring) and \
-                            "://" in self.pluginclass.__pattern__:
+            if (
+                hasattr(self.pluginclass, "__pattern__") and
+                isinstance(self.pluginclass.__pattern__, six.string_types) and
+                "://" in self.pluginclass.__pattern__
+            ):
                 pattern = r'%s|%s' % (self.pluginclass.__pattern__, pattern)
 
             self.log_debug("Pattern: %s" % pattern)

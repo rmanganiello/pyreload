@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import six
+
 from ..internal.misc import json
 from ..internal.MultiAccount import MultiAccount
 
@@ -51,7 +53,10 @@ class LinksnappyCom(MultiAccount):
             else:
                 validuntil = float(validuntil)
 
-            if 'trafficleft' not in json_data['return'] or isinstance(json_data['return']['trafficleft'], basestring):
+            if (
+                'trafficleft' not in json_data['return'] or
+                isinstance(json_data['return']['trafficleft'], six.string_types)
+            ):
                 trafficleft = -1
 
             else:

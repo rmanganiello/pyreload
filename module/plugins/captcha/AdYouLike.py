@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 
 import re
 
+import six
+
 from ..internal.CaptchaService import CaptchaService
 from ..internal.misc import json
 
@@ -70,10 +72,10 @@ class AdYouLike(CaptchaService):
         #: 'big':{'y':0,'x':0,'w':300,'h':250},'hover':{'y':440,'x':0,'w':300,'h':60}},
         #: 'tid':"SqwuAdxT1EZoi4B5q0T63LN2AkiCJBg5"})
 
-        if isinstance(server, basestring):
+        if isinstance(server, six.string_types):
             server = json.loads(server)
 
-        if isinstance(challenge, basestring):
+        if isinstance(challenge, six.string_types):
             challenge = json.loads(challenge)
 
         try:

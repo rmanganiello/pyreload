@@ -76,15 +76,10 @@ number of requests and their responses, so we run a nested loop:
                     return
 """
 
-
-import base64
 import os
 import re
-quoted_slash = re.compile("(?i)%2F")
 import rfc822
 import socket
-
-_fileobject_uses_str_type = isinstance(socket._fileobject(None)._rbuf, basestring)
 
 import sys
 import threading
@@ -92,6 +87,7 @@ import time
 import traceback
 import warnings
 
+import six
 from six.moves import (
     cStringIO,
     queue,
@@ -108,6 +104,10 @@ except ImportError:
     SSL = None
 
 import errno
+
+quoted_slash = re.compile("(?i)%2F")
+_fileobject_uses_str_type = isinstance(socket._fileobject(None)._rbuf, six.string_types)
+
 
 def plat_specific_errors(*errnames):
     """Return error numbers for all errors in errnames on this platform.
@@ -1559,7 +1559,7 @@ class CherryPyWSGIServer(object):
         self._interrupt = None
 
         # Select the appropriate socket
-        if isinstance(self.bind_addr, basestring):
+        if isinstance(self.bind_addr, six.string_types):
             # AF_UNIX socket
 
             # So we can reuse the socket...
@@ -1634,7 +1634,7 @@ class CherryPyWSGIServer(object):
 
             # If listening on the IPV6 any address ('::' = IN6ADDR_ANY),
             # activate dual-stack. See http://www.cherrypy.org/ticket/871.
-            if (not isinstance(self.bind_addr, basestring)
+            if (not isinstance(self.bind_addr, six.string_types)
                 and self.bind_addr[0] == '::' and family == socket.AF_INET6):
                 try:
                     self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
@@ -1666,7 +1666,7 @@ class CherryPyWSGIServer(object):
             environ["ACTUAL_SERVER_PROTOCOL"] = self.protocol
             environ["SERVER_NAME"] = self.server_name
 
-            if isinstance(self.bind_addr, basestring):
+            if isinstance(self.bind_addr, six.string_types):
                 # AF_UNIX. This isn't really allowed by WSGI, which doesn't
                 # address unix domain sockets. But it's better than nothing.
                 environ["SERVER_PORT"] = ""
@@ -1717,7 +1717,7 @@ class CherryPyWSGIServer(object):
 
         sock = getattr(self, "socket", None)
         if sock:
-            if not isinstance(self.bind_addr, basestring):
+            if not isinstance(self.bind_addr, six.string_types):
                 # Touch our own socket to make accept() return immediately.
                 try:
                     host, port = sock.getsockname()[:2]

@@ -124,7 +124,7 @@ class Api(Iface):
                 item = ConfigItem()
                 item.name = key
                 item.description = data["desc"]
-                item.value = str(data["value"]) if not isinstance(data["value"], basestring) else data["value"]
+                item.value = str(data["value"]) if not isinstance(data["value"], six.string_types) else data["value"]
                 item.type = data["type"]
                 items.append(item)
             section.items = items
@@ -147,7 +147,7 @@ class Api(Iface):
         else:
             value = self.core.config.getPlugin(category, option)
 
-        return str(value) if not isinstance(value, basestring) else value
+        return str(value) if not isinstance(value, six.string_types) else value
 
     @permission(PERMS.SETTINGS)
     def setConfigValue(self, category, option, value, section="core"):

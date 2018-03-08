@@ -8,6 +8,7 @@ import time
 import re
 from os.path import join
 
+import six
 from six.moves.html_entities import name2codepoint
 
 from module.common.compatibility import maketrans
@@ -140,7 +141,7 @@ def parseFileSize(string, unit=None): #returns bytes
         else:
             return 0
     else:
-        if isinstance(string, basestring):
+        if isinstance(string, six.string_types):
             traffic = float(string.replace(",", "."))
         else:
             traffic = string
