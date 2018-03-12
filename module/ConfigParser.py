@@ -243,7 +243,7 @@ class ConfigParser:
                             value += "\t\t" + str(x) + ",\n"
                         value += "\t\t]\n"
                     else:
-                        if type(data["value"]) in (str, unicode):
+                        if isinstance(data["value"], six.string_types):
                             value = data["value"] + "\n"
                         else:
                             value = str(data["value"]) + "\n"
@@ -254,7 +254,7 @@ class ConfigParser:
 
     def cast(self, typ, value):
         """cast value to given format"""
-        if type(value) not in (str, unicode):
+        if isinstance(value, six.string_types):
             return value
 
         elif typ == "int":
@@ -290,7 +290,7 @@ class ConfigParser:
         """get value"""
         val = self.config[section][option]["value"]
         try:
-            if type(val) in (str, unicode):
+            if isinstance(val, six.string_types):
                 return val.decode("utf8")
             else:
                 return val
@@ -309,7 +309,7 @@ class ConfigParser:
         """gets a value for a plugin"""
         val = self.plugin[plugin][option]["value"]
         try:
-            if type(val) in (str, unicode):
+            if isinstance(val, six.string_types):
                 return val.decode("utf8")
             else:
                 return val
