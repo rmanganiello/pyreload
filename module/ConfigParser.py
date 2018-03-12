@@ -254,7 +254,7 @@ class ConfigParser:
 
     def cast(self, typ, value):
         """cast value to given format"""
-        if isinstance(value, six.string_types):
+        if not isinstance(value, six.string_types):
             return value
 
         elif typ == "int":
