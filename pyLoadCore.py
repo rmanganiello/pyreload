@@ -350,7 +350,11 @@ class Core(object):
                 except Exception as e:
                     print(_("Failed changing user: %s") % e)
 
-        self.check_file(self.config['log']['log_folder'], _("folder for logs"), True)
+        self.check_file(
+            self.config['log']['log_folder'],
+            _("folder for logs"),
+            is_folder=True,
+        )
 
         if self.debug:
             self.init_logger(logging.DEBUG) # logging level
@@ -376,12 +380,16 @@ class Core(object):
         self.check_install("Crypto", _("pycrypto to decode container files"))
         #img = self.check_install("Image", _("Python Image Libary (PIL) for captcha reading"))
         #self.check_install("pycurl", _("pycurl to download any files"), True, True)
-        self.check_file("tmp", _("folder for temporary files"), True)
+        self.check_file("tmp", _("folder for temporary files"), is_folder=True)
         #tesser = self.check_install("tesseract", _("tesseract for captcha reading"), False) if os.name != "nt" else True
 
         self.captcha = True # checks seems to fail, althoug tesseract is available
 
-        self.check_file(self.config['general']['download_folder'], _("folder for downloads"), True)
+        self.check_file(
+            self.config['general']['download_folder'],
+            _("folder for downloads"),
+            is_folder=True,
+        )
 
         if self.config['ssl']['activated']:
             self.check_install("OpenSSL", _("OpenSSL for secure connection"))
@@ -522,12 +530,17 @@ class Core(object):
 
         if self.config['log']['file_log']:
             if self.config['log']['log_rotate']:
-                file_handler = logging.handlers.RotatingFileHandler(join(self.config['log']['log_folder'], 'log.txt'),
-                                                                    maxBytes=self.config['log']['log_size'] * 1024,
-                                                                    backupCount=int(self.config['log']['log_count']),
-                                                                    encoding="utf8")
+                file_handler = logging.handlers.RotatingFileHandler(
+                    join(self.config['log']['log_folder'], 'log.txt'),
+                    maxBytes=self.config['log']['log_size'] * 1024,
+                    backupCount=int(self.config['log']['log_count']),
+                    encoding="utf8",
+                )
             else:
-                file_handler = logging.FileHandler(join(self.config['log']['log_folder'], 'log.txt'), encoding="utf8")
+                file_handler = logging.FileHandler(
+                    join(self.config['log']['log_folder'], 'log.txt'),
+                    encoding="utf8",
+                )
 
             file_handler.setFormatter(frm)
             self.log.addHandler(file_handler)
@@ -557,42 +570,26 @@ class Core(object):
 
             return False
 
-    def check_file(self, check_names, description="", folder=False, empty=True, essential=False, quiet=False):
-        """check wether needed files exists"""
-        tmp_names = []
-        if not type(check_names) == list:
-            tmp_names.append(check_names)
-        else:
-            tmp_names.extend(check_names)
+    def check_file(self, check_name, description, is_folder=False):
+        """Check whether needed files exist."""
         file_created = True
         file_exists = True
-        for tmp_name in tmp_names:
-            if not exists(tmp_name):
-                file_exists = False
-                if empty:
-                    try:
-                        if folder:
-                            tmp_name = tmp_name.replace("/", sep)
-                            makedirs(tmp_name)
-                        else:
-                            open(tmp_name, "w")
-                    except:
-                        file_created = False
-                else:
-                    file_created = False
 
-            if not file_exists and not quiet:
-                if file_created:
-                #self.log.info( _("%s created") % description )
-                    pass
+        if not exists(check_name):
+            file_exists = False
+
+            try:
+                if is_folder:
+                    check_name = check_name.replace("/", sep)
+                    makedirs(check_name)
                 else:
-                    if not empty:
-                        self.log.warning(
-                            _("could not find %(desc)s: %(name)s") % {"desc": description, "name": tmp_name})
-                    else:
-                        print(_("could not create %(desc)s: %(name)s") % {"desc": description, "name": tmp_name})
-                    if essential:
-                        exit()
+                    open(check_name, "w")
+            except Exception:
+                file_created = False
+
+        if not file_exists:
+            if not file_created:
+                print(_("could not create %(desc)s: %(name)s") % {"desc": description, "name": check_name})
 
     def isClientConnected(self):
         return (self.lastClientConnected + 30) > time()
