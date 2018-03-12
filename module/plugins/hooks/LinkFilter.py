@@ -2,6 +2,7 @@ from module.singletons import get_plugin_manager
 
 from ..internal.Addon import Addon
 
+
 class LinkFilter(Addon):
     __name__ = "LinkFilter"
     __type__ = "hook"
@@ -44,6 +45,7 @@ class LinkFilter(Addon):
                 any(link.find(_filter) != -1 for _filter in filters) or
                 not self.is_hoster_link(link) and
                 plugindict[link] != "BasePlugin"
+            )
         ]
         linkcount -= len(links)
 
