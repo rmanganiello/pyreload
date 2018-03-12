@@ -24,7 +24,7 @@ from os.path import join
 from time import sleep, time, strftime, gmtime
 from traceback import print_exc, format_exc
 from pprint import pformat
-from sys import exc_info, exc_clear
+import sys
 from copy import copy
 from types import MethodType
 
@@ -97,7 +97,7 @@ class PluginThread(Thread):
         dump = "pyLoad %s Debug Report of %s %s \n\nTRACEBACK:\n %s \n\nFRAMESTACK:\n" % (
             self.m.core.api.getServerVersion(), pyfile.pluginname, pyfile.plugin.__version__, format_exc())
 
-        tb = exc_info()[2]
+        tb = sys.exc_info()[2]
         stack = []
         while tb:
             stack.append(tb.tb_frame)
@@ -323,7 +323,10 @@ class DownloadThread(PluginThread):
             finally:
                 self.m.core.files.save()
                 pyfile.checkIfProcessed()
-                exc_clear()
+                try:
+                    sys.exc_clear()
+                except Exception:
+                    pass
 
 
             #pyfile.plugin.req.clean()
@@ -416,7 +419,10 @@ class DecrypterThread(PluginThread):
                 self.active = False
                 self.m.core.files.save()
                 self.m.localThreads.remove(self)
-                exc_clear()
+                try:
+                    sys.exc_clear()
+                except Exception:
+                    pass
 
         # get_hook_manager().downloadFinished(pyfile)
 
