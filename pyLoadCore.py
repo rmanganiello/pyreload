@@ -53,7 +53,10 @@ from module.singletons import (
     set_request_factory,
     set_thread_manager,
 )
-from module.util.encoding import smart_text
+from module.util.encoding import (
+    smart_bytes,
+    smart_text,
+)
 from module.plugins.AccountManager import AccountManager
 from module.CaptchaManager import CaptchaManager
 from module.ConfigParser import ConfigParser
@@ -211,7 +214,7 @@ class Core(object):
         self.deletePidFile()
         pid = os.getpid()
         f = open(self.pidfile, "wb")
-        f.write(str(pid))
+        f.write(smart_bytes(pid))
         f.close()
 
     def deletePidFile(self):

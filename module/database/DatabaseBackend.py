@@ -26,6 +26,7 @@ from traceback import print_exc
 
 from six.moves import queue
 
+from module.util.encoding import smart_bytes
 from module.utils import chmod
 
 try:
@@ -162,7 +163,7 @@ class DatabaseBackend(Thread):
         """ check db version and delete it if needed"""
         if not exists("files.version"):
             f = open("files.version", "wb")
-            f.write(str(DB_VERSION))
+            f.write(smart_bytes(DB_VERSION))
             f.close()
             return
 
@@ -178,7 +179,7 @@ class DatabaseBackend(Thread):
                 remove("files.version")
                 move("files.db", "files.backup.db")
             f = open("files.version", "wb")
-            f.write(str(DB_VERSION))
+            f.write(smart_bytes(DB_VERSION))
             f.close()
             return v
 
