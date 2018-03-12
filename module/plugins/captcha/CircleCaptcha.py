@@ -8,7 +8,10 @@ import math
 import operator
 import sys
 
-from six.moves import cStringIO
+from six.moves import (
+    cStringIO,
+    input,
+)
 from six.moves.urllib.request import urlopen
 
 import Image
@@ -34,7 +37,7 @@ class ImageSequence:
 class CircleCaptcha(OCR):
     __name__ = "CircleCaptcha"
     __type__ = "ocr"
-    __version__ = "1.12"
+    __version__ = "1.13"
     __status__ = "testing"
 
     __description__ = """Circle captcha ocr plugin"""
@@ -87,7 +90,7 @@ class CircleCaptcha(OCR):
                     if howmany <= cleandeep and howmany > 0:
                         #: Clean pixel
                         for ic in range(1, cleandeep + 1):
-                            #: raw_input('2'+str(ic))
+                            #: input('2'+str(ic))
                             if y - ic > 0:
                                 pix[x, y - ic] = self.BACKGROUND
                     howmany = 0
@@ -462,7 +465,7 @@ class CircleCaptcha(OCR):
         if maxX - minX >= c[2] * 2 * 0.75:
             return -1
         if maxY - minY >= c[2] * 2 * 0.75:
-            #: raw_input('tro')
+            #: input('tro')
             return -1
         """
         #: Lenght of missing cannot be less 10% of diameter
@@ -537,7 +540,7 @@ class CircleCaptcha(OCR):
                 # if iDebugSaveFile < 7:
                 # continue
                 im.save("output" + str(iDebugSaveFile) + ".png", "png")
-                raw_input('frame: ' + str(im))
+                input('frame: ' + str(im))
 
             pix = im.load()
 
@@ -680,7 +683,7 @@ class CircleCaptcha(OCR):
                                     imdebug.save("debug.png", "png")
 
                                     if _pause != "":
-                                        valore = raw_input(
+                                        valore = input(
                                             'Found ' +
                                             _pause +
                                             ' CIRCLE circle press [Enter] = continue / [q] for Quit: ' +

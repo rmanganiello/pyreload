@@ -31,7 +31,10 @@ from time import sleep
 from traceback import print_exc
 
 import six
-from six.moves import configparser
+from six.moves import (
+    configparser,
+    input,
+)
 
 from codecs import getwriter
 
@@ -91,7 +94,7 @@ class Cli:
     def start(self):
         """ main loop. handle input """
         while True:
-            #inp = raw_input()
+            #inp = input()
             inp = self.getch.impl()
             if ord(inp) == 3:
                 os.system("clear")
@@ -553,9 +556,9 @@ def main():
             config["port"] = False
 
         if not client:
-            if not config["addr"]: config["addr"] = raw_input(_("Address: "))
-            if not config["port"]: config["port"] = raw_input(_("Port: "))
-            if not username: username = raw_input(_("Username: "))
+            if not config["addr"]: config["addr"] = input(_("Address: "))
+            if not config["port"]: config["port"] = input(_("Port: "))
+            if not username: username = input(_("Username: "))
             if not password:
                 from getpass import getpass
 

@@ -18,6 +18,7 @@ from .Protocol import Protocol
 
 from time import time
 
+from six.moves import input
 import xmlrpclib
 
 def bench(f, *args, **kwargs):
@@ -31,7 +32,7 @@ def bench(f, *args, **kwargs):
     return ret
 
 from getpass import getpass
-user = raw_input("user ")
+user = input("user ")
 passwd = getpass("password ")
 
 server_url = "http%s://%s:%s@%s:%s/" % (

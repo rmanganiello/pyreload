@@ -27,6 +27,9 @@ import sys
 from sys import exit
 from module.utils import get_console_encoding
 
+from six.moves import input
+
+
 class Setup():
     """
     pyLoads initial setup configuration assistent
@@ -77,7 +80,7 @@ class Setup():
         print(_("to abort and don't let him start with pyLoadCore automatically anymore."))
         print("")
         print(_("When you are ready for system check, hit enter."))
-        raw_input()
+        input()
 
         basic, ssl, captcha, gui, web, js = self.system_check()
         print("")
@@ -86,10 +89,10 @@ class Setup():
             print(_("You need pycurl, sqlite and python 2.5, 2.6 or 2.7 to run pyLoad."))
             print(_("Please correct this and re-run pyLoad."))
             print(_("Setup will now close."))
-            raw_input()
+            input()
             return False
 
-        raw_input(_("System check finished, hit enter to see your status report."))
+        input(_("System check finished, hit enter to see your status report."))
         print("")
         print(_("## Status ##"))
         print("")
@@ -180,7 +183,7 @@ class Setup():
         print("")
         print(_("Setup finished successfully."))
         print(_("Hit enter to exit and restart pyLoad"))
-        raw_input()
+        input()
         return True
 
     def system_check(self):
@@ -368,7 +371,7 @@ class Setup():
                 print(_("2 - List users"))
                 print(_("3 - Remove user"))
                 print(_("4 - Quit"))
-                action = raw_input("[1]/2/3/4: ")
+                action = input("[1]/2/3/4: ")
                 if not action in ("1", "2", "3", "4"):
                     continue
                 elif action == "1":
@@ -417,7 +420,7 @@ class Setup():
             f.close()
             print(_("Configpath changed, setup will now close, please restart to go on."))
             print(_("Press Enter to exit."))
-            raw_input()
+            input()
             exit()
         except Exception as e:
             print(_("Setting config path failed: %s") % str(e))
@@ -484,35 +487,34 @@ class Setup():
 
         while True:
             try:
-                input = raw_input(qst + " %s: " % info)
+                input_value = input(qst + " %s: " % info)
             except KeyboardInterrupt:
                 print("\nSetup interrupted")
                 exit()
 
-            input = input.decode(self.stdin_encoding)
+            input_value = input_value.decode(self.stdin_encoding)
 
-            if input.strip() == "":
-                input = default
+            if input_value.strip() == "":
+                input_value = default
 
             if bool:
                 # yes, true,t are inputs for booleans with value true
-                if input.lower().strip() in [self.yes, _("yes"), _("true"), _("t"), "yes"]:
+                if input_value.lower().strip() in [self.yes, _("yes"), _("true"), _("t"), "yes"]:
                     return True
                 # no, false,f are inputs for booleans with value false
-                elif input.lower().strip() in [self.no, _("no"), _("false"), _("f"), "no"]:
+                elif input_value.lower().strip() in [self.no, _("no"), _("false"), _("f"), "no"]:
                     return False
                 else:
                     print(_("Invalid Input"))
                     continue
 
             if not answers:
-                return input
+                return input_value
 
-            else:
-                if input in answers:
-                    return input
-                else:
-                    print(_("Invalid Input"))
+            if input_value in answers:
+                return input_value
+
+            print(_("Invalid Input"))
 
 
 if __name__ == "__main__":
