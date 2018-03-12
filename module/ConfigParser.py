@@ -10,6 +10,7 @@ from shutil import copy
 from traceback import print_exc
 
 import six
+from six.moves import range
 
 from .utils import chmod
 
@@ -20,6 +21,7 @@ IGNORE = (
     )
 
 CONF_VERSION = 1
+
 
 class ConfigParser:
     """
@@ -58,45 +60,49 @@ class ConfigParser:
 
         self.deleteOldPlugins()
 
-
-    def checkVersion(self, n=0):
+    def checkVersion(self):
         """determines if config need to be copied"""
-        try:
-            if not exists("pyload.conf"):
-                copy(join(pypath, "module", "config", "default.conf"), "pyload.conf")
-                chmod("pyload.conf", 0o600)
+        MAX_ITERATIONS = 4
 
-            if not exists("plugin.conf"):
-                f = open("plugin.conf", "wb")
-                f.write("version: " + str(CONF_VERSION))
+        for iteration in range(1, MAX_ITERATIONS + 1):
+            try:
+                if not exists("pyload.conf"):
+                    copy(join(pypath, "module", "config", "default.conf"), "pyload.conf")
+                    chmod("pyload.conf", 0o600)
+
+                if not exists("plugin.conf"):
+                    f = open("plugin.conf", "wb")
+                    f.write(b"version: {0}".format(CONF_VERSION))
+                    f.close()
+                    chmod("plugin.conf", 0o600)
+
+                f = open("pyload.conf", "rb")
+                v = f.readline()
                 f.close()
-                chmod("plugin.conf", 0o600)
+                v = v[v.find(b":") + 1:].strip()
 
-            f = open("pyload.conf", "rb")
-            v = f.readline()
-            f.close()
-            v = v[v.find(":") + 1:].strip()
+                if not v or int(v) < CONF_VERSION:
+                    copy(join(pypath, "module", "config", "default.conf"), "pyload.conf")
+                    print("Old version of config was replaced")
 
-            if not v or int(v) < CONF_VERSION:
-                copy(join(pypath, "module", "config", "default.conf"), "pyload.conf")
-                print("Old version of config was replaced")
-
-            f = open("plugin.conf", "rb")
-            v = f.readline()
-            f.close()
-            v = v[v.find(":") + 1:].strip()
-
-            if not v or int(v) < CONF_VERSION:
-                f = open("plugin.conf", "wb")
-                f.write("version: " + str(CONF_VERSION))
+                f = open("plugin.conf", "rb")
+                v = f.readline()
                 f.close()
-                print("Old version of plugin-config replaced")
-        except:
-            if n < 3:
-                sleep(0.3)
-                self.checkVersion(n + 1)
-            else:
-                raise
+                v = v[v.find(b":") + 1:].strip()
+
+                if not v or int(v) < CONF_VERSION:
+                    f = open("plugin.conf", "wb")
+                    f.write(b"version: {0}".format(CONF_VERSION))
+                    f.close()
+                    print("Old version of plugin-config replaced")
+
+                return
+
+            except Exception:
+                if iteration < MAX_ITERATIONS:
+                    sleep(0.3)
+                else:
+                    raise
 
     def readConfig(self):
         """reads the config file"""
