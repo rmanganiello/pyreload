@@ -21,6 +21,7 @@ from threading import Event
 from os import remove
 from os.path import exists
 from shutil import move
+import sqlite3
 
 from traceback import print_exc
 
@@ -29,10 +30,6 @@ from six.moves import queue
 from module.util.encoding import smart_bytes
 from module.utils import chmod
 
-try:
-    from pysqlite2 import dbapi2 as sqlite3
-except:
-    import sqlite3
 
 DB_VERSION = 4
 
@@ -131,7 +128,10 @@ class DatabaseBackend(Thread):
         """main loop, which executes commands"""
         convert = self._checkVersion() #returns None or current version
 
-        self.conn = sqlite3.connect("files.db")
+        # Explicitly clear isolation level, so open transactions are committed
+        # before DDL transactions.
+        # See: https://github.com/ghaering/pysqlite/issues/109
+        self.conn = sqlite3.connect("files.db", isolation_level=None)
         chmod("files.db", 0o600)
 
         self.c = self.conn.cursor() #compatibility
