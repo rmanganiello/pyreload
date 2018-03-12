@@ -4,7 +4,9 @@
 
 import re
 
+import six
 from six.moves.urllib.parse import urlparse
+
 
 def matchFirst(string, *args):
     """ matches against list of regexp and returns first match"""
@@ -153,4 +155,4 @@ if __name__ == "__main__":
 
     pprint(packs)
 
-    print("Got %d urls." % sum([len(x) for x in packs.itervalues()]))
+    print("Got %d urls." % sum(len(x) for x in six.itervalues(packs)))

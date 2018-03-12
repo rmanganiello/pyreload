@@ -213,7 +213,7 @@ class HTTPRequest():
             else:
                 post = [
                     (x, y.encode('utf8') if isinstance(y, six.text_type) else y)
-                    for x, y in post.iteritems()
+                    for x, y in six.iteritems(post)
                 ]
                 self.c.setopt(pycurl.HTTPPOST, post)
         else:
