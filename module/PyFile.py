@@ -56,7 +56,7 @@ class PyFile(object):
     """
     Represents a file object at runtime
     """
-    __slots__ = ("m", "id", "url", "name", "size", "_size", "status", "pluginname", "packageid",
+    __slots__ = ("m", "id", "url", "name", "_size", "status", "pluginname", "packageid",
                  "error", "order", "lock", "plugin", "waitUntil", "active", "abort", "statusname",
                  "reconnected", "progress", "maxprogress", "pluginmodule", "pluginclass")
 
