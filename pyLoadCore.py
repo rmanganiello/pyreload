@@ -27,7 +27,7 @@ from imp import find_module
 import logging
 import logging.handlers
 import os
-from os import _exit, execl, getcwd, makedirs, remove, sep, walk, chdir, close
+from os import _exit, execl, getcwd, remove, sep, walk, chdir, close
 from os.path import exists, join
 import signal
 import subprocess
@@ -53,6 +53,7 @@ from module.singletons import (
     set_request_factory,
     set_thread_manager,
 )
+from module.util.encoding import smart_text
 from module.plugins.AccountManager import AccountManager
 from module.CaptchaManager import CaptchaManager
 from module.ConfigParser import ConfigParser
@@ -531,14 +532,14 @@ class Core(object):
         if self.config['log']['file_log']:
             if self.config['log']['log_rotate']:
                 file_handler = logging.handlers.RotatingFileHandler(
-                    join(self.config['log']['log_folder'], 'log.txt'),
+                    join(smart_text(self.config['log']['log_folder']), u'log.txt'),
                     maxBytes=self.config['log']['log_size'] * 1024,
                     backupCount=int(self.config['log']['log_count']),
                     encoding="utf8",
                 )
             else:
                 file_handler = logging.FileHandler(
-                    join(self.config['log']['log_folder'], 'log.txt'),
+                    join(smart_text(self.config['log']['log_folder']), u'log.txt'),
                     encoding="utf8",
                 )
 
@@ -575,21 +576,22 @@ class Core(object):
         file_created = True
         file_exists = True
 
+        check_name = smart_text(check_name)
+
         if not exists(check_name):
             file_exists = False
 
             try:
                 if is_folder:
-                    check_name = check_name.replace("/", sep)
-                    makedirs(check_name)
+                    check_name = check_name.replace(u'/', smart_text(sep))
+                    os.makedirs(check_name)
                 else:
                     open(check_name, "w")
             except Exception:
                 file_created = False
 
-        if not file_exists:
-            if not file_created:
-                print(_("could not create %(desc)s: %(name)s") % {"desc": description, "name": check_name})
+        if not file_exists and not file_created:
+            print(_("could not create %(desc)s: %(name)s") % {"desc": description, "name": check_name})
 
     def isClientConnected(self):
         return (self.lastClientConnected + 30) > time()
