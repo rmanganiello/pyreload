@@ -1,21 +1,27 @@
 ## {{{ http://code.activestate.com/recipes/286134/ (r3) (modified)
 import dis
 
-_const_codes = map(dis.opmap.__getitem__, [
-    'POP_TOP','ROT_TWO','ROT_THREE','ROT_FOUR','DUP_TOP',
-    'BUILD_LIST','BUILD_MAP','BUILD_TUPLE',
-    'LOAD_CONST','RETURN_VALUE','STORE_SUBSCR'
-    ])
+from module.util.encoding import smart_text
 
+
+_const_codes = {
+    dis.opmap[code]
+    for code in (
+        'POP_TOP', 'ROT_TWO', 'ROT_THREE', 'ROT_FOUR', 'DUP_TOP', 'BUILD_LIST',
+        'BUILD_MAP', 'BUILD_TUPLE', 'LOAD_CONST', 'RETURN_VALUE', 'STORE_SUBSCR',
+    )
+    if code in dis.opmap
+}
 
 _load_names = ['False', 'True', 'null', 'true', 'false']
 
 _locals = {'null': None, 'true': True, 'false': False}
 
+
 def _get_opcodes(codeobj):
     i = 0
     opcodes = []
-    s = codeobj.co_code
+    s = smart_text(codeobj.co_code)
     names = codeobj.co_names
     while i < len(s):
         code = ord(s[i])
@@ -25,6 +31,7 @@ def _get_opcodes(codeobj):
         else:
             i += 1
     return opcodes, names
+
 
 def test_expr(expr, allowed_codes):
     try:
