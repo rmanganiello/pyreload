@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from six.moves import reduce
+
 from ..internal.MultiAccount import MultiAccount
 from ..internal.misc import json
 

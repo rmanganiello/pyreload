@@ -12,7 +12,10 @@ from traceback import print_exc
 import six
 from six.moves import range
 
-from module.util.encoding import smart_bytes
+from module.util.encoding import (
+    smart_bytes,
+    smart_text,
+)
 
 from .utils import chmod
 
@@ -244,17 +247,14 @@ class ConfigParser:
                             value += "\t\t" + str(x) + ",\n"
                         value += "\t\t]\n"
                     else:
-                        if isinstance(data["value"], six.string_types):
-                            value = data["value"] + "\n"
-                        else:
-                            value = str(data["value"]) + "\n"
+                        value = '{val}\n'.format(val=smart_text(data["value"]))
 
                     f.write(smart_bytes(
-                        '\t{0} {1} : "{2}" = {3}'.format(
+                        u'\t{0} {1} : "{2}" = {3}'.format(
                             data["type"],
                             option,
                             data["desc"],
-                            smart_bytes(value),
+                            value,
                         )
                     ))
 

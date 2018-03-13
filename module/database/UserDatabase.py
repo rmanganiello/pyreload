@@ -19,8 +19,13 @@
 from hashlib import sha1
 import random
 
-from .DatabaseBackend import DatabaseBackend
-from .DatabaseBackend import style
+from six.moves import reduce
+
+from .DatabaseBackend import (
+    DatabaseBackend,
+    style,
+)
+
 
 class UserMethods():
     @style.queue

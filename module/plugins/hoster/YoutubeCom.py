@@ -9,6 +9,7 @@ import subprocess
 import time
 from xml.dom.minidom import parseString as parse_xml
 
+from six.moves import reduce
 from six.moves.urllib.parse import unquote
 
 from module.network.CookieJar import CookieJar
@@ -16,7 +17,7 @@ from module.network.HTTPRequest import HTTPRequest
 from module.singletons import get_request_factory
 
 from ..internal.Hoster import Hoster
-from ..internal.misc import exists, isexecutable, json, reduce, renice, replace_patterns, which
+from ..internal.misc import exists, isexecutable, json, renice, replace_patterns, which
 from ..internal.Plugin import Abort, Skip
 
 

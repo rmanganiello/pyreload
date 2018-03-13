@@ -35,11 +35,6 @@ from module.util.encoding import (
 )
 
 try:
-    from functools import reduce
-except ImportError:
-    reduce = reduce
-
-try:
     import send2trash
 except ImportError:
     pass

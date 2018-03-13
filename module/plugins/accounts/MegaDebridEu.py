@@ -3,7 +3,9 @@
 import pycurl
 from module.network.HTTPRequest import BadHeader
 
-from ..internal.misc import encode, json, reduce
+from six.moves import reduce
+
+from ..internal.misc import encode, json
 from ..internal.MultiAccount import MultiAccount
 
 
