@@ -19,15 +19,19 @@
 from __future__ import unicode_literals
 
 from getpass import getpass
-import module.common.pylgettext as gettext
 import os
-from subprocess import PIPE
-from subprocess import call
+from subprocess import (
+    PIPE,
+    call,
+)
 import sys
 from sys import exit
-from module.utils import get_console_encoding
 
 from six.moves import input
+
+import module.common.pylgettext as gettext
+from module.util.encoding import smart_text
+from module.utils import get_console_encoding
 
 
 class Setup():
@@ -86,7 +90,7 @@ class Setup():
         print("")
 
         if not basic:
-            print(_("You need pycurl, sqlite and python 2.5, 2.6 or 2.7 to run pyLoad."))
+            print(_("You need pycurl, sqlite and Python 2.7 or newer to run pyLoad."))
             print(_("Please correct this and re-run pyLoad."))
             print(_("Setup will now close."))
             input()
@@ -190,11 +194,8 @@ class Setup():
         """ make a systemcheck and return the results"""
         print(_("## System Check ##"))
 
-        if sys.version_info[:2] > (2, 7):
-            print(_("Your python version is too new, Please use Python 2.6/2.7"))
-            python = False
-        elif sys.version_info[:2] < (2, 5):
-            print(_("Your python version is too old, Please use at least Python 2.5"))
+        if sys.version_info[:2] < (2, 7):
+            print(_("Your Python version is too old. Please use at least Python 2.7"))
             python = False
         else:
             print(_("Python Version: OK"))
@@ -243,7 +244,8 @@ class Setup():
 
             v = jinja2.__version__
             if v and "unknown" not in v:
-                if not v.startswith("2.5") and not v.startswith("2.6"):
+                jinja2_version = tuple(int(value) for value in v.split('.'))
+                if jinja2_version < (2, 6):
                     print(_("Your installed jinja2 version %s seems too old.") % jinja2.__version__)
                     print(_("You can safely continue but if the webinterface is not working,"))
                     print(_("please upgrade or deinstall it, pyLoad includes a sufficient jinja2 libary."))
@@ -492,7 +494,7 @@ class Setup():
                 print("\nSetup interrupted")
                 exit()
 
-            input_value = input_value.decode(self.stdin_encoding)
+            input_value = smart_text(input_value, encoding=self.stdin_encoding)
 
             if input_value.strip() == "":
                 input_value = default
