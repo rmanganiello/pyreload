@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-#
-#@TODO: Move to misc directory in 0.4.10
+
+# @TODO: Move to misc directory in 0.4.10
 
 from __future__ import unicode_literals, with_statement
 
@@ -29,6 +29,10 @@ from six.moves.urllib.parse import (
 
 from module.common.compatibility import maketrans
 from module.singletons import get_hook_manager
+from module.util.encoding import (
+    smart_bytes,
+    smart_text,
+)
 
 try:
     from functools import reduce
@@ -381,20 +385,20 @@ def decode(value, encoding=None, errors='strict'):
     """
     Encoded string (default to own system encoding) -> unicode string
     """
-    if isinstance(value, str):
-        res = unicode(
-            value, encoding or get_console_encoding(
-                sys.stdout.encoding), errors)
-
-    elif isinstance(value, unicode):
+    if isinstance(value, six.binary_type):
+        res = smart_text(
+            value,
+            encoding=encoding or get_console_encoding(sys.stdout.encoding),
+            errors=errors,
+        )
+    elif isinstance(value, six.text_type):
         res = value
-
     else:
-        res = unicode(value)
+        res = smart_text(value)
 
     # Hotfix UnicodeDecodeError
     try:
-        str(res)
+        smart_bytes(res, encoding='ascii')
     except UnicodeEncodeError:
         return normalize(res)
 
@@ -409,20 +413,16 @@ def encode(value, encoding='utf-8', errors='backslashreplace'):
     """
     Unicode string -> encoded string (default to UTF-8)
     """
-    if isinstance(value, unicode):
-        res = value.encode(encoding, errors)
+    if isinstance(value, six.text_type):
+        return value.encode(encoding, errors)
 
-    elif isinstance(value, str):
+    if isinstance(value, six.binary_type):
         decoding = get_console_encoding(sys.stdin.encoding)
         if encoding == decoding:
-            res = value
-        else:
-            res = transcode(value, decoding, encoding)
+            return value
+        return transcode(value, decoding, encoding)
 
-    else:
-        res = str(value)
-
-    return res
+    return smart_bytes(value)
 
 
 def exists(path):
