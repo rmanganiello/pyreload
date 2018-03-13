@@ -75,17 +75,23 @@ def get_console_encoding(enc):
 
     return enc
 
+
 def compare_time(start, end):
-    start = map(int, start)
-    end = map(int, end)
+    start = tuple(int(value) for value in start)
+    end = tuple(int(value) for value in end)
 
-    if start == end: return True
+    if start == end:
+        return True
 
-    now = list(time.localtime()[3:5])
-    if start < now < end: return True
-    elif start > end and (now > start or now < end): return True
-    elif start < now > end < start: return True
-    else: return False
+    now = time.localtime()[3:5]
+
+    if start < now < end:
+        return True
+    elif start > end and (now > start or now < end):
+        return True
+    elif start < now > end < start:
+        return True
+    return False
 
 
 def formatSize(size):
