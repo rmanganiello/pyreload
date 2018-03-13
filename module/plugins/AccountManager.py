@@ -30,6 +30,7 @@ from module.singletons import (
     get_plugin_manager,
     get_pull_manager,
 )
+from module.util.encoding import smart_bytes
 from module.utils import chmod, lock
 
 
@@ -79,24 +80,19 @@ class AccountManager():
         """loads all accounts available"""
 
         if not exists("accounts.conf"):
-            f = open("accounts.conf", "wb")
-            f.write("version: " + str(ACC_VERSION))
-            f.close()
+            with open("accounts.conf", "wb") as f:
+                f.write(smart_bytes('version: {0}'.format(ACC_VERSION)))
 
-        f = open("accounts.conf", "rb")
-        content = f.readlines()
-        version = content[0].split(":")[1].strip() if content else ""
-        f.close()
+        with open("accounts.conf", "rb") as f:
+            content = f.readlines()
+            version = content[0].split(b":")[1].strip() if content else ""
 
         if not version or int(version) < ACC_VERSION:
             copy("accounts.conf", "accounts.backup")
-            f = open("accounts.conf", "wb")
-            f.write("version: " + str(ACC_VERSION))
-            f.close()
+            with open("accounts.conf", "wb") as f:
+                f.write(smart_bytes('version: {0}'.format(ACC_VERSION)))
             self.core.log.warning(_("Account settings deleted, due to new config format."))
             return
-
-
 
         plugin = ""
         name = ""
@@ -122,28 +118,24 @@ class AccountManager():
             elif ":" in line:
                 name, sep, pw = line.partition(":")
                 self.accounts[plugin][name] = {"password": pw, "options": {}, "valid": True}
-    #----------------------------------------------------------------------
+
     def saveAccounts(self):
         """save all account information"""
 
-        f = open("accounts.conf", "wb")
-        f.write("version: " + str(ACC_VERSION) + "\n")
+        with open("accounts.conf", "wb") as f:
+            f.write(smart_bytes('version: {0}\n'.format(ACC_VERSION)))
 
-        for plugin, accounts in six.iteritems(self.accounts):
-            f.write("\n")
-            f.write(plugin+":\n")
+            for plugin, accounts in six.iteritems(self.accounts):
+                f.write(smart_bytes('\n{0}:\n'.format(plugin)))
 
-            for name, data in six.iteritems(accounts):
-                f.write("\n\t%s:%s\n" % (name, data['password']) )
-                if data['options']:
-                    for option, values in six.iteritems(data['options']):
-                        f.write("\t@%s %s\n" % (option, " ".join(values)))
+                for name, data in six.iteritems(accounts):
+                    f.write(smart_bytes('\n\t{0}:{1}\n'.format(name, data['password'])))
+                    if data['options']:
+                        for option, values in six.iteritems(data['options']):
+                            f.write(smart_bytes('\t@{0} {1}\n'.format(option, b' '.join(values))))
 
-        f.close()
-        chmod(f.name, 0o600)
+            chmod(f.name, 0o600)
 
-
-    #----------------------------------------------------------------------
     def initAccountPlugins(self):
         """init names"""
         for name in get_plugin_manager().getAccountPlugins():
