@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import sys
-import socket
 import errno
-
+import socket
+import sys
 from time import sleep
 
 from thrift.transport.TSocket import TSocket, TServerSocket, TTransportException
 
-WantReadError = Exception #overwritten when ssl is used
+
+class WantReadError(Exception):
+    """Overwritten when ssl is used."""
+
 
 class SecureSocketConnection:
     def __init__(self, connection):
@@ -26,14 +28,14 @@ class SecureSocketConnection:
     def accept(self):
         connection, address = self.__dict__["connection"].accept()
         return SecureSocketConnection(connection), address
-    
+
     def send(self, buff):
         try:
             return self.__dict__["connection"].send(buff)
         except WantReadError:
             sleep(0.1)
             return self.send(buff)
-    
+
     def recv(self, buff):
         try:
             return self.__dict__["connection"].recv(buff)
@@ -48,7 +50,8 @@ class Socket(TSocket):
 
     def open(self):
         if self.ssl:
-            SSL = __import__("OpenSSL", globals(), locals(), "SSL", -1).SSL
+            import OpenSSL
+            SSL = OpenSSL.SSL
             WantReadError = SSL.WantReadError
             ctx = SSL.Context(SSL.SSLv23_METHOD)
             c = SSL.Connection(ctx, socket.socket(socket.AF_INET, socket.SOCK_STREAM))
@@ -86,7 +89,7 @@ class Socket(TSocket):
                 buff = ''
             else:
                 raise
-            
+
         if not len(buff):
             raise TTransportException(type=TTransportException.END_OF_FILE, message='TSocket read 0 bytes')
         return buff
@@ -102,7 +105,8 @@ class ServerSocket(TServerSocket, Socket):
 
     def listen(self):
         if self.cert and self.key:
-            SSL = __import__("OpenSSL", globals(), locals(), "SSL", -1).SSL
+            import OpenSSL
+            SSL = OpenSSL.SSL
             WantReadError = SSL.WantReadError
             ctx = SSL.Context(SSL.SSLv23_METHOD)
             ctx.use_privatekey_file(self.key)

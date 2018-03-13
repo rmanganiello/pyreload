@@ -17,13 +17,12 @@
     @author: mkaay, RaNaN
 """
 
-import re
-import sys
-
+import importlib
+from itertools import chain
 from os import listdir, makedirs
 from os.path import isfile, join, exists, abspath
-from sys import version_info
-from itertools import chain
+import re
+import sys
 from traceback import print_exc
 
 import six
@@ -148,11 +147,11 @@ class PluginManager:
                 content = data.read()
                 data.close()
 
-                if f.endswith("_25.pyc") and version_info[0:2] != (2, 5):
+                if f.endswith("_25.pyc") and sys.version_info[0:2] != (2, 5):
                     continue
-                elif f.endswith("_26.pyc") and version_info[0:2] != (2, 6):
+                elif f.endswith("_26.pyc") and sys.version_info[0:2] != (2, 6):
                     continue
-                elif f.endswith("_27.pyc") and version_info[0:2] != (2, 7):
+                elif f.endswith("_27.pyc") and sys.version_info[0:2] != (2, 7):
                     continue
 
                 name = f[:-3]
@@ -301,10 +300,17 @@ class PluginManager:
         """
         plugins = self.plugins[type]
         if name in plugins:
-            if "module" in plugins[name]: return plugins[name]["module"]
+            if 'module' in plugins[name]:
+                return plugins[name]["module"]
             try:
-                module = __import__(self.ROOT + "%s.%s" % (type, plugins[name]["name"]), globals(), locals(),
-                    plugins[name]["name"])
+                module = importlib.import_module(
+                    '{root}{_type}.{name}'.format(
+                        root=self.ROOT,
+                        _type=type,
+                        name=plugins[name]["name"],
+                    )
+                )
+
                 plugins[name]["module"] = module  #cache import, maybe unneeded
                 return module
             except Exception as e:
@@ -342,27 +348,26 @@ class PluginManager:
                 if user and not self.plugins[type][name]["user"]:
                     return self
 
-
     def load_module(self, name, replace=True):
-        if name not in sys.modules:  #could be already in modules
+        if name not in sys.modules:  # Could be already in modules
             if replace:
                 if self.ROOT in name:
                     newname = name.replace(self.ROOT, self.USERROOT)
                 else:
                     newname = name.replace(self.USERROOT, self.ROOT)
-            else: newname = name
+            else:
+                newname = name
 
             base, plugin = newname.rsplit(".", 1)
 
             self.log.debug("Redirected import %s -> %s" % (name, newname))
 
-            module = __import__(newname, globals(), locals(), [plugin])
-            #inject under new an old name
+            module = importlib.import_module(newname)
+            # Inject under new an old name
             sys.modules[name] = module
             sys.modules[newname] = module
 
         return sys.modules[name]
-
 
     def reloadPlugins(self, type_plugins):
         """ reloads and reindexes plugins """

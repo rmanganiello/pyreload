@@ -16,6 +16,7 @@
     @author: mkaay
 """
 
+import importlib
 from threading import Thread
 from traceback import print_exc
 
@@ -73,7 +74,10 @@ class RemoteManager():
         port = self.core.config["remote"]["port"]
 
         for b in self.available:
-            klass = getattr(__import__("module.remote.%s" % b, globals(), locals(), [b], -1), b)
+            klass = getattr(
+                importlib.import_module('module.remote.{0}'.format(b)),
+                b,
+            )
             backend = klass(self)
             if not backend.checkDeps():
                 continue
