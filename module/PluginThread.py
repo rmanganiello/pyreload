@@ -123,7 +123,7 @@ class PluginThread(Thread):
 
         for name in dir(pyfile.plugin):
             attr = getattr(pyfile.plugin, name)
-            if not name.endswith("__") and type(attr) != MethodType:
+            if not name.endswith("__") and not isinstance(attr, MethodType):
                 dump += "\t%20s = " % name
                 try:
                     dump += pformat(attr) + "\n"
@@ -134,7 +134,7 @@ class PluginThread(Thread):
 
         for name in dir(pyfile):
             attr = getattr(pyfile, name)
-            if not name.endswith("__") and type(attr) != MethodType:
+            if not name.endswith("__") and not isinstance(attr, MethodType):
                 dump += "\t%20s = " % name
                 try:
                     dump += pformat(attr) + "\n"

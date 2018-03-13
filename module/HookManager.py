@@ -21,8 +21,6 @@
 import traceback
 from threading import RLock
 
-from types import MethodType
-
 import six
 from six.moves import _thread as thread
 
@@ -83,7 +81,10 @@ class HookManager:
         self.events = {}  # contains events
 
         # Registering callback for config event
-        self.config.pluginCB = MethodType(self.dispatchEvent, "pluginConfigChanged", six.string_types)
+        self.config.pluginCB = six.create_bound_method(
+            self.dispatchEvent,
+            'pluginConfigChanged',
+        )
 
         self.addEvent("pluginConfigChanged", self.manageHooks)
 

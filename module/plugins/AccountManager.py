@@ -100,23 +100,26 @@ class AccountManager():
         for line in content[1:]:
             line = line.strip()
 
-            if not line: continue
-            if line.startswith("#"): continue
-            if line.startswith("version"): continue
+            if (
+                not line or
+                line.startswith(b"#") or
+                line.startswith(b"version")
+            ):
+                continue
 
-            if line.endswith(":") and line.count(":") == 1:
+            if line.endswith(b":") and line.count(b":") == 1:
                 plugin = line[:-1]
                 self.accounts[plugin] = {}
 
-            elif line.startswith("@"):
+            elif line.startswith(b"@"):
                 try:
                     option = line[1:].split()
                     self.accounts[plugin][name]["options"][option[0]] = [] if len(option) < 2 else ([option[1]] if len(option) < 3 else option[1:])
                 except:
                     pass
 
-            elif ":" in line:
-                name, sep, pw = line.partition(":")
+            elif b":" in line:
+                name, sep, pw = line.partition(b":")
                 self.accounts[plugin][name] = {"password": pw, "options": {}, "valid": True}
 
     def saveAccounts(self):
