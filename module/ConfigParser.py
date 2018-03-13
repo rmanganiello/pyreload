@@ -12,6 +12,8 @@ from traceback import print_exc
 import six
 from six.moves import range
 
+from module.util.encoding import smart_bytes
+
 from .utils import chmod
 
 # ignore these plugin configs, mainly because plugins were wiped out
@@ -71,29 +73,27 @@ class ConfigParser:
                     chmod("pyload.conf", 0o600)
 
                 if not exists("plugin.conf"):
-                    f = open("plugin.conf", "wb")
-                    f.write(b"version: {0}".format(CONF_VERSION))
-                    f.close()
+                    with open("plugin.conf", "wb") as f:
+                        f.write(smart_bytes("version: {0}".format(CONF_VERSION)))
                     chmod("plugin.conf", 0o600)
 
-                f = open("pyload.conf", "rb")
-                v = f.readline()
-                f.close()
+                with open("pyload.conf", "rb") as f:
+                    v = f.readline()
+
                 v = v[v.find(b":") + 1:].strip()
 
                 if not v or int(v) < CONF_VERSION:
                     copy(join(pypath, "module", "config", "default.conf"), "pyload.conf")
                     print("Old version of config was replaced")
 
-                f = open("plugin.conf", "rb")
-                v = f.readline()
-                f.close()
+                with open("plugin.conf", "rb") as f:
+                    v = f.readline()
+
                 v = v[v.find(b":") + 1:].strip()
 
                 if not v or int(v) < CONF_VERSION:
-                    f = open("plugin.conf", "wb")
-                    f.write(b"version: {0}".format(CONF_VERSION))
-                    f.close()
+                    with open("plugin.conf", "wb") as f:
+                        f.write(smart_bytes("version: {0}".format(CONF_VERSION)))
                     print("Old version of plugin-config replaced")
 
                 return
@@ -229,9 +229,10 @@ class ConfigParser:
         """saves config to filename"""
         with open(filename, "wb") as f:
             chmod(filename, 0o600)
-            f.write("version: %i \n" % CONF_VERSION)
+            f.write(smart_bytes('version: {0} \n'.format(CONF_VERSION)))
+
             for section in sorted(six.iterkeys(config)):
-                f.write('\n%s - "%s":\n' % (section, config[section]["desc"]))
+                f.write(smart_bytes('\n{0} - "{1}":\n'.format(section, config[section]["desc"])))
 
                 for option, data in sorted(config[section].items(), key=lambda _x: _x[0]):
                     if option in ("desc", "outline"):
@@ -247,10 +248,15 @@ class ConfigParser:
                             value = data["value"] + "\n"
                         else:
                             value = str(data["value"]) + "\n"
-                    try:
-                        f.write('\t%s %s : "%s" = %s' % (data["type"], option, data["desc"], value))
-                    except UnicodeEncodeError:
-                        f.write('\t%s %s : "%s" = %s' % (data["type"], option, data["desc"], value.encode("utf8")))
+
+                    f.write(smart_bytes(
+                        '\t{0} {1} : "{2}" = {3}'.format(
+                            data["type"],
+                            option,
+                            data["desc"],
+                            smart_bytes(value),
+                        )
+                    ))
 
     def cast(self, typ, value):
         """cast value to given format"""
