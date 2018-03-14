@@ -354,7 +354,7 @@ def isiterable(obj):
     """
     Check if object is iterable (string excluded)
     """
-    return hasattr(obj, "__iter__")
+    return hasattr(obj, "__iter__") and not isinstance(obj, six.string_types)
 
 
 def get_console_encoding(enc):
