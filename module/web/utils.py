@@ -16,11 +16,14 @@
 
     @author: RaNaN
 """
+from __future__ import unicode_literals
+
 from bottle import request, HTTPError, redirect, ServerAdapter
 
 from .webinterface import env, TEMPLATE, PREFIX
 
 from module.Api import has_permission, PERMS, ROLE
+
 
 def render_to_response(name, args={}, proc=[]):
     for p in proc:

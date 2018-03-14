@@ -17,6 +17,8 @@
     @author: RaNaN
 """
 
+from __future__ import unicode_literals
+
 import json
 import os
 from os import makedirs
@@ -30,6 +32,7 @@ sys.path.append(PYLOAD_DIR)
 
 import module.common.pylgettext as gettext
 from module import InitHomeDir
+from module.util.encoding import smart_text
 from module.utils import decode, formatSize
 
 import bottle
@@ -57,10 +60,10 @@ from module.common.JsEngine import JsEngine
 
 JS = JsEngine()
 
-TEMPLATE = config.get('webinterface', 'template')
-DL_ROOT = config.get('general', 'download_folder')
-LOG_ROOT = config.get('log', 'log_folder')
-PREFIX = config.get('webinterface', 'prefix')
+TEMPLATE = smart_text(config.get('webinterface', 'template'))
+DL_ROOT = smart_text(config.get('general', 'download_folder'))
+LOG_ROOT = smart_text(config.get('log', 'log_folder'))
+PREFIX = smart_text(config.get('webinterface', 'prefix'))
 
 if PREFIX:
     PREFIX = PREFIX.rstrip("/")
