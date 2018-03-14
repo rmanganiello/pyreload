@@ -21,6 +21,8 @@ import random
 
 from six.moves import reduce
 
+from module.util.encoding import smart_bytes
+
 from .DatabaseBackend import (
     DatabaseBackend,
     style,
@@ -38,7 +40,7 @@ class UserMethods():
 
         salt = r[2][:5]
         pw = r[2][5:]
-        h = sha1(salt + password)
+        h = sha1(smart_bytes(salt + password))
         if h.hexdigest() == pw:
             return {"id": r[0], "name": r[1], "role": r[3],
                     "permission": r[4], "template": r[5], "email": r[6]}
@@ -48,7 +50,7 @@ class UserMethods():
     @style.queue
     def addUser(db, user, password):
         salt = reduce(lambda x, y: x + y, [str(random.randint(0, 9)) for i in range(0, 5)])
-        h = sha1(salt + password)
+        h = sha1(smart_bytes(salt + password))
         password = salt + h.hexdigest()
 
         c = db.c
@@ -68,10 +70,10 @@ class UserMethods():
 
         salt = r[2][:5]
         pw = r[2][5:]
-        h = sha1(salt + oldpw)
+        h = sha1(smart_bytes(salt + oldpw))
         if h.hexdigest() == pw:
             salt = reduce(lambda x, y: x + y, [str(random.randint(0, 9)) for i in range(0, 5)])
-            h = sha1(salt + newpw)
+            h = sha1(smart_bytes(salt + newpw))
             password = salt + h.hexdigest()
 
             db.c.execute("UPDATE users SET password=? WHERE name=?", (password, user))
