@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import os
 import re
@@ -12,7 +12,7 @@ from ..internal.misc import fsjoin, threaded
 class MergeFiles(Addon):
     __name__ = "MergeFiles"
     __type__ = "hook"
-    __version__ = "0.22"
+    __version__ = "0.23"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False)]

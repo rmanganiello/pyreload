@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals, with_statement
+from __future__ import absolute_import, unicode_literals
 
 import inspect
 import os
@@ -29,7 +29,7 @@ _decode = decode
 class Plugin(object):
     __name__ = "Plugin"
     __type__ = "plugin"
-    __version__ = "0.74"
+    __version__ = "0.75"
     __status__ = "stable"
 
     __config__ = []  #: [("name", "type", "desc", "default")]

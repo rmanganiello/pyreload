@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import os
 import time
@@ -18,7 +18,7 @@ from .Plugin import Plugin
 class Captcha(Plugin):
     __name__ = "Captcha"
     __type__ = "captcha"
-    __version__ = "0.55"
+    __version__ = "0.56"
     __status__ = "stable"
 
     __description__ = """Base anti-captcha plugin"""

@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
-from threading import Event
+from __future__ import absolute_import, unicode_literals
 
 import hashlib
 import os
 import re
+from threading import Event
 import time
 import zlib
 
 from ..internal.Addon import Addon
 from ..internal.misc import encode, format_time, fsjoin, threaded
+
 
 def compute_checksum(local_file, algorithm, progress_notify=None, abort=None):
     file_size = os.stat(local_file).st_size
@@ -63,7 +64,7 @@ def compute_checksum(local_file, algorithm, progress_notify=None, abort=None):
 class Checksum(Addon):
     __name__ = "Checksum"
     __type__ = "hook"
-    __version__ = "0.34"
+    __version__ = "0.35"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),

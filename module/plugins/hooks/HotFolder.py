@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import os
 import shutil
@@ -13,7 +13,7 @@ from ..internal.misc import encode, fsjoin
 class HotFolder(Addon):
     __name__ = "HotFolder"
     __type__ = "hook"
-    __version__ = "0.24"
+    __version__ = "0.25"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),

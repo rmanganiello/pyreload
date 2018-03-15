@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 from ..internal.misc import encode
 from ..internal.MultiHoster import MultiHoster
@@ -9,7 +9,7 @@ from ..internal.MultiHoster import MultiHoster
 class PremiumTo(MultiHoster):
     __name__ = "PremiumTo"
     __type__ = "hoster"
-    __version__ = "0.33"
+    __version__ = "0.34"
     __status__ = "testing"
 
     __pattern__ = r'^unmatchable$'

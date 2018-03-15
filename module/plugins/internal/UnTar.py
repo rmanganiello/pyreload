@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import sys
 import tarfile
@@ -12,7 +12,7 @@ from .misc import encode
 class UnTar(Extractor):
     __name__ = "UnTar"
     __type__ = "extractor"
-    __version__ = "0.04"
+    __version__ = "0.05"
     __status__ = "stable"
 
     __description__ = """TAR extractor plugin"""
@@ -32,7 +32,7 @@ class UnTar(Extractor):
 
     @classmethod
     def find(cls):
-        return sys.version_info[:2] >= (2, 5)
+        return True
 
     def list(self, password=None):
         with tarfile.open(self.filename) as t:

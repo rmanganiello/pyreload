@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import os
 import subprocess
@@ -29,7 +29,7 @@ class Kernel32(object):
 class AntiStandby(Addon):
     __name__ = "AntiStandby"
     __type__ = "hook"
-    __version__ = "0.19"
+    __version__ = "0.20"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),

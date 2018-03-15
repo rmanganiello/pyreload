@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import re
 
@@ -17,7 +17,7 @@ from .misc import encode, parse_name, parse_size, parse_time, replace_patterns
 class SimpleHoster(Hoster):
     __name__ = "SimpleHoster"
     __type__ = "hoster"
-    __version__ = "2.27"
+    __version__ = "2.28"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'

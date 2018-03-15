@@ -17,7 +17,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 #
 ###
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
+
 from getopt import GetoptError, getopt
 
 import module.common.pylgettext as gettext

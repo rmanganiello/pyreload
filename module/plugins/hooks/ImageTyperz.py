@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import base64
 import re
@@ -30,7 +30,7 @@ class ImageTyperzException(Exception):
 class ImageTyperz(Addon):
     __name__ = "ImageTyperz"
     __type__ = "hook"
-    __version__ = "0.14"
+    __version__ = "0.15"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),

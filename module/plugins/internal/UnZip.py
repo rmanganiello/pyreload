@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import sys
 import zipfile
@@ -12,7 +12,7 @@ from .misc import encode
 class UnZip(Extractor):
     __name__ = "UnZip"
     __type__ = "extractor"
-    __version__ = "1.24"
+    __version__ = "1.25"
     __status__ = "stable"
 
     __description__ = """ZIP extractor plugin"""
@@ -29,7 +29,7 @@ class UnZip(Extractor):
 
     @classmethod
     def find(cls):
-        return sys.version_info[:2] >= (2, 6)
+        return True
 
     def list(self, password=None):
         with zipfile.ZipFile(self.filename, 'r') as z:

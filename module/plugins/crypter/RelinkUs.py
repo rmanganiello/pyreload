@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import binascii
 import re
@@ -16,7 +16,7 @@ from ..internal.misc import fsjoin, replace_patterns
 class RelinkUs(Crypter):
     __name__ = "RelinkUs"
     __type__ = "crypter"
-    __version__ = "3.22"
+    __version__ = "3.23"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?relink\.(?:us|to)/(f/|((view|go)\.php\?id=))(?P<ID>.+)'

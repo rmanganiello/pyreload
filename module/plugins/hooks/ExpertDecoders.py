@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import base64
 import uuid
@@ -16,7 +16,7 @@ from ..internal.misc import threaded
 class ExpertDecoders(Addon):
     __name__ = "ExpertDecoders"
     __type__ = "hook"
-    __version__ = "0.11"
+    __version__ = "0.12"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),

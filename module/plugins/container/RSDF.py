@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import binascii
 import re
@@ -14,7 +14,7 @@ from ..internal.misc import encode
 class RSDF(Container):
     __name__ = "RSDF"
     __type__ = "container"
-    __version__ = "0.37"
+    __version__ = "0.38"
     __status__ = "testing"
 
     __pattern__ = r'.+\.rsdf$'

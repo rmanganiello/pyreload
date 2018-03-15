@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import os
-import sys
 
 from module.singletons import get_plugin_manager
 
@@ -56,7 +55,7 @@ class ArchiveQueue(object):
 class ExtractArchive(Addon):
     __name__ = "ExtractArchive"
     __type__ = "hook"
-    __version__ = "1.67"
+    __version__ = "1.68"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", True),

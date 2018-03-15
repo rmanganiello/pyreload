@@ -1,43 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import os
 import re
 
-import six
-from six.moves import builtins
-
 import mimetypes
+import six
 
 from module.network.HTTPRequest import BadHeader
 from module.singletons import get_hook_manager
 
 from .Base import Base
-from .misc import compute_checksum, encode, exists, fixurl, fsjoin, parse_name, safejoin
+from .misc import encode, exists, fixurl, fsjoin, parse_name, safejoin
 from .Plugin import Fail
-
-# Python 2.5 compatibility hack for property.setter, property.deleter
-if not hasattr(builtins.property, "setter"):
-    class property(builtins.property):
-        __metaclass__ = type
-
-        def setter(self, method):
-            return property(self.fget, method, self.fdel)
-
-        def deleter(self, method):
-            return property(self.fget, self.fset, method)
-
-        @builtins.property
-        def __doc__(self):
-            """Doc seems not to be set correctly when subclassing"""
-            return self.fget.__doc__
 
 
 class Hoster(Base):
     __name__ = "Hoster"
     __type__ = "hoster"
-    __version__ = "0.73"
+    __version__ = "0.74"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'

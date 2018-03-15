@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import operator
 import os
@@ -21,7 +21,7 @@ from ..internal.misc import Expose, encode, exists, fsjoin, threaded
 class UpdateManager(Addon):
     __name__ = "UpdateManager"
     __type__ = "hook"
-    __version__ = "1.22"
+    __version__ = "1.23"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", True),
@@ -132,9 +132,10 @@ class UpdateManager(Addon):
 
     def server_response(self, line=None):
         try:
-            html = self.load(self.SERVER_URL,
-                             get={'v': self.pyload.api.getServerVersion()})
-
+            html = self.load(
+                self.SERVER_URL,
+                get={'v': self.pyload.api.getServerVersion()},
+            )
         except Exception:
             self.log_warning(_("Unable to connect to the server to retrieve updates"))
 

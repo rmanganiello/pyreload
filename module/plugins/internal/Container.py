@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import os
 
@@ -13,7 +13,7 @@ from .misc import encode, exists
 class Container(Crypter):
     __name__ = "Container"
     __type__ = "container"
-    __version__ = "0.14"
+    __version__ = "0.15"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'

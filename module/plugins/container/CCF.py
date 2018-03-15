@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import re
 
@@ -15,7 +15,7 @@ from ..internal.misc import encode, fsjoin
 class CCF(Container):
     __name__ = "CCF"
     __type__ = "container"
-    __version__ = "0.30"
+    __version__ = "0.31"
     __status__ = "testing"
 
     __pattern__ = r'.+\.ccf$'

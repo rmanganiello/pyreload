@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import os
 import subprocess
@@ -20,7 +20,7 @@ except ImportError:
 class OCR(Plugin):
     __name__ = "OCR"
     __type__ = "ocr"
-    __version__ = "0.26"
+    __version__ = "0.27"
     __status__ = "stable"
 
     __description__ = """OCR base plugin"""

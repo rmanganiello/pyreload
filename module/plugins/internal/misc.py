@@ -2,7 +2,7 @@
 
 # @TODO: Move to misc directory in 0.4.10
 
-from __future__ import unicode_literals, with_statement
+from __future__ import absolute_import, unicode_literals
 
 # import HTMLParser  #@TODO: Use in 0.4.10
 import datetime

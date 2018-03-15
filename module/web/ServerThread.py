@@ -1,14 +1,15 @@
 #!/usr/bin/env python
-from __future__ import with_statement
-from os.path import exists
+from __future__ import absolute_import, unicode_literals
 
 import os
+from os.path import exists
 import threading
 import logging
 
 core = None
 setup = None
 log = logging.getLogger("log")
+
 
 class WebServer(threading.Thread):
     def __init__(self, pycore):

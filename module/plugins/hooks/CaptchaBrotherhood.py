@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+from __future__ import absolute_import, unicode_literals
 
 import time
 
@@ -38,7 +38,7 @@ class CaptchaBrotherhoodException(Exception):
 class CaptchaBrotherhood(Addon):
     __name__ = "CaptchaBrotherhood"
     __type__ = "hook"
-    __version__ = "0.16"
+    __version__ = "0.17"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
