@@ -140,18 +140,20 @@ class PluginManager:
 
         configs = {}
         for f in listdir(pfolder):
-            if (isfile(join(pfolder, f)) and f.endswith(".py") or f.endswith("_25.pyc") or
-                    f.endswith("_26.pyc") or f.endswith("_27.pyc")) and not f.startswith("_"):
+            if (
+                (
+                    isfile(join(pfolder, f)) and
+                    f.endswith(".py") or
+                    f.endswith("_27.pyc")
+                ) and
+                not f.startswith("_")
+            ):
 
                 data = open(join(pfolder, f))
                 content = data.read()
                 data.close()
 
-                if f.endswith("_25.pyc") and sys.version_info[0:2] != (2, 5):
-                    continue
-                elif f.endswith("_26.pyc") and sys.version_info[0:2] != (2, 6):
-                    continue
-                elif f.endswith("_27.pyc") and sys.version_info[0:2] != (2, 7):
+                if f.endswith("_27.pyc") and sys.version_info[0:2] != (2, 7):
                     continue
 
                 name = f[:-3]
