@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import, unicode_literals
+
 import os
 import re
 import string
 import subprocess
+
+from module.util.encoding import smart_text
 
 from .Extractor import ArchiveError, CRCError, Extractor, PasswordError
 from .misc import decode, encode, fsjoin, renice
@@ -12,7 +16,7 @@ from .misc import decode, encode, fsjoin, renice
 class UnRar(Extractor):
     __name__ = "UnRar"
     __type__ = "extractor"
-    __version__ = "1.38"
+    __version__ = "1.39"
     __status__ = "testing"
 
     __config__ = [("ignore_warnings", "bool", "Ignore unrar warnings", False)]
@@ -68,7 +72,7 @@ class UnRar(Extractor):
             except OSError:
                 return False
 
-        m = cls._RE_VERSION.search(out)
+        m = cls._RE_VERSION.search(smart_text(out))
         if m is not None:
             cls.VERSION = m.group(1)
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import operator
 import os
@@ -15,6 +15,7 @@ from six.moves.urllib.parse import unquote
 from module.network.CookieJar import CookieJar
 from module.network.HTTPRequest import HTTPRequest
 from module.singletons import get_request_factory
+from module.util.encoding import smart_text
 
 from ..internal.Hoster import Hoster
 from ..internal.misc import exists, isexecutable, json, renice, replace_patterns, which
@@ -94,7 +95,7 @@ class Ffmpeg(object):
         except OSError:
             return False
 
-        m = cls._RE_VERSION.search(out)
+        m = cls._RE_VERSION.search(smart_text(out))
         if m is not None:
             cls.VERSION = m.group(1)
 
@@ -211,7 +212,7 @@ class Ffmpeg(object):
 class YoutubeCom(Hoster):
     __name__ = "YoutubeCom"
     __type__ = "hoster"
-    __version__ = "0.69"
+    __version__ = "0.70"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:[^/]*\.)?(?:youtu\.be/|youtube\.com/watch\?(?:.*&)?v=)[\w\-]+'

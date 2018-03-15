@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import, unicode_literals
+
 import os
 import re
 import string
 import subprocess
+
+from module.util.encoding import smart_text
 
 from .misc import encode, fsjoin, renice
 from .Extractor import ArchiveError, CRCError, Extractor, PasswordError
@@ -12,7 +16,7 @@ from .Extractor import ArchiveError, CRCError, Extractor, PasswordError
 class SevenZip(Extractor):
     __name__ = "SevenZip"
     __type__ = "extractor"
-    __version__ = "0.27"
+    __version__ = "0.28"
     __status__ = "testing"
 
     __description__ = """7-Zip extractor plugin"""
@@ -48,7 +52,7 @@ class SevenZip(Extractor):
             return False
 
         else:
-            m = cls._RE_VERSION.search(out)
+            m = cls._RE_VERSION.search(smart_text(out))
             if m is not None:
                 cls.VERSION = m.group(1)
 
