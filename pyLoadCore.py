@@ -21,7 +21,6 @@
     @version: v0.4.9
 """
 
-from getopt import getopt, GetoptError
 import module.common.pylgettext as gettext
 from imp import find_module
 import logging
@@ -32,10 +31,11 @@ from os.path import exists, join
 import signal
 import subprocess
 import sys
-from sys import argv, executable, exit
+from sys import executable, exit
 from time import time, sleep
 from traceback import print_exc
 
+import click
 import six
 
 from module import InitHomeDir
@@ -46,7 +46,6 @@ from module.singletons import (
     get_thread_manager,
     set_account_manager,
     set_captcha_manager,
-    set_hook_manager,
     set_plugin_manager,
     set_pull_manager,
     set_remote_manager,
@@ -97,107 +96,53 @@ def exceptHook(exc_type, exc_value, exc_traceback):
 class Core(object):
     """pyLoad Core, one tool to rule them all... (the filehosters) :D"""
 
-    def __init__(self):
-        self.doDebug = False
+    def __init__(self, **kwargs):
+        if kwargs.get('display_version'):
+            print("pyLoad", CURRENT_VERSION)
+            exit()
+        elif kwargs.get('do_clean'):
+            self.cleanTree()
+            exit()
+        elif kwargs.get('user'):
+            from module.setup import Setup
+
+            self.config = ConfigParser()
+            s = Setup(pypath, self.config)
+            s.set_user()
+            exit()
+        elif kwargs.get('setup'):
+            from module.setup import Setup
+
+            self.config = ConfigParser()
+            s = Setup(pypath, self.config)
+            s.start()
+            exit()
+        elif kwargs.get('change_dir'):
+            from module.setup import Setup
+
+            self.config = ConfigParser()
+            s = Setup(pypath, self.config)
+            s.conf_path(True)
+            exit()
+        elif kwargs.get('do_quit'):
+            self.quitInstance()
+            exit()
+        elif kwargs.get('display_status'):
+            pid = self.isAlreadyRunning()
+            if self.isAlreadyRunning():
+                print(pid)
+                exit(0)
+            else:
+                print("false")
+                exit(1)
+
         self.startedInGui = False
         self.running = False
-        self.daemon = False
-        self.remote = True
-        self.arg_links = []
-        self.pidfile = "pyload.pid"
-        self.deleteLinks = False # will delete links on startup
-
-        if len(argv) > 1:
-            try:
-                options, args = getopt(argv[1:], 'vchdusqp:',
-                    ["version", "clear", "clean", "help", "debug", "user",
-                     "setup", "configdir=", "changedir", "daemon",
-                     "quit", "status", "no-remote","pidfile="])
-
-                for option, argument in options:
-                    if option in ("-v", "--version"):
-                        print("pyLoad", CURRENT_VERSION)
-                        exit()
-                    elif option in ("-p", "--pidfile"):
-                        self.pidfile = argument
-                    elif option == "--daemon":
-                        self.daemon = True
-                    elif option in ("-c", "--clear"):
-                        self.deleteLinks = True
-                    elif option in ("-h", "--help"):
-                        self.print_help()
-                        exit()
-                    elif option in ("-d", "--debug"):
-                        self.doDebug = True
-                    elif option in ("-u", "--user"):
-                        from module.setup import Setup
-
-                        self.config = ConfigParser()
-                        s = Setup(pypath, self.config)
-                        s.set_user()
-                        exit()
-                    elif option in ("-s", "--setup"):
-                        from module.setup import Setup
-
-                        self.config = ConfigParser()
-                        s = Setup(pypath, self.config)
-                        s.start()
-                        exit()
-                    elif option == "--changedir":
-                        from module.setup import Setup
-
-                        self.config = ConfigParser()
-                        s = Setup(pypath, self.config)
-                        s.conf_path(True)
-                        exit()
-                    elif option in ("-q", "--quit"):
-                        self.quitInstance()
-                        exit()
-                    elif option == "--status":
-                        pid = self.isAlreadyRunning()
-                        if self.isAlreadyRunning():
-                            print(pid)
-                            exit(0)
-                        else:
-                            print("false")
-                            exit(1)
-                    elif option == "--clean":
-                        self.cleanTree()
-                        exit()
-                    elif option == "--no-remote":
-                        self.remote = False
-
-            except GetoptError:
-                print('Unknown Argument(s) "%s"' % " ".join(argv[1:]))
-                self.print_help()
-                exit()
-
-    def print_help(self):
-        print("")
-        print("pyLoad v%s     2008-2011 the pyLoad Team" % CURRENT_VERSION)
-        print("")
-        if sys.argv[0].endswith(".py"):
-            print("Usage: python pyLoadCore.py [options]")
-        else:
-            print("Usage: pyLoadCore [options]")
-        print("")
-        print("<Options>")
-        print("  -v, --version", " " * 10, "Print version to terminal")
-        print("  -c, --clear", " " * 12, "Delete all saved packages/links")
-        #print "  -a, --add=<link/list>", " " * 2, "Add the specified links"
-        print("  -u, --user", " " * 13, "Manages users")
-        print("  -d, --debug", " " * 12, "Enable debug mode")
-        print("  -s, --setup", " " * 12, "Run Setup Assistent")
-        print("  --configdir=<dir>", " " * 6, "Run with <dir> as config directory")
-        print("  -p, --pidfile=<file>", " " * 3, "Set pidfile to <file>")
-        print("  --changedir", " " * 12, "Change config dir permanently")
-        print("  --daemon", " " * 15, "Daemonmize after start")
-        print("  --no-remote", " " * 12, "Disable remote access (saves RAM)")
-        print("  --status", " " * 15, "Display pid if running or False")
-        print("  --clean", " " * 16, "Remove .pyc/.pyo files")
-        print("  -q, --quit", " " * 13, "Quit running pyLoad instance")
-        print("  -h, --help", " " * 13, "Display this help screen")
-        print("")
+        self.pidfile = kwargs.get('pidfile') or 'pyload.pid'
+        self.doDebug = bool(kwargs.get('do_debug'))
+        self.remote = bool(kwargs.get('no_remote', True))
+        self.daemon = bool(kwargs.get('is_daemon'))
+        self.deleteLinks = bool(kwargs.get('do_clear'))  # will delete links on startup
 
     def toggle_pause(self):
         thread_manager = get_thread_manager()
@@ -643,7 +588,7 @@ class Core(object):
         return join(pypath, *args)
 
 
-def deamon():
+def daemon():
     try:
         pid = os.fork()
         if pid > 0:
@@ -682,14 +627,106 @@ def deamon():
     pyload_core.start()
 
 
-def main():
-    #change name to 'pyLoadCore'
-    #from module.lib.rename_process import renameProcess
-    #renameProcess('pyLoadCore')
-    if "--daemon" in sys.argv:
-            deamon()
+@click.command()
+@click.option(
+    '--daemon',
+    'is_daemon',
+    is_flag=True,
+    help='Daemonize after start',
+)
+@click.option(
+    '--version', '-v',
+    'display_version',
+    is_flag=True,
+    help='Print program version',
+)
+@click.option(
+    '--clear', '-c',
+    'do_clear',
+    is_flag=True,
+    help='Delete all saved packages/links',
+)
+@click.option(
+    '--debug', '-d',
+    'do_debug',
+    is_flag=True,
+    help='Enable debug mode',
+)
+@click.option(
+    '--clean',
+    'do_clean',
+    is_flag=True,
+    help='Remove .pyc/.pyo files',
+)
+@click.option(
+    '--user', '-u',
+    is_flag=True,
+    help='Manage users',
+)
+@click.option(
+    '--setup', '-s',
+    is_flag=True,
+    help='Run setup assistant',
+)
+@click.option(
+    '--changedir',
+    'change_dir',
+    is_flag=True,
+    help='Change config dir permanently',
+)
+@click.option(
+    '--quit', '-q',
+    'do_quit',
+    is_flag=True,
+    help='Quit running pyLoad instance',
+)
+@click.option(
+    '--no-remote',
+    is_flag=True,
+    help='Disable remote access (saves RAM)',
+)
+@click.option(
+    '--status',
+    'display_status',
+    is_flag=True,
+    help='Display PID if running or False',
+)
+@click.option(
+    '--pidfile', '-p',
+    help='Set PID file',
+)
+def main(
+    is_daemon,
+    display_version,
+    do_clear,
+    do_debug,
+    do_clean,
+    user,
+    setup,
+    change_dir,
+    do_quit,
+    no_remote,
+    display_status,
+    pidfile,
+):
+    # change name to 'pyLoadCore'
+    # from module.lib.rename_process import renameProcess
+    # renameProcess('pyLoadCore')
+    if is_daemon:
+        daemon()
     else:
-        pyload_core = Core()
+        pyload_core = Core(
+            change_dir=change_dir,
+            display_status=display_status,
+            display_version=display_version,
+            do_clear=do_clear,
+            do_debug=do_debug,
+            is_daemon=is_daemon,
+            no_remote=no_remote,
+            pidfile=pidfile,
+            setup=setup,
+            user=user,
+        )
         try:
             pyload_core.start()
         except KeyboardInterrupt:
@@ -698,7 +735,7 @@ def main():
             pyload_core.removeLogger()
             _exit(1)
 
+
 # And so it begins...
 if __name__ == "__main__":
     main()
-
