@@ -39,22 +39,25 @@ from six.moves import (
 
 from codecs import getwriter
 
-if os.name == "nt":
+from module import InitHomeDir
+from module.cli.printer import *
+from module.cli import AddPackage, ManageFiles
+
+from module.Api import Destination
+from module.util.compatibility import IS_WINDOWS
+from module.utils import formatSize, decode
+from module.remote.thriftbackend.ThriftClient import ThriftClient, NoConnection, NoSSL, WrongLogin, ConnectionClosed
+from module.lib.Getch import Getch
+from module.lib.rename_process import renameProcess
+
+
+if IS_WINDOWS:
     enc = "cp850"
 else:
     enc = "utf8"
 
 sys.stdout = getwriter(enc)(sys.stdout, errors="replace")
 
-from module import InitHomeDir
-from module.cli.printer import *
-from module.cli import AddPackage, ManageFiles
-
-from module.Api import Destination
-from module.utils import formatSize, decode
-from module.remote.thriftbackend.ThriftClient import ThriftClient, NoConnection, NoSSL, WrongLogin, ConnectionClosed
-from module.lib.Getch import Getch
-from module.lib.rename_process import renameProcess
 
 class Cli:
     def __init__(self, client, command):

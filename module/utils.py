@@ -11,7 +11,10 @@ from os.path import join
 import six
 from six.moves.html_entities import name2codepoint
 
-from module.common.compatibility import maketrans
+from module.util.compatibility import (
+    IS_WINDOWS,
+    maketrans,
+)
 
 
 def chmod(*args):
@@ -39,7 +42,7 @@ def remove_chars(string, repl):
 
 def save_path(name):
     #remove some chars
-    if os.name == 'nt':
+    if IS_WINDOWS:
         return remove_chars(name, '/\\?%*:|"<>')
     else:
         return remove_chars(name, '/\\"')
@@ -66,7 +69,7 @@ else:
     fs_encode = fs_decode = lambda x: x  # do nothing
 
 def get_console_encoding(enc):
-    if os.name == "nt":
+    if IS_WINDOWS:
         if enc == "cp65001": # aka UTF-8
             print("WARNING: Windows codepage 65001 is not supported.")
             enc = "cp850"
@@ -110,7 +113,7 @@ def formatSpeed(speed):
 
 
 def freeSpace(folder):
-    if os.name == "nt":
+    if IS_WINDOWS:
         import ctypes
 
         free_bytes = ctypes.c_ulonglong(0)

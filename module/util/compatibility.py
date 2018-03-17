@@ -1,4 +1,9 @@
+import os
+
 import six
+
+
+IS_WINDOWS = os.name == 'nt'
 
 
 def maketrans(frm, to):

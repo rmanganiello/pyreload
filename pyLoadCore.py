@@ -52,6 +52,7 @@ from module.singletons import (
     set_request_factory,
     set_thread_manager,
 )
+from module.util.compatibility import IS_WINDOWS
 from module.util.encoding import (
     smart_bytes,
     smart_text,
@@ -181,16 +182,17 @@ class Core(object):
 
     def isAlreadyRunning(self):
         pid = self.checkPidFile()
-        if not pid or os.name == "nt": return False
+        if not pid or IS_WINDOWS:
+            return False
         try:
             os.kill(pid, 0)  # 0 - default signal (does nothing)
-        except:
+        except Exception:
             return 0
 
         return pid
 
     def quitInstance(self):
-        if os.name == "nt":
+        if IS_WINDOWS:
             print("Not supported on windows.")
             return
 
@@ -276,11 +278,11 @@ class Core(object):
             print(_("pyLoad already running with pid %s") % pid)
             exit()
 
-        if os.name != "nt" and self.config["general"]["renice"]:
+        if not IS_WINDOWS and self.config["general"]["renice"]:
             os.system("renice %d %d" % (self.config["general"]["renice"], os.getpid()))
 
         if self.config["permission"]["change_group"]:
-            if os.name != "nt":
+            if not IS_WINDOWS:
                 try:
                     from grp import getgrnam
 
@@ -290,7 +292,7 @@ class Core(object):
                     print(_("Failed changing group: %s") % e)
 
         if self.config["permission"]["change_user"]:
-            if os.name != "nt":
+            if not IS_WINDOWS:
                 try:
                     from pwd import getpwnam
 
@@ -330,7 +332,7 @@ class Core(object):
         #img = self.check_install("Image", _("Python Image Libary (PIL) for captcha reading"))
         #self.check_install("pycurl", _("pycurl to download any files"), True, True)
         self.check_file("tmp", _("folder for temporary files"), is_folder=True)
-        #tesser = self.check_install("tesseract", _("tesseract for captcha reading"), False) if os.name != "nt" else True
+        #tesser = self.check_install("tesseract", _("tesseract for captcha reading"), False) if not IS_WINDOWS else True
 
         self.captcha = True # checks seems to fail, althoug tesseract is available
 

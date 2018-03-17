@@ -30,6 +30,7 @@ from sys import exit
 from six.moves import input
 
 import module.common.pylgettext as gettext
+from module.util.compatibility import IS_WINDOWS
 from module.util.encoding import smart_text
 from module.utils import get_console_encoding
 
@@ -222,7 +223,7 @@ class Setup():
         pil = self.check_module("Image") or self.check_module("PIL")
         self.print_dep("py-imaging", pil)
 
-        if os.name == "nt":
+        if IS_WINDOWS:
             tesser = self.check_prog([os.path.join(pypath, "tesseract", "tesseract.exe"), "-v"])
         else:
             tesser = self.check_prog(["tesseract", "-v"])

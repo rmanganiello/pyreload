@@ -27,8 +27,11 @@ from six.moves.urllib.parse import (
     urlparse,
 )
 
-from module.common.compatibility import maketrans
 from module.singletons import get_hook_manager
+from module.util.compatibility import (
+    IS_WINDOWS,
+    maketrans,
+)
 from module.util.encoding import (
     smart_bytes,
     smart_text,
@@ -43,7 +46,7 @@ except ImportError:
 class misc(object):
     __name__ = "misc"
     __type__ = "plugin"
-    __version__ = "0.50"
+    __version__ = "0.51"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -284,7 +287,7 @@ def compare_time(start, end):
 
 
 def free_space(folder):
-    if os.name == "nt":
+    if IS_WINDOWS:
         import ctypes
 
         free_bytes = ctypes.c_ulonglong(0)
@@ -305,7 +308,7 @@ def fsbsize(path):
     """
     path = encode(path)
 
-    if os.name == "nt":
+    if IS_WINDOWS:
         import ctypes
 
         drive = "%s\\" % os.path.splitdrive(path)[0]
@@ -358,7 +361,7 @@ def isiterable(obj):
 
 
 def get_console_encoding(enc):
-    if os.name == "nt":
+    if IS_WINDOWS:
         if enc == "cp65001":  #: aka UTF-8
             enc = "cp850"
             # print("WARNING: Windows codepage 65001 (UTF-8) is not supported,
@@ -424,7 +427,7 @@ def exists(path):
     path = encode(path)
 
     if os.path.exists(path):
-        if os.name == "nt":
+        if IS_WINDOWS:
             dir, name = os.path.split(path.rstrip(os.sep))
             return name.upper() in map(str.upper, os.listdir(dir))
         else:
@@ -509,7 +512,7 @@ def safepath(value):
     """
     Remove invalid characters and truncate the path if needed
     """
-    if os.name == "nt":
+    if IS_WINDOWS:
         unt, value = os.path.splitunc(value)
     else:
         unt = ""
@@ -519,7 +522,7 @@ def safepath(value):
     path = unt + drive + filename
 
     try:
-        if os.name != "nt":
+        if not IS_WINDOWS:
             return
 
         length = len(path) - 259
@@ -545,7 +548,7 @@ def safename(value):
     """
     Remove invalid characters
     """
-    repl = '<>:"/\\|?*' if os.name == "nt" else '\0/\\"'
+    repl = '<>:"/\\|?*' if IS_WINDOWS else '\0/\\"'
     name = remove_chars(value, repl)
     return name
 
@@ -844,7 +847,7 @@ def chunks(iterable, size):
 
 
 def renice(pid, value):
-    if not value or os.name == "nt":
+    if not value or IS_WINDOWS:
         return
 
     try:

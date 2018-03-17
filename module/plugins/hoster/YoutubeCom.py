@@ -15,6 +15,7 @@ from six.moves.urllib.parse import unquote
 from module.network.CookieJar import CookieJar
 from module.network.HTTPRequest import HTTPRequest
 from module.singletons import get_request_factory
+from module.util.compatibility import IS_WINDOWS
 from module.util.encoding import smart_text
 
 from ..internal.Hoster import Hoster
@@ -79,10 +80,12 @@ class Ffmpeg(object):
             return True
 
         try:
-            if os.name == "nt":
-                ffmpeg = os.path.join(pypath, "ffmpeg.exe") if isexecutable(os.path.join(pypath, "ffmpeg.exe")) \
+            if IS_WINDOWS:
+                ffmpeg = (
+                    os.path.join(pypath, "ffmpeg.exe")
+                    if isexecutable(os.path.join(pypath, "ffmpeg.exe"))
                     else "ffmpeg.exe"
-
+                )
             else:
                 ffmpeg = "ffmpeg"
 
@@ -212,7 +215,7 @@ class Ffmpeg(object):
 class YoutubeCom(Hoster):
     __name__ = "YoutubeCom"
     __type__ = "hoster"
-    __version__ = "0.70"
+    __version__ = "0.71"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:[^/]*\.)?(?:youtu\.be/|youtube\.com/watch\?(?:.*&)?v=)[\w\-]+'

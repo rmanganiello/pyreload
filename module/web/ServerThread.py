@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 from __future__ import absolute_import, unicode_literals
 
-import os
 from os.path import exists
 import threading
 import logging
+
+from module.util.compatibility import IS_WINDOWS
+
 
 core = None
 setup = None
@@ -60,7 +62,7 @@ class WebServer(threading.Thread):
                 log.warning(_("Of course you need to be familiar with linux and know how to compile software"))
                 self.server = "builtin"
 
-        if os.name == "nt":
+        if IS_WINDOWS:
             self.core.log.info(_("Server set to threaded, due to known performance problems on windows."))
             self.core.config['webinterface']['server'] = "threaded"
             self.server = "threaded"

@@ -1,6 +1,6 @@
 import unittest
 
-from module.common.compatibility import maketrans
+from module.util.compatibility import maketrans
 
 
 class TestCompatibility(unittest.TestCase):

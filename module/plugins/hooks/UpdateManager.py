@@ -13,6 +13,7 @@ from module.singletons import (
     get_request_factory,
     get_thread_manager,
 )
+from module.util.compatibility import IS_WINDOWS
 
 from ..internal.Addon import Addon
 from ..internal.misc import Expose, encode, exists, fsjoin, threaded
@@ -21,7 +22,7 @@ from ..internal.misc import Expose, encode, exists, fsjoin, threaded
 class UpdateManager(Addon):
     __name__ = "UpdateManager"
     __type__ = "hook"
-    __version__ = "1.23"
+    __version__ = "1.24"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", True),
@@ -267,7 +268,7 @@ class UpdateManager(Addon):
 
         if blacklist:
             #@NOTE: Protect UpdateManager from self-removing
-            if os.name == "nt":
+            if IS_WINDOWS:
                 #@NOTE: Windows filesystem is case insensitive, make sure we do not delete legitimate plugins
                 whitelisted_plugins = [
                     (plugin['type'], plugin['name'].upper()) for plugin in updatelist]

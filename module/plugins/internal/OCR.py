@@ -5,12 +5,13 @@ from __future__ import absolute_import, unicode_literals
 import os
 import subprocess
 
+from module.util.compatibility import IS_WINDOWS
+
 from .misc import encode, fsjoin
 from .Plugin import Plugin
 
 try:
     from PIL import Image
-
 except ImportError:
     import Image
 
@@ -20,7 +21,7 @@ except ImportError:
 class OCR(Plugin):
     __name__ = "OCR"
     __type__ = "ocr"
-    __version__ = "0.27"
+    __version__ = "0.28"
     __status__ = "stable"
 
     __description__ = """OCR base plugin"""
@@ -105,7 +106,7 @@ class OCR(Plugin):
         self.log_debug("Saving tiff...")
         self.img.save(tmpTif.name, 'TIFF')
 
-        if os.name == "nt":
+        if IS_WINDOWS:
             command = os.path.join(pypath, "tesseract", "tesseract.exe")
         else:
             command = "tesseract"

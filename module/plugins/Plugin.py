@@ -33,9 +33,10 @@ from module.singletons import (
     get_plugin_manager,
     get_request_factory,
 )
+from module.util.compatibility import IS_WINDOWS
 from module.utils import save_join, save_path, fs_encode, fs_decode
 
-if os.name != "nt":
+if not IS_WINDOWS:
     from os import chown
     from pwd import getpwnam
     from grp import getgrnam
@@ -499,7 +500,7 @@ class Plugin(Base):
         if not exists(location):
             makedirs(location, int(self.core.config["permission"]["folder"], 8))
 
-            if self.core.config["permission"]["change_dl"] and os.name != "nt":
+            if self.core.config["permission"]["change_dl"] and not IS_WINDOWS:
                 try:
                     uid = getpwnam(self.config["permission"]["user"])[2]
                     gid = getgrnam(self.config["permission"]["group"])[2]
@@ -533,7 +534,7 @@ class Plugin(Base):
         if self.core.config["permission"]["change_file"]:
             chmod(fs_filename, int(self.core.config["permission"]["file"], 8))
 
-        if self.core.config["permission"]["change_dl"] and os.name != "nt":
+        if self.core.config["permission"]["change_dl"] and not IS_WINDOWS:
             try:
                 uid = getpwnam(self.config["permission"]["user"])[2]
                 gid = getgrnam(self.config["permission"]["group"])[2]

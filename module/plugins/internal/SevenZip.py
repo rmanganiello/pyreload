@@ -7,6 +7,7 @@ import re
 import string
 import subprocess
 
+from module.util.compatibility import IS_WINDOWS
 from module.util.encoding import smart_text
 
 from .misc import encode, fsjoin, renice
@@ -16,7 +17,7 @@ from .Extractor import ArchiveError, CRCError, Extractor, PasswordError
 class SevenZip(Extractor):
     __name__ = "SevenZip"
     __type__ = "extractor"
-    __version__ = "0.28"
+    __version__ = "0.29"
     __status__ = "testing"
 
     __description__ = """7-Zip extractor plugin"""
@@ -40,7 +41,7 @@ class SevenZip(Extractor):
     @classmethod
     def find(cls):
         try:
-            if os.name == "nt":
+            if IS_WINDOWS:
                 cls.CMD = os.path.join(pypath, "7z.exe")
 
             p = subprocess.Popen([cls.CMD],

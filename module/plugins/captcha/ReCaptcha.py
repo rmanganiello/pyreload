@@ -2,7 +2,6 @@
 
 import os
 import re
-import urllib
 
 from six.moves import cStringIO
 from six.moves.urllib.parse import (
@@ -10,6 +9,8 @@ from six.moves.urllib.parse import (
     unquote,
     urljoin,
 )
+
+from module.util.compatibility import IS_WINDOWS
 
 from ..internal.CaptchaService import CaptchaService
 
@@ -32,7 +33,7 @@ except ImportError:
 class ReCaptcha(CaptchaService):
     __name__ = 'ReCaptcha'
     __type__ = 'captcha'
-    __version__ = '0.39'
+    __version__ = '0.40'
     __status__ = 'testing'
 
     __description__ = 'ReCaptcha captcha service plugin'
@@ -187,7 +188,7 @@ class ReCaptcha(CaptchaService):
 
         font_name = 'arialbd'
 
-        if os.name == 'nt':
+        if IS_WINDOWS:
             font = ImageFont.truetype(font_name, 13)
         else:
             font = None
@@ -232,7 +233,7 @@ class ReCaptcha(CaptchaService):
                     font=font
                 )
 
-        if os.name == 'nt':
+        if IS_WINDOWS:
             font = ImageFont.truetype(font_name, 16)
 
         _sol = 0
@@ -258,7 +259,7 @@ class ReCaptcha(CaptchaService):
         # the text's real height is twice as big as returned by font.getsize() since we use
         # a newline character which indeed breaks the text but doesn't count as a second line
         # in font.getsize().
-        if os.name == 'nt':
+        if IS_WINDOWS:
             text_area_height = draw.multiline_textsize(message, font=font)[1]
 
         else:
@@ -279,7 +280,7 @@ class ReCaptcha(CaptchaService):
         img2.paste(img, (0, text_area_height))
         draw = ImageDraw.Draw(img2)
 
-        if os.name == 'nt':
+        if IS_WINDOWS:
             draw.text((3, margin), message, fill='black', font=font)
         else:
             for i in range(len(lines)):

@@ -7,6 +7,7 @@ import re
 import string
 import subprocess
 
+from module.util.compatibility import IS_WINDOWS
 from module.util.encoding import smart_text
 
 from .Extractor import ArchiveError, CRCError, Extractor, PasswordError
@@ -16,7 +17,7 @@ from .misc import decode, encode, fsjoin, renice
 class UnRar(Extractor):
     __name__ = "UnRar"
     __type__ = "extractor"
-    __version__ = "1.39"
+    __version__ = "1.40"
     __status__ = "testing"
 
     __config__ = [("ignore_warnings", "bool", "Ignore unrar warnings", False)]
@@ -45,7 +46,7 @@ class UnRar(Extractor):
     @classmethod
     def find(cls):
         try:
-            if os.name == "nt":
+            if IS_WINDOWS:
                 cls.CMD = os.path.join(pypath, "RAR.exe")
             else:
                 cls.CMD = "rar"
@@ -59,7 +60,7 @@ class UnRar(Extractor):
 
         except OSError:
             try:
-                if os.name == "nt":
+                if IS_WINDOWS:
                     cls.CMD = os.path.join(pypath, "UnRAR.exe")
                 else:
                     cls.CMD = "unrar"

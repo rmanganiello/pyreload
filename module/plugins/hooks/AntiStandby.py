@@ -8,6 +8,7 @@ import sys
 import time
 
 from module.singletons import get_thread_manager
+from module.util.compatibility import IS_WINDOWS
 
 from ..internal.Addon import Addon
 from ..internal.misc import Expose, encode, fsjoin
@@ -29,7 +30,7 @@ class Kernel32(object):
 class AntiStandby(Addon):
     __name__ = "AntiStandby"
     __type__ = "hook"
-    __version__ = "0.20"
+    __version__ = "0.21"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -56,7 +57,7 @@ class AntiStandby(Addon):
         if hdd:
             self.periodical.start(self.config.get('interval'), threaded=True)
 
-        if os.name == "nt":
+        if IS_WINDOWS:
             self.win_standby(system, display)
 
         elif sys.platform == "darwin":
@@ -68,7 +69,7 @@ class AntiStandby(Addon):
     def deactivate(self):
         self.remove(self.TMP_FILE, trash=False)
 
-        if os.name == "nt":
+        if IS_WINDOWS:
             self.win_standby(True)
 
         elif sys.platform == "darwin":
