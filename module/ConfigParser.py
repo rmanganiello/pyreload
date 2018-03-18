@@ -293,22 +293,19 @@ class ConfigParser:
         self.saveConfig(self.config, "pyload.conf")
         self.saveConfig(self.plugin, "plugin.conf")
 
-
     def __getitem__(self, section):
         """provides dictonary like access: c['section']['option']"""
         return Section(self, section)
-
 
     def get(self, section, option):
         """get value"""
         val = self.config[section][option]["value"]
         try:
-            if isinstance(val, six.string_types):
-                return val.decode("utf8")
-            else:
-                return val
-        except:
+            if isinstance(val, six.binary_type):
+                return smart_text(val)
+        except Exception:
             return val
+        return val
 
     def set(self, section, option, value):
         """set value"""
