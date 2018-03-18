@@ -28,9 +28,17 @@ from .utils import chmod
 
 # ignore these plugin configs, mainly because plugins were wiped out
 IGNORE = (
-    "FreakshareNet", "SpeedManager", "ArchiveTo", "ShareCx", ('hooks', 'UnRar'),
-    'EasyShareCom', 'FlyshareCz'
-    )
+    'FreakshareNet',
+    'SpeedManager',
+    'ArchiveTo',
+    'ShareCx',
+    ('hooks', 'UnRar'),
+    'EasyShareCom',
+    'FlyshareCz',
+    # TODO: UpdateManager can't be used by pyreload, until a valid
+    # update server is configured
+    'UpdateManager',
+)
 
 CONF_VERSION = 1
 
