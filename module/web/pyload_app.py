@@ -83,7 +83,6 @@ from .webinterface import (
     env,
 )
 
-# Helper
 
 def pre_processor():
     s = request.environ.get('beaker.session')
@@ -100,21 +99,25 @@ def pre_processor():
 
         # check if update check is available
         if info:
-            if info["pyload"] == "True": update = True
-            if info["plugins"] == "True": plugins = True
+            if info["pyload"] == "True":
+                update = True
+            if info["plugins"] == "True":
+                plugins = True
 
-
-    return {"user": user,
-            'status': status,
-            'captcha': captcha,
-            'perms': perms,
-            'url': request.url,
-            'update': update,
-            'plugins': plugins}
+    return {
+        'user': user,
+        'status': status,
+        'captcha': captcha,
+        'perms': perms,
+        'url': request.url,
+        'update': update,
+        'plugins': plugins,
+    }
 
 
 def base(messages):
     return render_to_response('base.html', {'messages': messages}, [pre_processor])
+
 
 def choose_path(browse_for, path=""):
     path = os.path.normpath(unquotepath(path))
@@ -152,7 +155,6 @@ def choose_path(browse_for, path=""):
 
     if os.path.abspath(cwd) == os.path.abspath("/"):
         parentdir = ""
-
 
     # try:
     #     cwd = cwd.encode("utf8")
@@ -197,12 +199,21 @@ def choose_path(browse_for, path=""):
 
     files = sorted(files, key=itemgetter('type', 'sort'))
 
-    return render_to_response('pathchooser.html',
-            {'cwd'     : cwd, 'files': files, 'parentdir': parentdir, 'type': browse_for, 'oldfile': oldfile,
-             'absolute': abs}, [])
+    return render_to_response(
+        'pathchooser.html',
+        {
+            'cwd': cwd,
+            'files': files,
+            'parentdir': parentdir,
+            'type': browse_for,
+            'oldfile': oldfile,
+            'absolute': abs,
+        },
+        [],
+    )
 
 
-## Views
+# Views
 @error(500)
 def error500(error):
     print("An error occured while processing the request.")
@@ -374,7 +385,7 @@ def downloads():
 @login_required("DOWNLOAD")
 def get_download(path):
     path = unquote(path).decode("utf8")
-    #@TODO some files can not be downloaded
+    # TODO: some files can not be downloaded
 
     root = PYLOAD.getConfigValue("general", "download_folder")
 
@@ -385,7 +396,6 @@ def get_download(path):
     except Exception as e:
         print(e)
         return HTTPError(404, "File not Found.")
-
 
 
 @route("/settings")
@@ -414,12 +424,12 @@ def config():
             data.trafficleft = formatSize(data.trafficleft * 1024)
 
         if data.validuntil == -1:
-            data.validuntil  = _("unlimited")
-        elif not data.validuntil :
-            data.validuntil  = _("not available")
+            data.validuntil = _("unlimited")
+        elif not data.validuntil:
+            data.validuntil = _("not available")
         else:
             t = time.localtime(data.validuntil)
-            data.validuntil  = time.strftime("%d.%m.%Y", t)
+            data.validuntil = time.strftime("%d.%m.%Y", t)
 
         if "time" in data.options:
             try:
@@ -432,9 +442,18 @@ def config():
         else:
             data.options["limitdl"] = "0"
 
-    return render_to_response('settings.html',
-            {'conf': {'plugin': plugin_menu, 'general': conf_menu, 'accs': accs}, 'types': PYLOAD.getAccountTypes()},
-        [pre_processor])
+    return render_to_response(
+        'settings.html',
+        {
+            'conf': {
+                'plugin': plugin_menu,
+                'general': conf_menu,
+                'accs': accs,
+            },
+            'types': PYLOAD.getAccountTypes(),
+        },
+        [pre_processor],
+    )
 
 
 @route("/filechooser")
@@ -442,6 +461,7 @@ def config():
 @login_required('STATUS')
 def file(file=""):
     return choose_path("file", file)
+
 
 @route("/pathchooser")
 @route("/pathchooser/:path#.+#")
@@ -462,7 +482,7 @@ def logs(item=-1):
     reversed = s.get('reversed', False)
 
     warning = ""
-    conf = PYLOAD.getConfigValue("log","file_log")
+    conf = PYLOAD.getConfigValue("log", "file_log")
     if not conf:
         warning = "Warning: File log is disabled, see settings page."
 
@@ -497,7 +517,7 @@ def logs(item=-1):
     if item < 1 or type(item) is not int:
         item = 1 if len(log) - perpage + 1 < 1 or perpage == 0 else len(log) - perpage + 1
 
-    if type(fro) is datetime: # we will search for datetime
+    if type(fro) is datetime:  # we will search for datetime
         item = -1
 
     data = []
@@ -517,24 +537,36 @@ def logs(item=-1):
                 level = '?'
                 message = l
             if item == -1 and dtime is not None and fro <= dtime:
-                item = counter #found our datetime
+                # Found our datetime
+                item = counter
             if item >= 0:
                 data.append({'line': counter, 'date': date + " " + time, 'level': level, 'message': message})
                 perpagecheck += 1
-                if fro is None and dtime is not None: #if fro not set set it to first showed line
+                if fro is None and dtime is not None:
+                    # If fro not set set it to first showed line
                     fro = dtime
             if perpagecheck >= perpage > 0:
                 break
 
-    if fro is None: #still not set, empty log?
+    if fro is None:
+        # Still not set, empty log?
         fro = datetime.now()
     if reversed:
         data.reverse()
-    return render_to_response('logs.html', {'warning': warning, 'log': data, 'from': fro.strftime('%d.%m.%Y %H:%M:%S'),
-                                            'reversed': reversed, 'perpage': perpage, 'perpage_p': sorted(perpage_p),
-                                            'iprev': 1 if item - perpage < 1 else item - perpage,
-                                            'inext': (item + perpage) if item + perpage < len(log) else item},
-        [pre_processor])
+    return render_to_response(
+        'logs.html',
+        {
+            'warning': warning,
+            'log': data,
+            'from': fro.strftime('%d.%m.%Y %H:%M:%S'),
+            'reversed': reversed,
+            'perpage': perpage,
+            'perpage_p': sorted(perpage_p),
+            'iprev': max(1, item - perpage),
+            'inext': (item + perpage) if item + perpage < len(log) else item,
+        },
+        [pre_processor],
+    )
 
 
 @route("/admin")
@@ -548,8 +580,7 @@ def admin():
     for data in six.itervalues(user):
         data["perms"] = {}
         get_permission(data["perms"], data["permission"])
-        data["perms"]["admin"] = True if data["role"] is 0 else False
-
+        data["perms"]["admin"] = data["role"] == 0
 
     s = request.environ.get('beaker.session')
     if request.environ.get('REQUEST_METHOD', "GET") == "POST":
@@ -564,7 +595,6 @@ def admin():
             # set all perms to false
             for perm in perms:
                 user[name]["perms"][perm] = False
-
 
             for perm in request.POST.getall("%s|perms" % name):
                 user[name]["perms"][perm] = True

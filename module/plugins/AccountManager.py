@@ -36,7 +36,10 @@ from module.singletons import (
     get_plugin_manager,
     get_pull_manager,
 )
-from module.util.encoding import smart_bytes
+from module.util.encoding import (
+    smart_bytes,
+    smart_text,
+)
 from module.utils import (
     chmod,
     lock,
@@ -55,15 +58,15 @@ class AccountManager():
         self.lock = Lock()
 
         self.initPlugins()
-        self.saveAccounts() # save to add categories to conf
+        # Save to add categories to conf
+        self.saveAccounts()
 
     def initPlugins(self):
-        self.accounts = {} # key = ( plugin )
+        self.accounts = {}  # key = ( plugin )
         self.plugins = {}
 
         self.initAccountPlugins()
         self.loadAccounts()
-
 
     def getAccountPlugin(self, plugin):
         """get account instance for plugin or None if anonymous"""
@@ -83,7 +86,7 @@ class AccountManager():
             plugins.append(self.getAccountPlugin(plugin))
 
         return plugins
-    #----------------------------------------------------------------------
+
     def loadAccounts(self):
         """loads all accounts available"""
 
@@ -106,29 +109,27 @@ class AccountManager():
         name = ""
 
         for line in content[1:]:
-            line = line.strip()
+            line = smart_text(line.strip())
 
             if (
                 not line or
-                line.startswith(b"#") or
-                line.startswith(b"version")
+                line.startswith('#') or
+                line.startswith('version')
             ):
                 continue
 
-            if line.endswith(b":") and line.count(b":") == 1:
+            if line.endswith(':') and line.count(':') == 1:
                 plugin = line[:-1]
                 self.accounts[plugin] = {}
 
-            elif line.startswith(b"@"):
-                try:
-                    option = line[1:].split()
-                    self.accounts[plugin][name]["options"][option[0]] = [] if len(option) < 2 else ([option[1]] if len(option) < 3 else option[1:])
-                except:
-                    pass
+            elif line.startswith('@'):
+                options = line[1:].split()
+                if options:
+                    self.accounts[plugin][name]['options'][options[0]] = options[1:]
 
-            elif b":" in line:
-                name, sep, pw = line.partition(b":")
-                self.accounts[plugin][name] = {"password": pw, "options": {}, "valid": True}
+            elif ':' in line:
+                name, sep, pw = line.partition(':')
+                self.accounts[plugin][name] = {'password': pw, 'options': {}, 'valid': True}
 
     def saveAccounts(self):
         """save all account information"""
@@ -153,15 +154,19 @@ class AccountManager():
             self.accounts[name] = {}
 
     @lock
-    def updateAccount(self, plugin , user, password=None, options={}):
+    def updateAccount(self, plugin, user, password=None, options=None):
         """add or update account"""
+        if options is None:
+            options = {}
+
         if plugin in self.accounts:
             p = self.getAccountPlugin(plugin)
             updated = p.updateAccounts(user, password, options)
-            #since accounts is a ref in plugin self.accounts doesnt need to be updated here
 
+            # Since accounts is a ref in plugin self.accounts doesnt need to be updated here
             self.saveAccounts()
-            if updated: p.scheduleRefresh(user, force=False)
+            if updated:
+                p.scheduleRefresh(user, force=False)
 
     @lock
     def removeAccount(self, plugin, user):
