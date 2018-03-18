@@ -93,7 +93,7 @@ class main(QObject):
         gettext.setpaths([join(os.sep, "usr", "share", "pyload", "locale"), None])
         translation = gettext.translation("pyLoadGui", join(pypath, "locale"), languages=[str(lang), "en"], fallback=True)
         try:
-            translation.install(unicode=(True if sys.stdout.encoding.lower().startswith("utf") else False))
+            translation.install(unicode=sys.stdout.encoding.lower().startswith("utf"))
         except:
             translation.install(unicode=False)
 

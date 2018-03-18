@@ -31,6 +31,9 @@ from os.path import (
 
 from six.moves.urllib.parse import quote
 
+from module.util.encoding import smart_bytes
+
+
 ENGINE = ""
 
 DEBUG = False
@@ -103,8 +106,7 @@ class JsEngine():
 
             self.init = True
 
-        if type(script) == unicode:
-            script = script.encode("utf8")
+        script = smart_bytes(script)
 
         if not ENGINE:
             raise Exception("No JS Engine")

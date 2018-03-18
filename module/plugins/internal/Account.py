@@ -33,7 +33,7 @@ from .Plugin import (
 class Account(Plugin):
     __name__ = "Account"
     __type__ = "account"
-    __version__ = "0.85"
+    __version__ = "0.86"
     __status__ = "stable"
 
     __description__ = """Base account plugin"""
@@ -135,7 +135,8 @@ class Account(Plugin):
             self.signin(
                 self.user,
                 self.info['login']['password'],
-                self.info['data'])
+                self.info['data'],
+            )
 
         except Skip as e:
             self.log_warning(_("Skipped login user `%s`") % self.user, e)

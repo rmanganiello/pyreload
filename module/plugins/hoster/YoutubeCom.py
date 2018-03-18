@@ -230,7 +230,7 @@ class Ffmpeg(object):
 class YoutubeCom(Hoster):
     __name__ = "YoutubeCom"
     __type__ = "hoster"
-    __version__ = "0.71"
+    __version__ = "0.72"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:[^/]*\.)?(?:youtu\.be/|youtube\.com/watch\?(?:.*&)?v=)[\w\-]+'
@@ -538,22 +538,20 @@ class YoutubeCom(Hoster):
                 h, m = divmod(m, 60)
                 return "%02d:%02d:%02d,%s" % (h, m, s, milli)
 
-            i = 1
             srt = ""
             dom = parse_xml(timedtext)
             body = dom.getElementsByTagName("body")[0]
             paras = body.getElementsByTagName("p")
-            for para in paras:
-                srt += str(i) + "\n"
+            for i, para in enumerate(paras):
+                srt += smart_text(i+1) + "\n"
                 srt += _format_srt_time(int(para.attributes['t'].value)) + ' --> ' + \
                        _format_srt_time(int(para.attributes['t'].value) + int(para.attributes['d'].value)) + "\n"
                 for child in para.childNodes:
                     if child.nodeName == 'br':
                         srt += "\n"
                     elif child.nodeName == '#text':
-                        srt += unicode(child.data)
+                        srt += smart_text(child.data)
                     srt += "\n\n"
-                i += 1
 
             return srt
 

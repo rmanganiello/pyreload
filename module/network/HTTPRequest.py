@@ -43,20 +43,23 @@ from six.moves.urllib.parse import (
 )
 
 from module.plugins.Plugin import Abort
+from module.util.encoding import (
+    smart_bytes,
+    smart_text,
+)
 
 
 def myquote(url):
-    return quote(url.encode('utf_8') if isinstance(url, unicode) else url, safe="%/:=&?~#+!$,;'@()*[]")
+    return quote(smart_bytes(url), safe="%/:=&?~#+!$,;'@()*[]")
+
 
 def myurlencode(data):
     data = dict(data)
-    return urlencode(dict(
-        (
-            x.encode('utf_8') if isinstance(x, six.text_type) else x,
-            y.encode('utf_8') if isinstance(y, six.text_type) else y,
-        )
+    return urlencode({
+        smart_bytes(x): smart_text(y)
         for x, y in six.iteritems(data)
-    ))
+    })
+
 
 bad_headers = {
     # 400's error codes
@@ -80,6 +83,7 @@ unofficial_responses = {
     527: 'Railgun Error - CloudFlare requests timeout or failed after the WAN connection has been established',
     530: 'Site Is Frozen - Used by the Pantheon web platform to indicate a site that has been frozen due to inactivity'}
 
+
 class BadHeader(Exception):
     def __init__(self, code, header="", content=""):
         int_code = int(code)
@@ -97,7 +101,7 @@ class BadHeader(Exception):
         self.content = content
 
 
-class HTTPRequest():
+class HTTPRequest(object):
     def __init__(self, cookies=None, options=None):
         self.c = pycurl.Curl()
         self.rep = None
@@ -213,10 +217,9 @@ class HTTPRequest():
         if post:
             self.c.setopt(pycurl.POST, 1)
             if not multipart:
-                if type(post) == unicode:
-                    post = str(post) #unicode not allowed
-                elif type(post) == str:
-                    pass
+                if isinstance(post, (six.binary_type, six.text_type)):
+                    # Unicode not allowed
+                    post = smart_bytes(post)
                 else:
                     post = myurlencode(post)
 
@@ -343,11 +346,11 @@ class HTTPRequest():
             f.close()
             raise Exception("Loaded Url exceeded limit")
 
-        self.rep.write(buf)
+        self.rep.write(smart_text(buf))
 
     def writeHeader(self, buf):
         """ writes header """
-        self.header += buf
+        self.header += smart_text(buf)
 
     def putHeader(self, name, value):
         self.headers.append("%s: %s" % (name, value))

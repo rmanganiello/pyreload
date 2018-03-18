@@ -49,7 +49,7 @@ except ImportError:
 class misc(object):
     __name__ = "misc"
     __type__ = "plugin"
-    __version__ = "0.51"
+    __version__ = "0.52"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -467,15 +467,15 @@ def remove_chars(value, repl):
     """
     Remove all chars in repl from string
     """
-    if isinstance(repl, unicode):
+    if isinstance(repl, six.text_type):
         for badc in list(repl):
             value = value.replace(badc, "")
         return value
 
-    elif isinstance(value, unicode):
+    elif isinstance(value, six.text_type):
         return value.translate(dict((ord(s), None) for s in repl))
 
-    elif isinstance(value, str):
+    elif isinstance(value, six.binary_type):
         return value.translate(maketrans("", ""), repl)
 
 
@@ -488,7 +488,7 @@ def fixurl(url, unquote=None):
 
     url = decode(url)
     try:
-        url = url.decode('unicode-escape')
+        url = smart_text(url, encoding='unicode-escape')
     except UnicodeDecodeError:
         pass
 

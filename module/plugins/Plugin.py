@@ -52,6 +52,7 @@ from module.singletons import (
     get_request_factory,
 )
 from module.util.compatibility import IS_WINDOWS
+from module.util.encoding import smart_bytes
 from module.utils import (
     fs_decode,
     fs_encode,
@@ -451,10 +452,10 @@ class Plugin(Base):
         :param decode: Wether to decode the output according to http header, should be True in most cases
         :return: Loaded content
         """
-        if self.pyfile.abort: raise Abort
-        #utf8 vs decode -> please use decode attribute in all future plugins
-        if type(url) == unicode: url = str(url)
+        if self.pyfile.abort:
+            raise Abort
 
+        url = smart_bytes(url)
         res = self.req.load(url, get, post, ref, cookies, just_header, decode=decode)
 
         if self.core.debug:
@@ -594,7 +595,7 @@ class Plugin(Base):
         #produces encoding errors, better log to other file in the future?
         #self.log.debug("Content: %s" % content)
         for name, rule in six.iteritems(rules):
-            if type(rule) in (str, unicode):
+            if isinstance(rule, (six.binary_type, six.text_type)):
                 if rule in content:
                     if delete:
                         remove(lastDownload)

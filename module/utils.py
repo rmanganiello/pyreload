@@ -22,6 +22,7 @@ from module.util.compatibility import (
     IS_WINDOWS,
     maketrans,
 )
+from module.util.encoding import smart_text
 
 
 def chmod(*args):
@@ -41,14 +42,14 @@ def decode(string):
 
 def remove_chars(string, repl):
     """ removes all chars in repl from string"""
-    if type(string) == str:
-        return string.translate(maketrans("", ""), repl)
-    elif type(string) == unicode:
+    if isinstance(string, six.binary_text):
+        return string.translate(maketrans(b"", b""), repl)
+    elif isinstance(string, six.text_type):
         return string.translate(dict([(ord(s), None) for s in repl]))
 
 
 def save_path(name):
-    #remove some chars
+    # Remove some chars
     if IS_WINDOWS:
         return remove_chars(name, '/\\?%*:|"<>')
     else:
@@ -57,7 +58,7 @@ def save_path(name):
 
 def save_join(*args):
     """ joins a path, encoding aware """
-    return fs_encode(join(*[x if type(x) == unicode else decode(x) for x in args]))
+    return fs_encode(join(*[smart_text(x) for x in args]))
 
 
 # File System Encoding functions:

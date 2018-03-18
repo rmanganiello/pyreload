@@ -29,6 +29,7 @@ from module.singletons import (
     get_hook_manager,
     get_request_factory,
 )
+from module.util.encoding import smart_text
 
 
 class IRC(object):
@@ -251,9 +252,9 @@ class IRC(object):
                 continue
 
             try:
-                text = unicode(args[1], 'utf-8')
+                text = smart_text(args[1])
             except UnicodeDecodeError:
-                text = unicode(args[1], 'latin1', 'replace')
+                text = smart_text(args[1], encoding='latin1', errors='replace')
 
             sender_nick = origin.split('@')[0].split('!')[0]
             self.plugin.log_info(_("PrivMsg: <%s> %s") % (sender_nick, text))
@@ -290,9 +291,9 @@ class IRC(object):
                 continue
 
             try:
-                text = unicode(args[1], 'utf-8')
+                text = smart_text(args[1])
             except UnicodeDecodeError:
-                text = unicode(args[1], 'latin1', 'replace')
+                text = smart_text(args[1], encoding='latin1', errors='replace')
 
             sender_nick = origin.split('@')[0].split('!')[0]
             if command == "INVITE":
@@ -385,9 +386,9 @@ class IRC(object):
                     and command in ("PRIVMSG", "NOTICE"):
 
                     try:
-                        text = unicode(args[1], 'utf-8')
+                        text = smart_text(args[1])
                     except UnicodeDecodeError:
-                        text = unicode(args[1], 'latin1', 'replace')
+                        text = smart_text(args[1], encoding='latin1', errors='replace')
 
                     sender_nick = origin.split('@')[0].split('!')[0]
                     self.plugin.log_debug(_("PrivMsg: <%s> %s") % (sender_nick, text))
@@ -427,9 +428,9 @@ class IRC(object):
                 and command in ("PRIVMSG", "NOTICE"):
 
                 try:
-                    text = unicode(args[1], 'utf-8')
+                    text = smart_text(args[1])
                 except UnicodeDecodeError:
-                    text = unicode(args[1], 'latin1', 'replace')
+                    text = smart_text(args[1], encoding='latin1', errors='replace')
 
                 pack_info = text.split()
                 if pack_info[0].lower() == "filename":
@@ -461,7 +462,7 @@ class IRC(object):
 class XDCC(Hoster):
     __name__    = "XDCC"
     __type__    = "hoster"
-    __version__ = "0.49"
+    __version__ = "0.50"
     __status__  = "testing"
 
     __pattern__ = r'xdcc://(?P<SERVER>.*?)/#?(?P<CHAN>.*?)/(?P<BOT>.*?)/#?(?P<PACK>\d+)/?'
@@ -626,9 +627,9 @@ class XDCC(Hoster):
             return
 
         try:
-            text = unicode(args[1], 'utf-8')
+            text = smart_text(args[1])
         except UnicodeDecodeError:
-            text = unicode(args[1], 'latin1', 'replace')
+            text = smart_text(args[1], encoding='latin1', errors='replace')
 
         sender_nick = origin.split('@')[0].split('!')[0]
         self.log_debug(_("PrivMsg: <%s> %s") % (sender_nick, text))

@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
     @author: RaNaN
 """
 from __future__ import (
@@ -35,6 +35,7 @@ from time import sleep
 
 import pycurl
 
+from module.util.encoding import smart_text
 from module.utils import fs_encode
 
 from .HTTPRequest import HTTPRequest
@@ -46,7 +47,7 @@ class WrongFormat(Exception):
 
 class ChunkInfo():
     def __init__(self, name):
-        self.name = unicode(name)
+        self.name = smart_text(name)
         self.size = 0
         self.resume = False
         self.chunks = []
@@ -76,7 +77,6 @@ class ChunkInfo():
             end = self.size - 1 if (i == chunks - 1) else current + chunk_size
             self.addChunk("%s.chunk%s" % (self.name, i), (current, end))
             current += chunk_size + 1
-
 
     def save(self):
         fs_name = fs_encode("%s.chunks" % self.name)
@@ -117,7 +117,7 @@ class ChunkInfo():
             else:
                 raise WrongFormat()
 
-            ci.addChunk(name, (long(range[0]), long(range[1])))
+            ci.addChunk(name, (int(range[0]), int(range[1])))
         fh.close()
         return ci
 

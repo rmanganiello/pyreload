@@ -12,12 +12,14 @@ from os.path import (
     join,
 )
 
+import six
+
+
 CONF_VERSION = 1
 
 
 class ConfigParser:
 
-    #----------------------------------------------------------------------
     def __init__(self, configdir):
         """Constructor"""
         self.configdir = configdir
@@ -26,7 +28,6 @@ class ConfigParser:
         if self.checkVersion():
             self.readConfig()
 
-    #----------------------------------------------------------------------
     def checkVersion(self):
 
         if not exists(join(self.configdir, "pyload.conf")):
@@ -41,14 +42,11 @@ class ConfigParser:
 
         return True
 
-    #----------------------------------------------------------------------
     def readConfig(self):
         """reads the config file"""
 
         self.config = self.parseConfig(join(self.configdir, "pyload.conf"))
 
-
-    #----------------------------------------------------------------------
     def parseConfig(self, config):
         """parses a given configfile"""
 
@@ -129,34 +127,29 @@ class ConfigParser:
             except:
                 pass
 
-
         f.close()
         return conf
 
-    #----------------------------------------------------------------------
     def cast(self, typ, value):
         """cast value to given format"""
-        if type(value) not in (str, unicode):
+        if not isinstance(value, (six.binary_type, six.text_type)):
             return value
 
         if typ == "int":
             return int(value)
         elif typ == "bool":
-            return True if value.lower() in ("1","true", "on", "an","yes") else False
-        else:
-            return value
+            return value.lower() in {"1", "true", "on", "an", "yes"}
+        return value
 
-    #----------------------------------------------------------------------
     def get(self, section, option):
         """get value"""
         return self.config[section][option]["value"]
 
-    #----------------------------------------------------------------------
     def __getitem__(self, section):
         """provides dictonary like access: c['section']['option']"""
         return Section(self, section)
 
-########################################################################
+
 class Section:
     """provides dictionary like access for configparser"""
 
