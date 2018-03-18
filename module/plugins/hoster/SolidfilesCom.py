@@ -3,6 +3,13 @@
 # Test links:
 #   http://www.solidfiles.com/d/609cdb4b1b
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from ..internal.SimpleHoster import SimpleHoster
 
 

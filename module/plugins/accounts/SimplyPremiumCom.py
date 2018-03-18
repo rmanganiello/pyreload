@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from ..internal.misc import json, set_cookie
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from ..internal.misc import (
+    json,
+    set_cookie,
+)
 from ..internal.MultiAccount import MultiAccount
 
 

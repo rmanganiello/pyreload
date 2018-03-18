@@ -1,9 +1,20 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import time
 
 from .Addon import Addon
-from .misc import Expose, encode, isiterable
+from .misc import (
+    Expose,
+    encode,
+    isiterable,
+)
 
 
 class Notifier(Addon):

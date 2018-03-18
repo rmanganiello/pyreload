@@ -1,11 +1,22 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import errno
 import socket
 import sys
 from time import sleep
 
-from thrift.transport.TSocket import TSocket, TServerSocket, TTransportException
+from thrift.transport.TSocket import (
+    TServerSocket,
+    TSocket,
+    TTransportException,
+)
 
 
 class WantReadError(Exception):

@@ -17,8 +17,16 @@
     @author: RaNaN
 """
 
-from time import time
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from threading import Lock
+from time import time
+
 
 class Bucket:
     def __init__(self):
@@ -58,4 +66,3 @@ class Bucket:
             delta = self.rate * (now - self.timestamp)
             self.tokens = min(self.rate, self.tokens + delta)
             self.timestamp = now
-

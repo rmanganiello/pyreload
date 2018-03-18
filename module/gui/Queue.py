@@ -16,16 +16,32 @@
     @author: mkaay
 """
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 from time import time
 
 import six
 
+from module.gui.Collector import (
+    CollectorModel,
+    CollectorView,
+    Link,
+    Package,
+    statusMapReverse,
+)
 from module.remote.thriftbackend.ThriftClient import Destination
-from module.gui.Collector import CollectorModel, Package, Link, CollectorView, statusMapReverse
-from module.utils import formatSize, formatSpeed
+from module.utils import (
+    formatSize,
+    formatSpeed,
+)
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+
 
 class QueueModel(CollectorModel):
     """
@@ -389,4 +405,3 @@ class QueueProgressBarDelegate(QItemDelegate):
             QApplication.style().drawControl(QStyle.CE_ProgressBar, opts, painter)
             return
         QItemDelegate.paint(self, painter, option, index)
-

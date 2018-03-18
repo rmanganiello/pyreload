@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from six.moves.urllib.parse import urljoin
@@ -48,4 +55,3 @@ class HearthisAtFolder(Crypter):
             links = map(lambda x: urljoin(pyfile.url, x) + "#pyload",
                         re.findall(r'<a class="player-link".+?href="(.+?)".+?</a>', self.data, re.S))
             self.packages = [(pyfile.package().name, links, pyfile.package().folder)]
-

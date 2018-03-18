@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from module.network.CookieJar import CookieJar
@@ -7,8 +14,8 @@ from module.network.HTTPRequest import HTTPRequest
 from module.singletons import get_request_factory
 
 from ..internal.misc import json
-from ..internal.SimpleHoster import SimpleHoster
 from ..internal.Plugin import Abort
+from ..internal.SimpleHoster import SimpleHoster
 
 
 class BIGHTTPRequest(HTTPRequest):

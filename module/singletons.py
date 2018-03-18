@@ -1,3 +1,10 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 ACCOUNT_MANAGER_SINGLETON = 'account_manager_singleton'
 CAPTCHA_MANAGER_SINGLETON = 'captcha_manager_singleton'
 HOOK_MANAGER_SINGLETON = 'hook_manager_singleton'

@@ -3,6 +3,13 @@
 # Test links:
 # http://uploadhero.co/dl/wQBRAVSM
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from six.moves.urllib.parse import urljoin

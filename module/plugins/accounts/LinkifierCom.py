@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import hashlib
+
 import pycurl
 
-from ..internal.MultiAccount import MultiAccount
 from ..internal.misc import json
+from ..internal.MultiAccount import MultiAccount
 
 
 class LinkifierCom(MultiAccount):
@@ -57,7 +65,3 @@ class LinkifierCom(MultiAccount):
         if json_data.get('hasErrors', True) or not json_data.get('isActive', True):
             self.log_warning(json_data['ErrorMSG'] or "Unknown error")
             self.fail_login()
-
-
-
-

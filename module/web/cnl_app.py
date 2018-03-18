@@ -1,14 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from os.path import join
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 from base64 import standard_b64decode
 from binascii import unhexlify
+from os.path import join
 
-from bottle import route, request, HTTPError
 from six.moves.urllib.parse import unquote
 
-from .webinterface import PYLOAD, DL_ROOT, JS
+from bottle import (
+    HTTPError,
+    request,
+    route,
+)
+
+from .webinterface import (
+    DL_ROOT,
+    JS,
+    PYLOAD,
+)
 
 try:
     from Crypto.Cipher import AES

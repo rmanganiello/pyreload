@@ -16,8 +16,16 @@
     @author: mkaay
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
 
 class NewLinkDock(QDockWidget):
     def __init__(self):

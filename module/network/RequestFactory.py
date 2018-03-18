@@ -17,15 +17,21 @@
     @author: mkaay, RaNaN
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from threading import Lock
 
 from module.singletons import get_request_factory
 
 from .Browser import Browser
 from .Bucket import Bucket
-from .HTTPRequest import HTTPRequest
 from .CookieJar import CookieJar
-
+from .HTTPRequest import HTTPRequest
 from .XDCCRequest import XDCCRequest
 
 

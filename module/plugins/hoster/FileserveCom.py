@@ -1,12 +1,23 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from module.network.RequestFactory import getURL as get_url
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..internal.Hoster import Hoster
-from ..internal.misc import json, parse_size, seconds_to_midnight
+from ..internal.misc import (
+    json,
+    parse_size,
+    seconds_to_midnight,
+)
 
 
 class FileserveCom(Hoster):

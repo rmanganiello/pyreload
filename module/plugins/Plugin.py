@@ -17,12 +17,30 @@
     @author: RaNaN, spoob, mkaay
 """
 
-from itertools import islice
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import os
-from os import remove, makedirs, chmod, stat
-from os.path import exists, join
+from itertools import islice
+from os import (
+    chmod,
+    makedirs,
+    remove,
+    stat,
+)
+from os.path import (
+    exists,
+    join,
+)
 from random import randint
-from time import time, sleep
+from time import (
+    sleep,
+    time,
+)
 
 import six
 
@@ -34,7 +52,12 @@ from module.singletons import (
     get_request_factory,
 )
 from module.util.compatibility import IS_WINDOWS
-from module.utils import save_join, save_path, fs_encode, fs_decode
+from module.utils import (
+    fs_decode,
+    fs_encode,
+    save_join,
+    save_path,
+)
 
 if not IS_WINDOWS:
     from os import chown

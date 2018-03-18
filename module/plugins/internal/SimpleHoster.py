@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import re
 
@@ -11,7 +16,13 @@ from module.network.RequestFactory import getURL as get_url
 from module.singletons import get_plugin_manager
 
 from .Hoster import Hoster
-from .misc import encode, parse_name, parse_size, parse_time, replace_patterns
+from .misc import (
+    encode,
+    parse_name,
+    parse_size,
+    parse_time,
+    replace_patterns,
+)
 
 
 class SimpleHoster(Hoster):

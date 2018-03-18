@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import re
-
-from time import sleep
-from os.path import exists, join
+from os.path import (
+    exists,
+    join,
+)
 from shutil import copy
+from time import sleep
 from traceback import print_exc
 
 import six

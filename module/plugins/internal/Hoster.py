@@ -1,18 +1,30 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
+import mimetypes
 import os
 import re
 
-import mimetypes
 import six
 
 from module.network.HTTPRequest import BadHeader
 from module.singletons import get_hook_manager
 
 from .Base import Base
-from .misc import encode, exists, fixurl, fsjoin, parse_name, safejoin
+from .misc import (
+    encode,
+    exists,
+    fixurl,
+    fsjoin,
+    parse_name,
+    safejoin,
+)
 from .Plugin import Fail
 
 

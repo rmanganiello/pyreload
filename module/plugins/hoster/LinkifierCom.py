@@ -1,10 +1,21 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import hashlib
+
 import pycurl
 
+from ..internal.misc import (
+    json,
+    seconds_to_midnight,
+)
 from ..internal.MultiHoster import MultiHoster
-from ..internal.misc import json, seconds_to_midnight
 
 
 class LinkifierCom(MultiHoster):
@@ -59,4 +70,3 @@ class LinkifierCom(MultiHoster):
         self.resume_download = json_data['con_resume']
         self.chunk_limit = json_data.get('con_max', 1) or 1
         self.download(json_data['url'], fixurl=False)
-

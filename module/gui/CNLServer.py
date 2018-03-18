@@ -15,16 +15,29 @@
 
     @author: RaNaN
 """
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-from threading import Thread
-from cgi import FieldStorage
-from os.path import abspath, dirname, join
 from base64 import standard_b64decode
+from BaseHTTPServer import (
+    BaseHTTPRequestHandler,
+    HTTPServer,
+)
 from binascii import unhexlify
+from cgi import FieldStorage
+from os.path import (
+    abspath,
+    dirname,
+    join,
+)
+from threading import Thread
 
 from six.moves.urllib.parse import unquote
-
 
 try:
     from Crypto.Cipher import AES

@@ -18,14 +18,21 @@
     @interface-version: 0.1
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import traceback
 from threading import RLock
 
 import six
 from six.moves import _thread as thread
 
-from module.PluginThread import HookThread
 from module.plugins.PluginManager import literal_eval
+from module.PluginThread import HookThread
 from module.singletons import (
     get_plugin_manager,
     get_thread_manager,
@@ -328,4 +335,3 @@ class HookManager:
                     % (event, f, args, str(e)))
                     if self.core.debug:
                         traceback.print_exc()
-

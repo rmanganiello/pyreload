@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from six.moves.urllib.parse import urljoin
 
 from ..internal.Crypter import Crypter
-from ..internal.misc import fsjoin, json
+from ..internal.misc import (
+    fsjoin,
+    json,
+)
 
 
 class YoutubeComFolder(Crypter):

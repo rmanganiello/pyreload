@@ -17,9 +17,15 @@
     @author: RaNaN
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from os.path import exists
 from shutil import copy
-
 from threading import Lock
 
 import six
@@ -31,8 +37,10 @@ from module.singletons import (
     get_pull_manager,
 )
 from module.util.encoding import smart_bytes
-from module.utils import chmod, lock
-
+from module.utils import (
+    chmod,
+    lock,
+)
 
 ACC_VERSION = 1
 

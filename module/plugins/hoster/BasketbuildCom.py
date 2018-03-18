@@ -4,6 +4,13 @@
 #   https://s.basketbuild.com/filedl/devs?dev=pacman&dl=pacman/falcon/RC-3/pac_falcon-RC-3-20141103.zip
 #   https://s.basketbuild.com/filedl/gapps?dl=gapps-gb-20110828-signed.zip
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from ..internal.SimpleHoster import SimpleHoster

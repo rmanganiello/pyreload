@@ -1,9 +1,20 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import pycurl
+
 from module.network.HTTPRequest import BadHeader
 
-from ..internal.misc import encode, json
+from ..internal.misc import (
+    encode,
+    json,
+)
 from ..internal.MultiHoster import MultiHoster
 
 
@@ -69,4 +80,3 @@ class MegaDebridEu(MultiHoster):
         else:
             self.log_error(res['response_text'])
             self.fail(res['response_text'])
-

@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import time
 
-import Crypto.Hash.SHA
 import pycurl
+
+import Crypto.Hash.SHA
 
 from ..internal.misc import json
 from ..internal.MultiHoster import MultiHoster
@@ -77,4 +85,3 @@ class DebridlinkFr(MultiHoster):
                                'maxLinkHost': "Limitation of number links per day for this host reached"}.get(err_code)
 
                 self.fail(err_message or "Unknown error: `%s`" % err_code)
-

@@ -15,7 +15,16 @@
 
     @author: mkaay, RaNaN
 """
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from os.path import exists
+
+from thrift.server import TServer
 
 from module.remote.RemoteManager import BackendBase
 
@@ -23,9 +32,9 @@ from .thriftbackend.Processor import Processor
 from .thriftbackend.Protocol import ProtocolFactory
 from .thriftbackend.Socket import ServerSocket
 from .thriftbackend.Transport import TransportFactory
+
 #from thriftbackend.Transport import TransportFactoryCompressed
 
-from thrift.server import TServer
 
 class ThriftBackend(BackendBase):
     def setup(self, host, port):

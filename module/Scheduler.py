@@ -17,9 +17,19 @@
     @author: mkaay
 """
 
-from time import time
-from heapq import heappop, heappush
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from heapq import (
+    heappop,
+    heappush,
+)
 from threading import Lock
+from time import time
 
 from six.moves import _thread as thread
 

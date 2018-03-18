@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import operator
 import os
@@ -19,8 +24,18 @@ from module.util.compatibility import IS_WINDOWS
 from module.util.encoding import smart_text
 
 from ..internal.Hoster import Hoster
-from ..internal.misc import exists, isexecutable, json, renice, replace_patterns, which
-from ..internal.Plugin import Abort, Skip
+from ..internal.misc import (
+    exists,
+    isexecutable,
+    json,
+    renice,
+    replace_patterns,
+    which,
+)
+from ..internal.Plugin import (
+    Abort,
+    Skip,
+)
 
 
 class BIGHTTPRequest(HTTPRequest):

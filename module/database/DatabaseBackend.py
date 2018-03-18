@@ -16,20 +16,27 @@
     @author: RaNaN
     @author: mkaay
 """
-from threading import Thread
-from threading import Event
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import sqlite3
 from os import remove
 from os.path import exists
 from shutil import move
-import sqlite3
-
+from threading import (
+    Event,
+    Thread,
+)
 from traceback import print_exc
 
 from six.moves import queue
 
 from module.util.encoding import smart_bytes
 from module.utils import chmod
-
 
 DB_VERSION = 4
 
@@ -351,4 +358,3 @@ if __name__ == "__main__":
     print(end-start)
 
     db.error()
-

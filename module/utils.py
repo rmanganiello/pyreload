@@ -2,10 +2,17 @@
 
 """ Store all usefull functions here """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import os
+import re
 import sys
 import time
-import re
 from os.path import join
 
 import six

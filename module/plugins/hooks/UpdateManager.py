@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import operator
 import os
@@ -16,7 +21,13 @@ from module.singletons import (
 from module.util.compatibility import IS_WINDOWS
 
 from ..internal.Addon import Addon
-from ..internal.misc import Expose, encode, exists, fsjoin, threaded
+from ..internal.misc import (
+    Expose,
+    encode,
+    exists,
+    fsjoin,
+    threaded,
+)
 
 
 class UpdateManager(Addon):

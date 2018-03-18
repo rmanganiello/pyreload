@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import unittest
 from json import loads
 from logging import log
-import unittest
 
 import pytest
 from six.moves.urllib.error import HTTPError
 from six.moves.urllib.parse import urlencode
 from six.moves.urllib.request import urlopen
-
 
 url = "http://localhost:8001/api/%s"
 

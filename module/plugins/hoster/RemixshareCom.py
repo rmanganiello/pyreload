@@ -8,6 +8,13 @@
 # if your download not starts because of pycurl timeouts:
 # Adjust timeouts in /usr/share/pyload/module/network/HTTPRequest.py
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from ..internal.SimpleHoster import SimpleHoster

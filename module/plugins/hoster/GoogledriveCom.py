@@ -4,6 +4,13 @@
 #   https://drive.google.com/file/d/0B6RNTe4ygItBQm15RnJiTmMyckU/view?pli=1
 
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from module.network.HTTPRequest import BadHeader
 
 from ..internal.Hoster import Hoster

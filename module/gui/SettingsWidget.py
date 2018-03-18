@@ -16,10 +16,18 @@
     @author: mkaay
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import six
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from sip import delete
-import six
 
 
 class SettingsWidget(QWidget):

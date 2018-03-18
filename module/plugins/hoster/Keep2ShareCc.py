@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from module.network.HTTPRequest import BadHeader
 from module.network.RequestFactory import getURL as get_url
 
-from ..internal.SimpleHoster import SimpleHoster
 from ..internal.misc import json
+from ..internal.SimpleHoster import SimpleHoster
 
 
 class Keep2ShareCc(SimpleHoster):

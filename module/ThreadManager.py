@@ -18,20 +18,39 @@
     @author: RaNaN
 """
 
-from os.path import exists, join
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
-from subprocess import Popen
-from threading import Event, Lock
-from time import sleep, time
-from traceback import print_exc
+from os.path import (
+    exists,
+    join,
+)
 from random import choice
+from subprocess import Popen
+from threading import (
+    Event,
+    Lock,
+)
+from time import (
+    sleep,
+    time,
+)
+from traceback import print_exc
 
 import pycurl
 
-from module.PyFile import PyFile
 from module.network.RequestFactory import getURL
+from module.PyFile import PyFile
 from module.singletons import get_hook_manager
-from module.utils import freeSpace, lock
+from module.utils import (
+    freeSpace,
+    lock,
+)
 
 from . import PluginThread
 

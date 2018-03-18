@@ -1,24 +1,37 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import sys
+from os.path import (
+    abspath,
+    dirname,
+    join,
+)
 from socket import error
-from os.path import dirname, abspath, join
 from traceback import print_exc
+
+from thrift.transport import TTransport
+
+from .Protocol import Protocol
+#from thrift.transport.TZlibTransport import TZlibTransport
+from .Socket import Socket
+from .thriftgen.pyload import Pyload
+from .thriftgen.pyload.ttypes import *
 
 try:
     import thrift
 except ImportError:
     sys.path.append(abspath(join(dirname(abspath(__file__)), "..", "..", "lib")))
 
-from thrift.transport import TTransport
-#from thrift.transport.TZlibTransport import TZlibTransport
-from .Socket import Socket
-from .Protocol import Protocol
 
 # modules should import ttypes from here, when want to avoid importing API
 
-from .thriftgen.pyload import Pyload
-from .thriftgen.pyload.ttypes import *
 
 ConnectionClosed = TTransport.TTransportException
 

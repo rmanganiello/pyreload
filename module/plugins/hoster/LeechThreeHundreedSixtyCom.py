@@ -1,7 +1,18 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from ..internal.misc import (
+    json,
+    parse_size,
+)
 from ..internal.MultiHoster import MultiHoster
-from ..internal.misc import json, parse_size
+
 
 class LeechThreeHundreedSixtyCom(MultiHoster):
     __name__ = "LeechThreeHundreedSixtyCom"
@@ -33,6 +44,3 @@ class LeechThreeHundreedSixtyCom(MultiHoster):
         pyfile.name = api_data.get('filename', "") or pyfile.name
         pyfile.size = parse_size(api_data.get('message', "0"))
         self.link = api_data['download_url']
-
-
-

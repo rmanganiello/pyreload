@@ -7,14 +7,23 @@
 #  options string: py:slots,dynamic
 #
 
-import sys
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import pprint
+import sys
 
 from six.moves.urllib.parse import urlparse
-from thrift.transport import TTransport
-from thrift.transport import TSocket
-from thrift.transport import THttpClient
 from thrift.protocol import TBinaryProtocol
+from thrift.transport import (
+    THttpClient,
+    TSocket,
+    TTransport,
+)
 
 from . import Pyload
 from .ttypes import *

@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
 
 
-from paver.easy import *
-from paver.setuputils import setup
-from paver.doctools import cog
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-import sys
 import re
-from subprocess import call, Popen, PIPE
+import sys
+from subprocess import (
+    PIPE,
+    Popen,
+    call,
+)
 from zipfile import ZipFile
 
 from six.moves.urllib.request import urlretrieve
 
+from paver.doctools import cog
+from paver.easy import *
+from paver.setuputils import setup
 
 PROJECT_DIR = path(__file__).dirname()
 sys.path.append(PROJECT_DIR)

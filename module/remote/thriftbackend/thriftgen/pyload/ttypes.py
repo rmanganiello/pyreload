@@ -6,9 +6,22 @@
 #  options string: py:slots,dynamic
 #
 
-from thrift.Thrift import TType, TMessageType, TException
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-from thrift.protocol.TBase import TBase, TExceptionBase
+from thrift.protocol.TBase import (
+    TBase,
+    TExceptionBase,
+)
+from thrift.Thrift import (
+    TException,
+    TMessageType,
+    TType,
+)
 
 
 class DownloadStatus(TBase):
@@ -832,4 +845,3 @@ class ServiceException(TExceptionBase):
 
   def __str__(self):
     return repr(self)
-

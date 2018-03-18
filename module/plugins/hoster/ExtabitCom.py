@@ -1,9 +1,19 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from ..captcha.ReCaptcha import ReCaptcha
-from ..internal.misc import json, seconds_to_midnight
+from ..internal.misc import (
+    json,
+    seconds_to_midnight,
+)
 from ..internal.SimpleHoster import SimpleHoster
 
 

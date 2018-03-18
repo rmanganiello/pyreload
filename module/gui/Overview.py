@@ -16,10 +16,20 @@
     @author: mkaay
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from module.utils import (
+    formatSize,
+    formatSpeed,
+)
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from module.utils import formatSpeed, formatSize
 
 class OverviewModel(QAbstractListModel):
     PackageName = 10

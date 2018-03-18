@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import time
 
-import Crypto.Hash.SHA
 import pycurl
+
+import Crypto.Hash.SHA
 
 from ..internal.misc import json
 from ..internal.MultiAccount import MultiAccount

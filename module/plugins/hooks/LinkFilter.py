@@ -1,3 +1,10 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from module.singletons import get_plugin_manager
 
 from ..internal.Addon import Addon

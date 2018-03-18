@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import inspect
 import re
@@ -18,9 +23,24 @@ from module.singletons import (
 )
 
 from .Captcha import Captcha
-from .misc import (decode, encode, fixurl, format_size, format_time,
-                   parse_html_form, parse_name, replace_patterns)
-from .Plugin import Abort, Fail, Plugin, Reconnect, Retry, Skip
+from .misc import (
+    decode,
+    encode,
+    fixurl,
+    format_size,
+    format_time,
+    parse_html_form,
+    parse_name,
+    replace_patterns,
+)
+from .Plugin import (
+    Abort,
+    Fail,
+    Plugin,
+    Reconnect,
+    Retry,
+    Skip,
+)
 
 
 #@TODO: Recheck in 0.4.10

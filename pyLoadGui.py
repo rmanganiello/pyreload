@@ -18,38 +18,48 @@
     @author: mkaay
 """
 
-import sys
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-from uuid import uuid4 as uuid # should be above PyQt imports
-from time import sleep, time
-
-from base64 import b64decode
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-
-import re
-import module.common.pylgettext as gettext
 import os
-from os.path import abspath
-from os.path import join
-from os.path import basename
-from os.path import commonprefix
+import re
+import sys
+from base64 import b64decode
+from os.path import (
+    abspath,
+    basename,
+    commonprefix,
+    join,
+)
+from time import (
+    sleep,
+    time,
+)
+from uuid import uuid4 as uuid  # should be above PyQt imports
 
 from six.moves import _thread as thread
 
+import module.common.pylgettext as gettext
 from module import InitHomeDir
+from module.gui.Collector import *
 from module.gui.ConnectionManager import *
 from module.gui.Connector import Connector
-from module.gui.MainWindow import *
-from module.gui.Queue import *
-from module.gui.Overview import *
-from module.gui.Collector import *
-from module.gui.XMLParser import *
 from module.gui.CoreConfigParser import ConfigParser
-
+from module.gui.MainWindow import *
+from module.gui.Overview import *
+from module.gui.Queue import *
+from module.gui.XMLParser import *
 from module.lib.rename_process import renameProcess
-from module.utils import formatSize, formatSpeed
+from module.utils import (
+    formatSize,
+    formatSpeed,
+)
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 try:
     import pynotify
@@ -763,4 +773,3 @@ if __name__ == "__main__":
     renameProcess('pyLoadGui')
     app = main()
     app.loop()
-

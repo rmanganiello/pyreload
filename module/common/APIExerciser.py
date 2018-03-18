@@ -1,15 +1,36 @@
 # -*- coding: utf-8 -*-
 
-import string
-from threading import Thread
-from random import choice, random, sample, randint
-from time import time, sleep
-from math import floor
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import gc
+import string
+from math import floor
+from random import (
+    choice,
+    randint,
+    random,
+    sample,
+)
+from threading import Thread
+from time import (
+    sleep,
+    time,
+)
+from traceback import (
+    format_exc,
+    print_exc,
+)
 
-from traceback import print_exc, format_exc
+from module.remote.thriftbackend.ThriftClient import (
+    Destination,
+    ThriftClient,
+)
 
-from module.remote.thriftbackend.ThriftClient import ThriftClient, Destination
 
 def createURLs():
     """ create some urls, some may fail """

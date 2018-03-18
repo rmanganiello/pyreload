@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import time
 
-from ..internal.MultiAccount import MultiAccount
 from ..internal.misc import json
+from ..internal.MultiAccount import MultiAccount
 
 
 class LeechThreeHundreedSixtyCom(MultiAccount):
@@ -66,5 +73,3 @@ class LeechThreeHundreedSixtyCom(MultiAccount):
             self.fail_login()
 
         data['token'] = api_data['token']
-
-

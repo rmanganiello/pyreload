@@ -6,6 +6,17 @@
 #  options string: py:slots,dynamic
 #
 
-from thrift.Thrift import TType, TMessageType, TException
-from .ttypes import *
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
+from thrift.Thrift import (
+    TException,
+    TMessageType,
+    TType,
+)
+
+from .ttypes import *

@@ -17,11 +17,21 @@
     @author: RaNaN
 """
 
-import pycurl
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-from codecs import getincrementaldecoder, lookup, BOM_UTF8
+from codecs import (
+    BOM_UTF8,
+    getincrementaldecoder,
+    lookup,
+)
 from logging import getLogger
 
+import pycurl
 import six
 from six.moves import (
     cStringIO,
@@ -33,6 +43,7 @@ from six.moves.urllib.parse import (
 )
 
 from module.plugins.Plugin import Abort
+
 
 def myquote(url):
     return quote(url.encode('utf_8') if isinstance(url, unicode) else url, safe="%/:=&?~#+!$,;'@()*[]")
@@ -361,4 +372,3 @@ if __name__ == "__main__":
     url = "http://pyload.org"
     c = HTTPRequest()
     print(c.load(url))
-

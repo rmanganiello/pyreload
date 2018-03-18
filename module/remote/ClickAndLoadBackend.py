@@ -15,20 +15,31 @@
 
     @author: RaNaN
 """
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-from cgi import FieldStorage
 from base64 import standard_b64decode
+from BaseHTTPServer import (
+    BaseHTTPRequestHandler,
+    HTTPServer,
+)
 from binascii import unhexlify
+from cgi import FieldStorage
 
 from six.moves.urllib.parse import unquote
+
+from .RemoteManager import BackendBase
 
 try:
     from Crypto.Cipher import AES
 except:
     pass
 
-from .RemoteManager import BackendBase
 
 core = None
 js = None

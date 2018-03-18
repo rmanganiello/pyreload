@@ -16,15 +16,29 @@
     
     @author: RaNaN
 """
-from os import remove, stat, fsync
-from os.path import exists
-from time import sleep
-from re import search
-from module.utils import fs_encode
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import codecs
+from os import (
+    fsync,
+    remove,
+    stat,
+)
+from os.path import exists
+from re import search
+from time import sleep
+
 import pycurl
 
+from module.utils import fs_encode
+
 from .HTTPRequest import HTTPRequest
+
 
 class WrongFormat(Exception):
     pass

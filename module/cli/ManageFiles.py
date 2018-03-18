@@ -18,13 +18,24 @@
 #
 ###
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from itertools import islice
 from time import time
+
+from module.Api import (
+    Destination,
+    PackageData,
+)
 
 from .Handler import Handler
 from .printer import *
 
-from module.Api import Destination, PackageData
 
 class ManageFiles(Handler):
     """ possibility to manage queue/collector """

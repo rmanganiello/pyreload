@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import re
 import time
 
 from six.moves.urllib.parse import urljoin
 
-from ..internal.SimpleHoster import SimpleHoster
 from ..internal.misc import json
+from ..internal.SimpleHoster import SimpleHoster
 
 
 def double_decode(m):

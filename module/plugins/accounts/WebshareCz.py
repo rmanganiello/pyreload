@@ -1,8 +1,19 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import hashlib
 import re
 import time
+
+from module.network.RequestFactory import getURL as get_url
+
+from ..internal.Account import Account
 
 try:
     import passlib.hash
@@ -10,9 +21,7 @@ except ImportError:
     passlib = None
 
 
-from module.network.RequestFactory import getURL as get_url
 
-from ..internal.Account import Account
 
 
 class WebshareCz(Account):

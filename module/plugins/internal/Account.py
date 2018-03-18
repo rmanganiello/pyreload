@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import random
 import threading
@@ -11,9 +16,18 @@ from module.singletons import (
     get_request_factory,
 )
 
-from .misc import (Periodical, compare_time, decode, isiterable, lock,
-                   parse_size)
-from .Plugin import Plugin, Skip
+from .misc import (
+    Periodical,
+    compare_time,
+    decode,
+    isiterable,
+    lock,
+    parse_size,
+)
+from .Plugin import (
+    Plugin,
+    Skip,
+)
 
 
 class Account(Plugin):

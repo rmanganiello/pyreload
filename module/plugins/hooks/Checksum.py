@@ -1,16 +1,26 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import hashlib
 import os
 import re
-from threading import Event
 import time
 import zlib
+from threading import Event
 
 from ..internal.Addon import Addon
-from ..internal.misc import encode, format_time, fsjoin, threaded
+from ..internal.misc import (
+    encode,
+    format_time,
+    fsjoin,
+    threaded,
+)
 
 
 def compute_checksum(local_file, algorithm, progress_notify=None, abort=None):

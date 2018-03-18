@@ -1,17 +1,30 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import os
 import re
 import select
 import socket
 import struct
 import sys
-import time
 import threading
+import time
 
-from module.plugins.Plugin import Abort
 from module.plugins.internal.Hoster import Hoster
-from module.plugins.internal.misc import encode, exists, fsjoin, lock, threaded
+from module.plugins.internal.misc import (
+    encode,
+    exists,
+    fsjoin,
+    lock,
+    threaded,
+)
+from module.plugins.Plugin import Abort
 from module.singletons import (
     get_hook_manager,
     get_request_factory,

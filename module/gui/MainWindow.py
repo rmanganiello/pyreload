@@ -16,23 +16,32 @@
     @author: mkaay
 """
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 from os.path import join
 
-from module.gui.PackageDock import *
-from module.gui.LinkDock import *
-from module.gui.CaptchaDock import CaptchaDock
-from module.gui.SettingsWidget import SettingsWidget
-
-from module.gui.Collector import CollectorView, Package, Link
-from module.gui.Queue import QueueView
-from module.gui.Overview import OverviewView
-from module.gui.Accounts import AccountView
 from module.gui.AccountEdit import AccountEdit
-
+from module.gui.Accounts import AccountView
+from module.gui.CaptchaDock import CaptchaDock
+from module.gui.Collector import (
+    CollectorView,
+    Link,
+    Package,
+)
+from module.gui.LinkDock import *
+from module.gui.Overview import OverviewView
+from module.gui.PackageDock import *
+from module.gui.Queue import QueueView
+from module.gui.SettingsWidget import SettingsWidget
 from module.remote.thriftbackend.ThriftClient import AccountInfo
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+
 
 class MainWindow(QMainWindow):
     def __init__(self, connector):

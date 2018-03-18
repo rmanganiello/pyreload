@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from module.network.HTTPRequest import BadHeader
@@ -7,7 +14,11 @@ from module.network.RequestFactory import getURL as get_url
 from module.singletons import get_request_factory
 
 from .Crypter import Crypter
-from .misc import parse_name, parse_time, replace_patterns
+from .misc import (
+    parse_name,
+    parse_time,
+    replace_patterns,
+)
 
 
 class SimpleCrypter(Crypter):

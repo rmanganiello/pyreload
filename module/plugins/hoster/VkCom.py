@@ -3,6 +3,13 @@
 # Test links:
 #   http://vk.com/video_ext.php?oid=166335015&id=162608895&hash=b55affa83774504b&hd=1
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from ..internal.SimpleHoster import SimpleHoster

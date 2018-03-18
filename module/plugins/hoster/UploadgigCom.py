@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from ..internal.SimpleHoster import SimpleHoster
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from ..captcha.ReCaptcha import ReCaptcha
+from ..internal.SimpleHoster import SimpleHoster
 
 
 class UploadgigCom(SimpleHoster):
@@ -48,5 +55,3 @@ class UploadgigCom(SimpleHoster):
         inputs['g-recaptcha-response'] = response
         self.data = self.load(self.fixurl(url),
                               post=inputs)
-
-

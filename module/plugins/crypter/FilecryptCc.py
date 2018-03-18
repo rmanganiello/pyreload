@@ -3,14 +3,24 @@
 # Test links:
 #   http://filecrypt.cc/Container/64E039F859.html
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import binascii
 import re
 
-import Crypto.Cipher.AES
 from six.moves.urllib.parse import urljoin
 
+import Crypto.Cipher.AES
 from module.network.CookieJar import CookieJar
-from module.network.HTTPRequest import BadHeader, HTTPRequest
+from module.network.HTTPRequest import (
+    BadHeader,
+    HTTPRequest,
+)
 from module.singletons import get_request_factory
 
 from ..captcha.ReCaptcha import ReCaptcha

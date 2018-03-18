@@ -4,6 +4,13 @@
 # http://www.filepup.net/files/k5w4ZVoF1410184283.html
 # http://www.filepup.net/files/R4GBq9XH1410186553.html
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from ..internal.SimpleHoster import SimpleHoster

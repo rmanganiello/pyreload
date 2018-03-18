@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from module.network.RequestFactory import getURL as get_url
 
-from ..internal.SimpleCrypter import SimpleCrypter
 from ..internal.misc import json
+from ..internal.SimpleCrypter import SimpleCrypter
 
 
 class TenluaVnFolder(SimpleCrypter):
@@ -39,4 +46,3 @@ class TenluaVnFolder(SimpleCrypter):
 
         if pack_links:
             self.packages.append((pack_name, pack_links, pack_name))
-

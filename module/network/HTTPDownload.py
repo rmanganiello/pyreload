@@ -17,19 +17,39 @@
     @author: RaNaN
 """
 
-from os import remove, fsync
-from os.path import dirname
-from time import sleep, time
-from shutil import move
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from logging import getLogger
+from os import (
+    fsync,
+    remove,
+)
+from os.path import dirname
+from shutil import move
+from time import (
+    sleep,
+    time,
+)
 
 import pycurl
 
-from .HTTPChunk import ChunkInfo, HTTPChunk
+from module.plugins.Plugin import Abort
+from module.utils import (
+    fs_encode,
+    save_join,
+)
+
+from .HTTPChunk import (
+    ChunkInfo,
+    HTTPChunk,
+)
 from .HTTPRequest import BadHeader
 
-from module.plugins.Plugin import Abort
-from module.utils import save_join, fs_encode
 
 class HTTPDownload():
     """ loads a url http + ftp """

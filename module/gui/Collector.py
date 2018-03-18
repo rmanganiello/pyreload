@@ -16,15 +16,24 @@
     @author: mkaay
 """
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import six
 
 from module.PyFile import statusMap
+from module.remote.thriftbackend.ThriftClient import (
+    Destination,
+    ElementType,
+    FileDoesNotExists,
+)
 from module.utils import formatSize
-
-from module.remote.thriftbackend.ThriftClient import Destination, FileDoesNotExists, ElementType
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 statusMapReverse = dict((v,k) for k, v in six.iteritems(statusMap))
 
@@ -406,4 +415,3 @@ class CollectorView(QTreeView):
         self.setColumnWidth(3, 100)
 
         self.setEditTriggers(QAbstractItemView.DoubleClicked | QAbstractItemView.EditKeyPressed)
-

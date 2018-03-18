@@ -17,18 +17,33 @@
     @author: mkaay, RaNaN
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import importlib
-from itertools import chain
-from os import listdir, makedirs
-from os.path import isfile, join, exists, abspath
 import re
 import sys
+from itertools import chain
+from os import (
+    listdir,
+    makedirs,
+)
+from os.path import (
+    abspath,
+    exists,
+    isfile,
+    join,
+)
 from traceback import print_exc
 
 import six
 
-from module.lib.SafeEval import const_eval as literal_eval
 from module.ConfigParser import IGNORE
+from module.lib.SafeEval import const_eval as literal_eval
 from module.singletons import get_account_manager
 
 
@@ -464,4 +479,3 @@ if __name__ == "__main__":
     b = time()
 
     print(b - a, "s")
-

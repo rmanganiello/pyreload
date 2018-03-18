@@ -1,19 +1,38 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from itertools import chain
-import json
-from traceback import format_exc, print_exc
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-from bottle import route, request, response, HTTPError
+import json
+from itertools import chain
+from traceback import (
+    format_exc,
+    print_exc,
+)
+
 import six
 from six.moves.urllib.parse import unquote
 
-from .utils import toDict, set_session
+from bottle import (
+    HTTPError,
+    request,
+    response,
+    route,
+)
+from module.Api import BaseObject
+from module.lib.SafeEval import const_eval as literal_eval
+
+from .utils import (
+    set_session,
+    toDict,
+)
 from .webinterface import PYLOAD
 
-from module.lib.SafeEval import const_eval as literal_eval
-from module.Api import BaseObject
 
 # json encoder that accepts TBase objects
 class TBaseEncoder(json.JSONEncoder):

@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from ..internal.SimpleHoster import SimpleHoster
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from ..internal.misc import json
+from ..internal.SimpleHoster import SimpleHoster
+
 
 class IronfilesNet(SimpleHoster):
     __name__ = "IronfilesNet"
@@ -49,4 +57,3 @@ class IronfilesNet(SimpleHoster):
 
             else:
                 self.fail(message)
-

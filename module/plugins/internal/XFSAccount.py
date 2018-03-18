@@ -1,13 +1,24 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 import time
 
 import six
 from six.moves.urllib.parse import urljoin
 
-from .misc import parse_html_form, parse_time, set_cookie
 from .Account import Account
+from .misc import (
+    parse_html_form,
+    parse_time,
+    set_cookie,
+)
 
 
 class XFSAccount(Account):

@@ -41,8 +41,19 @@ Further Example:
   then uploads it to the W3C validator.
 """
 
-import mimetools, mimetypes
-from os import write, remove
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import mimetools
+import mimetypes
+from os import (
+    remove,
+    write,
+)
 
 from six.moves import cStringIO
 from six.moves.urllib.parse import urlencode

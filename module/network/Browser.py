@@ -1,10 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from logging import getLogger
 
-from .HTTPRequest import HTTPRequest
 from .HTTPDownload import HTTPDownload
+from .HTTPRequest import HTTPRequest
 
 
 class Browser(object):
@@ -143,4 +150,3 @@ if __name__ == "__main__":
     #browser.getPage("http://google.com/search?q=bar")
 
     browser.httpDownload("http://speedtest.netcologne.de/test_10mb.bin", "test_10mb.bin")
-

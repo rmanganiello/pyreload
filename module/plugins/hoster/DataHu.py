@@ -3,7 +3,12 @@
 # Test links:
 # http://data.hu/get/6381232/random.bin
 
-from __future__ import unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 from ..internal.SimpleHoster import SimpleHoster
 

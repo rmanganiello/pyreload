@@ -1,14 +1,31 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import os
 
 from module.singletons import get_plugin_manager
 
 from ..internal.Addon import Addon
-from ..internal.Extractor import ArchiveError, CRCError, PasswordError
-from ..internal.misc import Expose, encode, exists, fsjoin, safename, threaded, uniqify
+from ..internal.Extractor import (
+    ArchiveError,
+    CRCError,
+    PasswordError,
+)
+from ..internal.misc import (
+    Expose,
+    encode,
+    exists,
+    fsjoin,
+    safename,
+    threaded,
+    uniqify,
+)
 
 try:
     import send2trash

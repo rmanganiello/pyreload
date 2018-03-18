@@ -16,15 +16,20 @@
 
     @author: RaNaN
 """
-from __future__ import unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-from getpass import getpass
 import os
+import sys
+from getpass import getpass
 from subprocess import (
     PIPE,
     call,
 )
-import sys
 from sys import exit
 
 from six.moves import input

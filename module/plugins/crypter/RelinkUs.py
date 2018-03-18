@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import binascii
 import re
@@ -10,7 +15,10 @@ import Crypto.Cipher.AES
 from ..captcha.SolveMedia import SolveMedia
 from ..internal.Captcha import Captcha
 from ..internal.Crypter import Crypter
-from ..internal.misc import fsjoin, replace_patterns
+from ..internal.misc import (
+    fsjoin,
+    replace_patterns,
+)
 
 
 class RelinkUs(Crypter):

@@ -21,24 +21,66 @@
     @version: v0.4.9
 """
 
-import module.common.pylgettext as gettext
-from imp import find_module
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import logging
 import logging.handlers
 import os
-from os import _exit, execl, getcwd, remove, sep, walk, chdir, close
-from os.path import exists, join
 import signal
 import subprocess
 import sys
-from sys import executable, exit
-from time import time, sleep
+from codecs import getwriter
+from imp import find_module
+from os import (
+    _exit,
+    chdir,
+    close,
+    execl,
+    getcwd,
+    remove,
+    sep,
+    walk,
+)
+from os.path import (
+    exists,
+    join,
+)
+from sys import (
+    executable,
+    exit,
+)
+from time import (
+    sleep,
+    time,
+)
 from traceback import print_exc
 
 import click
 import six
 
-from module import InitHomeDir
+import module.common.pylgettext as gettext
+from module import (
+    InitHomeDir,
+    remote,
+)
+from module.CaptchaManager import CaptchaManager
+from module.common.JsEngine import JsEngine
+from module.ConfigParser import ConfigParser
+from module.database import (
+    DatabaseBackend,
+    FileHandler,
+)
+from module.network.RequestFactory import RequestFactory
+from module.plugins.AccountManager import AccountManager
+from module.plugins.PluginManager import PluginManager
+from module.PullEvents import PullManager
+from module.remote.RemoteManager import RemoteManager
+from module.Scheduler import Scheduler
 from module.singletons import (
     get_account_manager,
     get_hook_manager,
@@ -57,23 +99,12 @@ from module.util.encoding import (
     smart_bytes,
     smart_text,
 )
-from module.plugins.AccountManager import AccountManager
-from module.CaptchaManager import CaptchaManager
-from module.ConfigParser import ConfigParser
-from module.plugins.PluginManager import PluginManager
-from module.PullEvents import PullManager
-from module.network.RequestFactory import RequestFactory
+from module.utils import (
+    formatSize,
+    freeSpace,
+    get_console_encoding,
+)
 from module.web.ServerThread import WebServer
-from module.Scheduler import Scheduler
-from module.common.JsEngine import JsEngine
-from module import remote
-from module.remote.RemoteManager import RemoteManager
-from module.database import DatabaseBackend, FileHandler
-
-from module.utils import freeSpace, formatSize, get_console_encoding
-
-from codecs import getwriter
-
 
 CURRENT_VERSION = '0.4.9'
 

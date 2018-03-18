@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from ..internal.SimpleHoster import SimpleHoster
@@ -50,4 +57,3 @@ class UptoboxCom(SimpleHoster):
         m = re.search(self.LINK_PATTERN, self.data)
         if m is not None:
             self.link = m.group(1)
-

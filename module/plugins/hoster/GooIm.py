@@ -4,6 +4,13 @@
 # https://goo.im/devs/liquidsmooth/3.x/codina/Nightly/LS-KK-v3.2-2014-08-01-codina.zip
 
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from ..internal.SimpleHoster import SimpleHoster
 
 

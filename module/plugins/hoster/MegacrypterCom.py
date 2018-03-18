@@ -1,9 +1,19 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from ..internal.misc import json
-from .MegaCoNz import MegaCoNz, MegaCrypto
+from .MegaCoNz import (
+    MegaCoNz,
+    MegaCrypto,
+)
 
 
 class MegacrypterCom(MegaCoNz):

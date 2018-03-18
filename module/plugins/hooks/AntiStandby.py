@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import os
 import subprocess
@@ -11,7 +16,11 @@ from module.singletons import get_thread_manager
 from module.util.compatibility import IS_WINDOWS
 
 from ..internal.Addon import Addon
-from ..internal.misc import Expose, encode, fsjoin
+from ..internal.misc import (
+    Expose,
+    encode,
+    fsjoin,
+)
 
 try:
     import caffeine

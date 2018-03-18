@@ -17,6 +17,13 @@
     @author: RaNaN
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import socket
 from sys import (
     argv,
@@ -72,4 +79,3 @@ if __name__ == "__main__":
         args.append(9666)
 
     f = Forwarder(args[0], int(args[1]))
-

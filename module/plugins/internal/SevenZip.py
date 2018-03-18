@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import os
 import re
@@ -10,8 +15,17 @@ import subprocess
 from module.util.compatibility import IS_WINDOWS
 from module.util.encoding import smart_text
 
-from .misc import encode, fsjoin, renice
-from .Extractor import ArchiveError, CRCError, Extractor, PasswordError
+from .Extractor import (
+    ArchiveError,
+    CRCError,
+    Extractor,
+    PasswordError,
+)
+from .misc import (
+    encode,
+    fsjoin,
+    renice,
+)
 
 
 class SevenZip(Extractor):

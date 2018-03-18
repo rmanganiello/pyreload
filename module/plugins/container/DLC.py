@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import re
 import xml.dom.minidom
@@ -8,7 +13,10 @@ import xml.dom.minidom
 import Crypto.Cipher.AES
 
 from ..internal.Container import Container
-from ..internal.misc import decode, encode
+from ..internal.misc import (
+    decode,
+    encode,
+)
 
 
 class DLC(Container):

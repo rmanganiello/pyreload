@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 import time
 
@@ -11,7 +18,11 @@ from module.singletons import (
 )
 
 from .Account import Account
-from .misc import decode, remove_chars, uniqify
+from .misc import (
+    decode,
+    remove_chars,
+    uniqify,
+)
 
 
 class MultiAccount(Account):

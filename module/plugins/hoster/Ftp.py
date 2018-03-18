@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
-from six.moves.urllib.parse import urlparse
-
 import pycurl
+from six.moves.urllib.parse import urlparse
 
 from ..internal.Hoster import Hoster
 from ..internal.misc import parse_name

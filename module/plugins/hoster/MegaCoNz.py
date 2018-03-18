@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import base64
 import os
 import random
@@ -11,8 +18,13 @@ import Crypto.Util.Counter
 from module.network.HTTPRequest import BadHeader
 
 from ..internal.Hoster import Hoster
-from ..internal.misc import decode, encode, exists, fsjoin, json
-
+from ..internal.misc import (
+    decode,
+    encode,
+    exists,
+    fsjoin,
+    json,
+)
 
 ############################ General errors ###################################
 # EINTERNAL            (-1): An internal error has occurred. Please submit a bug report, detailing the exact circumstances in which this error occurred

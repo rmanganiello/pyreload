@@ -17,8 +17,16 @@
     @author: mkaay
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
 
 class CaptchaDock(QDockWidget):
     """
@@ -91,4 +99,3 @@ class CaptchaDockWidget(QWidget):
         self.dock.emit(SIGNAL("done"), tid, str(text))
         self.dock.hide()
         self.dock.processing = False
-

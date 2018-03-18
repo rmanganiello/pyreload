@@ -16,10 +16,18 @@
     @author: mkaay
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from os.path import join
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from os.path import join
 
 class AccountEdit(QWidget):
     """

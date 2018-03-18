@@ -16,13 +16,30 @@
 
     @author: RaNaN
 """
-from __future__ import unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-from bottle import request, HTTPError, redirect, ServerAdapter
+from bottle import (
+    HTTPError,
+    ServerAdapter,
+    redirect,
+    request,
+)
+from module.Api import (
+    PERMS,
+    ROLE,
+    has_permission,
+)
 
-from .webinterface import env, TEMPLATE, PREFIX
-
-from module.Api import has_permission, PERMS, ROLE
+from .webinterface import (
+    PREFIX,
+    TEMPLATE,
+    env,
+)
 
 
 def render_to_response(name, args={}, proc=[]):

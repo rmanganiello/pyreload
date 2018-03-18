@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 
-import pycurl
-from module.network.HTTPRequest import BadHeader
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
+import pycurl
 from six.moves import reduce
 
-from ..internal.misc import encode, json
+from module.network.HTTPRequest import BadHeader
+
+from ..internal.misc import (
+    encode,
+    json,
+)
 from ..internal.MultiAccount import MultiAccount
 
 

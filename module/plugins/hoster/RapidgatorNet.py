@@ -1,14 +1,25 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 import pycurl
+
 from module.network.HTTPRequest import BadHeader
 
 from ..captcha.AdsCaptcha import AdsCaptcha
 from ..captcha.ReCaptcha import ReCaptcha
 from ..captcha.SolveMedia import SolveMedia
-from ..internal.misc import json, seconds_to_midnight
+from ..internal.misc import (
+    json,
+    seconds_to_midnight,
+)
 from ..internal.SimpleHoster import SimpleHoster
 
 

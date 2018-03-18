@@ -11,10 +11,20 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-from __future__ import unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-import sys, os
-from os.path import dirname, join, abspath
+import os
+import sys
+from os.path import (
+    abspath,
+    dirname,
+    join,
+)
 
 dir_name = join(dirname(abspath("")))
 sys.path.append(dir_name)

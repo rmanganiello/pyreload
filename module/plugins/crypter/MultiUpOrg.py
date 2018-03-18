@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from six.moves.urllib.parse import urljoin
 
 from module.network.HTTPRequest import BadHeader
-from ..internal.SimpleCrypter import SimpleCrypter
+
 from ..captcha.ReCaptcha import ReCaptcha
+from ..internal.SimpleCrypter import SimpleCrypter
 
 
 class MultiUpOrg(SimpleCrypter):

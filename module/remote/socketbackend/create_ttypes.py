@@ -1,9 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import inspect
 import sys
-from os.path import abspath, dirname, join
+from os.path import (
+    abspath,
+    dirname,
+    join,
+)
+
+from .thriftbackend.thriftgen.pyload import ttypes
+from .thriftbackend.thriftgen.pyload.Pyload import Iface
 
 path = dirname(abspath(__file__))
 module = join(path, "..", "..")
@@ -11,8 +25,6 @@ module = join(path, "..", "..")
 sys.path.append(join(module, "lib"))
 sys.path.append(join(module, "remote"))
 
-from .thriftbackend.thriftgen.pyload import ttypes
-from .thriftbackend.thriftgen.pyload.Pyload import Iface
 
 
 def main():

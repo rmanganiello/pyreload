@@ -17,8 +17,18 @@
     @author: mkaay
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from threading import RLock
-from time import sleep, time
+from time import (
+    sleep,
+    time,
+)
 
 from module.PullEvents import UpdateEvent
 from module.singletons import (
@@ -26,8 +36,10 @@ from module.singletons import (
     get_pull_manager,
     get_thread_manager,
 )
-from module.utils import formatSize, lock
-
+from module.utils import (
+    formatSize,
+    lock,
+)
 
 statusMap = {
     "finished":    0,

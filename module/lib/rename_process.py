@@ -1,4 +1,12 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import sys
+
 
 def renameProcess(new_name):
     """ Renames the process calling the function to the given name. """

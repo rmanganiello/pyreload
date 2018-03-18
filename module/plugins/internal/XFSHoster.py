@@ -1,12 +1,24 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import operator
 import random
 import re
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..captcha.SolveMedia import SolveMedia
-from .misc import html_unescape, parse_time, seconds_to_midnight, set_cookie
+from .misc import (
+    html_unescape,
+    parse_time,
+    seconds_to_midnight,
+    set_cookie,
+)
 from .SimpleHoster import SimpleHoster
 
 

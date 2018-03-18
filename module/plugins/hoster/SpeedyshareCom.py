@@ -3,6 +3,13 @@
 # Test links:
 # http://speedy.sh/ep2qY/Zapp-Brannigan.jpg
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from ..internal.SimpleHoster import SimpleHoster

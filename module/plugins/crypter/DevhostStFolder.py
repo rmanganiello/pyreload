@@ -3,6 +3,13 @@
 # Test links:
 # http://d-h.st/users/shine/?fld_id=37263#files
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from six.moves.urllib.parse import urljoin

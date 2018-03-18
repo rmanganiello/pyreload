@@ -18,18 +18,36 @@
     @author: RaNaN
 """
 
-from threading import Thread
-from os import listdir, stat
-from os.path import join
-from time import sleep, time, strftime, gmtime
-from traceback import print_exc, format_exc
-from pprint import pformat
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import sys
 from copy import copy
+from os import (
+    listdir,
+    stat,
+)
+from os.path import join
+from pprint import pformat
+from threading import Thread
+from time import (
+    gmtime,
+    sleep,
+    strftime,
+    time,
+)
+from traceback import (
+    format_exc,
+    print_exc,
+)
 from types import MethodType
 
-from pycurl import error
 import six
+from pycurl import error
 from six.moves import queue
 
 from module.singletons import (
@@ -37,11 +55,18 @@ from module.singletons import (
     get_plugin_manager,
 )
 
-from .PyFile import PyFile
-from .plugins.Plugin import Abort, Fail, Reconnect, Retry, SkipDownload
-from .common.packagetools import parseNames
-from .utils import save_join
 from .Api import OnlineStatus
+from .common.packagetools import parseNames
+from .plugins.Plugin import (
+    Abort,
+    Fail,
+    Reconnect,
+    Retry,
+    SkipDownload,
+)
+from .PyFile import PyFile
+from .utils import save_join
+
 
 class PluginThread(Thread):
     """abstract base class for thread types"""

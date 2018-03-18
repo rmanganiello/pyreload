@@ -17,10 +17,17 @@
     @author: RaNaN
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import re
 from base64 import standard_b64encode
 from os.path import join
 from time import time
-import re
 
 import six
 
@@ -34,11 +41,14 @@ from module.singletons import (
     get_thread_manager,
 )
 
-from .PyFile import PyFile
-from .utils import freeSpace, compare_time
 from .common.packagetools import parseNames
 from .network.RequestFactory import getURL
+from .PyFile import PyFile
 from .remote import activated
+from .utils import (
+    compare_time,
+    freeSpace,
+)
 
 if activated:
     try:

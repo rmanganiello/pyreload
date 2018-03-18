@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import pycurl
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 import time
 
+import pycurl
 from six.moves.urllib.parse import urljoin
 
 from ..internal.Account import Account

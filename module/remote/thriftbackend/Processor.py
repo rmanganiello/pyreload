@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from .thriftgen.pyload import Pyload
+
 
 class Processor(Pyload.Processor):
     def __init__(self, *args, **kwargs):

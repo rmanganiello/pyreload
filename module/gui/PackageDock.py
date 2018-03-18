@@ -15,10 +15,18 @@
     
     @author: mkaay
 """
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
 
 class NewPackageDock(QDockWidget):
     def __init__(self):

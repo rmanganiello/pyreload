@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import pycurl
+
 from module.network.RequestFactory import getRequest as get_request
 
 from ..internal.Notifier import Notifier

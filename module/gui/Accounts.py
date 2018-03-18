@@ -16,10 +16,21 @@
     @author: mkaay
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from time import (
+    gmtime,
+    strftime,
+)
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from time import strftime, gmtime
 
 class AccountModel(QAbstractItemModel):
     """
@@ -210,4 +221,3 @@ class AccountDelegate(QItemDelegate):
             QApplication.style().drawControl(QStyle.CE_ProgressBar, opts, painter)
             return
         QItemDelegate.paint(self, painter, option, index)
-

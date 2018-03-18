@@ -16,13 +16,20 @@
 
     @author: RaNaN
 """
-from __future__ import unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 from imp import find_module
-from os.path import join, exists
+from os.path import (
+    exists,
+    join,
+)
 
 from six.moves.urllib.parse import quote
-
 
 ENGINE = ""
 

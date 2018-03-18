@@ -19,12 +19,27 @@
 	This modules inits working directories and global variables, pydir and homedir
 """
 
-from os import makedirs, path, chdir
-from os.path import join
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import sys
-from sys import argv, platform
+from os import (
+    chdir,
+    makedirs,
+    path,
+)
+from os.path import join
+from sys import (
+    argv,
+    platform,
+)
 
 from six.moves import builtins
+
 builtins.owd = path.abspath("") #original working directory
 builtins.pypath = path.abspath(path.join(__file__, "..", ".."))
 

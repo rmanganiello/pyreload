@@ -2,7 +2,12 @@
 
 # @TODO: Move to misc directory in 0.4.10
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 # import HTMLParser  #@TODO: Use in 0.4.10
 import datetime
@@ -21,11 +26,9 @@ import xml.sax.saxutils  # @TODO: Remove in 0.4.10
 import zlib
 
 import six
-from six.moves.urllib.parse import (
-    quote as url_quote,
-    unquote as url_unquote,
-    urlparse,
-)
+from six.moves.urllib.parse import quote as url_quote
+from six.moves.urllib.parse import unquote as url_unquote
+from six.moves.urllib.parse import urlparse
 
 from module.singletons import get_hook_manager
 from module.util.compatibility import (

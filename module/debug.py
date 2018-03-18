@@ -1,11 +1,19 @@
 #!/usr/bin/env python
 #coding:utf-8
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
-from . import InitHomeDir
 from os import listdir
 
 from six.moves import input
+
+from . import InitHomeDir
 
 
 class Wrapper(object):

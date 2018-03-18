@@ -1,18 +1,35 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from os.path import join
-from traceback import print_exc
-from shutil import copyfileobj
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-from bottle import route, request, HTTPError
+from os.path import join
+from shutil import copyfileobj
+from traceback import print_exc
+
 import six
 
+from bottle import (
+    HTTPError,
+    request,
+    route,
+)
+from module.utils import (
+    decode,
+    formatSize,
+)
+
+from .utils import (
+    login_required,
+    render_to_response,
+    toDict,
+)
 from .webinterface import PYLOAD
-
-from .utils import login_required, render_to_response, toDict
-
-from module.utils import decode, formatSize
 
 
 def format_time(seconds):

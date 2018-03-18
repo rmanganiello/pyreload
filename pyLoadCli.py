@@ -17,17 +17,31 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 #
 ###
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-from getopt import GetoptError, getopt
-
-import module.common.pylgettext as gettext
 import os
-from os import _exit
-from os.path import join, exists, basename
 import sys
+from codecs import getwriter
+from getopt import (
+    GetoptError,
+    getopt,
+)
+from os import _exit
+from os.path import (
+    basename,
+    exists,
+    join,
+)
 from sys import exit
-from threading import Thread, Lock
+from threading import (
+    Lock,
+    Thread,
+)
 from time import sleep
 from traceback import print_exc
 
@@ -37,19 +51,28 @@ from six.moves import (
     input,
 )
 
-from codecs import getwriter
-
+import module.common.pylgettext as gettext
 from module import InitHomeDir
-from module.cli.printer import *
-from module.cli import AddPackage, ManageFiles
-
 from module.Api import Destination
-from module.util.compatibility import IS_WINDOWS
-from module.utils import formatSize, decode
-from module.remote.thriftbackend.ThriftClient import ThriftClient, NoConnection, NoSSL, WrongLogin, ConnectionClosed
+from module.cli import (
+    AddPackage,
+    ManageFiles,
+)
+from module.cli.printer import *
 from module.lib.Getch import Getch
 from module.lib.rename_process import renameProcess
-
+from module.remote.thriftbackend.ThriftClient import (
+    ConnectionClosed,
+    NoConnection,
+    NoSSL,
+    ThriftClient,
+    WrongLogin,
+)
+from module.util.compatibility import IS_WINDOWS
+from module.utils import (
+    decode,
+    formatSize,
+)
 
 if IS_WINDOWS:
     enc = "cp850"

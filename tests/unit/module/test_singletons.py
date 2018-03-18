@@ -1,5 +1,13 @@
-import mock
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import unittest
+
+import mock
 
 from module.singletons import (
     HOOK_MANAGER_SINGLETON,

@@ -16,8 +16,18 @@
     @author: mkaay
 """
 
-from module.database import style
-from module.database import DatabaseBackend
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from module.database import (
+    DatabaseBackend,
+    style,
+)
+
 
 class StorageMethods():
     @style.queue

@@ -2,6 +2,13 @@
 #
 # Based on 4chandl by Roland Beermann (https://gist.github.com/enkore/3492599)
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from six.moves.urllib.parse import urljoin

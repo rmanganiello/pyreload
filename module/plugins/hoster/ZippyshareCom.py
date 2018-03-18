@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 
 from bs4 import BeautifulSoup
@@ -105,4 +112,3 @@ class ZippyshareCom(SimpleHoster):
         scripts = inits + scripts + ['document.dlbutton.href']
 
         return self.js.eval('\n'.join(scripts))
-

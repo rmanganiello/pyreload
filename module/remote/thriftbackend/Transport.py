@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from thrift.transport.TTransport import TBufferedTransport
 from thrift.transport.TZlibTransport import TZlibTransport
+
 
 class Transport(TBufferedTransport):
     DEFAULT_BUFFER = 4096

@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from ..internal.SimpleHoster import SimpleHoster
 
 
@@ -25,4 +32,3 @@ class NofileIo(SimpleHoster):
     SIZE_PATTERN = r'<strong>File size</strong><br/>\s*(?P<S>[\d\.,]+) (?P<U>[\w^_]+)\s*<'
 
     LINK_PATTERN = r'data-url="(https://\w+\.nofilecdn\.io/g/.+?)"'
-

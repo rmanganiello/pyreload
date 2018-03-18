@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import re
 
@@ -9,7 +14,10 @@ from six.moves.urllib.request import build_opener
 import MultipartPostHandler
 
 from ..internal.Container import Container
-from ..internal.misc import encode, fsjoin
+from ..internal.misc import (
+    encode,
+    fsjoin,
+)
 
 
 class CCF(Container):

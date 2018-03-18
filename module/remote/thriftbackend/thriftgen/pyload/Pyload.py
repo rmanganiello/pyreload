@@ -6,10 +6,25 @@
 #  options string: py:slots,dynamic
 #
 
-from thrift.Thrift import TType, TMessageType, TException
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from thrift.protocol.TBase import (
+    TBase,
+    TExceptionBase,
+)
+from thrift.Thrift import (
+    TException,
+    TMessageType,
+    TProcessor,
+    TType,
+)
+
 from .ttypes import *
-from thrift.Thrift import TProcessor
-from thrift.protocol.TBase import TBase, TExceptionBase
 
 
 class Iface(object):
@@ -5531,4 +5546,3 @@ class setCaptchaResult_result(TBase):
 
   thrift_spec = (
   )
-

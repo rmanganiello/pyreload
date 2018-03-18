@@ -17,13 +17,28 @@
     @author: mkaay
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from threading import RLock
 from time import time
 
 import six
 
-from module.database import style, DatabaseBackend
-from module.PullEvents import InsertEvent, ReloadAllEvent, RemoveEvent, UpdateEvent
+from module.database import (
+    DatabaseBackend,
+    style,
+)
+from module.PullEvents import (
+    InsertEvent,
+    ReloadAllEvent,
+    RemoveEvent,
+    UpdateEvent,
+)
 from module.PyFile import PyFile
 from module.PyPackage import PyPackage
 from module.singletons import (
@@ -32,7 +47,10 @@ from module.singletons import (
     get_pull_manager,
     get_thread_manager,
 )
-from module.utils import formatSize, lock
+from module.utils import (
+    formatSize,
+    lock,
+)
 
 
 class FileHandler:

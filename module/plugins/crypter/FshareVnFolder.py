@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-import pycurl
 import re
 
+import pycurl
+
 from ..internal.Crypter import Crypter
-from ..internal.misc import json, replace_patterns
+from ..internal.misc import (
+    json,
+    replace_patterns,
+)
 
 
 class FshareVnFolder(Crypter):
@@ -70,5 +79,3 @@ class FshareVnFolder(Crypter):
 
         if links:
             self.packages = [(pack_name, links, pack_name)]
-
-

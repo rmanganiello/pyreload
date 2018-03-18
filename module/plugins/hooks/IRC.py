@@ -1,16 +1,26 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import re
 import select
 import socket
+import ssl
 import time
 import traceback
 from threading import Thread
 
 import pycurl
-import ssl
 
-from module.Api import FileDoesNotExists, PackageDoesNotExists
+from module.Api import (
+    FileDoesNotExists,
+    PackageDoesNotExists,
+)
 from module.singletons import get_captcha_manager
 
 from ..internal.misc import format_size

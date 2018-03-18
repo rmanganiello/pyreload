@@ -16,12 +16,19 @@
     @author: mkaay
 """
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from os.path import join
+from uuid import uuid4 as uuid
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from os.path import join
-
-from uuid import uuid4 as uuid
 
 class ConnectionManager(QWidget):
 
@@ -299,4 +306,3 @@ class ConnectionManager(QWidget):
             data = self.getData()
             self.hide()
             self.emit(SIGNAL("save"), data)
-

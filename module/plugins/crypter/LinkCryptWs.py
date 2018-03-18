@@ -1,13 +1,24 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import binascii
 import re
 
-import Crypto.Cipher.AES
 import pycurl
 
+import Crypto.Cipher.AES
+
 from ..internal.Crypter import Crypter
-from ..internal.misc import html_unescape, set_cookie
+from ..internal.misc import (
+    html_unescape,
+    set_cookie,
+)
 
 
 class LinkCryptWs(Crypter):

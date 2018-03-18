@@ -1,8 +1,16 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from module.network.RequestFactory import getRequest as get_request
 
 from ..internal.Notifier import Notifier
+
 
 class DiscordNotifier(Notifier):
   __name__ = "DiscordNotifier"

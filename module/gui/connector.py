@@ -18,16 +18,28 @@
 
 SERVER_VERSION = "0.4.9"
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import socket
 from time import sleep
 from uuid import uuid4 as uuid
 
+from thrift.Thrift import TException
+
+from module.remote.thriftbackend.ThriftClient import (
+    NoConnection,
+    NoSSL,
+    ThriftClient,
+    WrongLogin,
+)
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-import socket
-
-from module.remote.thriftbackend.ThriftClient import ThriftClient, WrongLogin, NoSSL, NoConnection
-from thrift.Thrift import TException
 
 class Connector(QObject):
     """

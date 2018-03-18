@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import sys
 import zipfile
 
-from .Extractor import ArchiveError, CRCError, Extractor, PasswordError
+from .Extractor import (
+    ArchiveError,
+    CRCError,
+    Extractor,
+    PasswordError,
+)
 from .misc import encode
 
 

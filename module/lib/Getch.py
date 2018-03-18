@@ -1,3 +1,11 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+
 class Getch:
     """
     Gets a single character from standard input.  Does not echo to

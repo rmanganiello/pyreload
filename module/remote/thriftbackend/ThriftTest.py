@@ -1,25 +1,39 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import sys
-from os.path import join,abspath,dirname
+import xmlrpclib
+from getpass import getpass
+from os.path import (
+    abspath,
+    dirname,
+    join,
+)
+from time import time
 
-path = join((abspath(dirname(__file__))), "..","..", "lib")
-sys.path.append(path)
-
-from .thriftgen.pyload import Pyload
-from .thriftgen.pyload.ttypes import *
-from .Socket import Socket
-
+from six.moves import input
 from thrift import Thrift
 from thrift.transport import TTransport
 
 from .Protocol import Protocol
+from .Socket import Socket
+from .thriftgen.pyload import Pyload
+from .thriftgen.pyload.ttypes import *
 
-from time import time
+path = join((abspath(dirname(__file__))), "..","..", "lib")
+sys.path.append(path)
 
-from six.moves import input
-import xmlrpclib
+
+
+
+
 
 def bench(f, *args, **kwargs):
     s = time()
@@ -31,7 +45,6 @@ def bench(f, *args, **kwargs):
         print("%s: %f s" % (f.__name__, e-s))
     return ret
 
-from getpass import getpass
 user = input("user ")
 passwd = getpass("password ")
 

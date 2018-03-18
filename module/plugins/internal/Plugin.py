@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 import inspect
 import os
@@ -9,15 +14,31 @@ import pycurl
 import six
 
 from module.network.RequestFactory import getRequest as get_request
-from module.plugins.Plugin import SkipDownload as Skip
 # @TODO: Remove in 0.4.10
-from module.plugins.Plugin import Abort, Fail, Reconnect, Retry
+from module.plugins.Plugin import (
+    Abort,
+    Fail,
+    Reconnect,
+    Retry,
+)
+from module.plugins.Plugin import SkipDownload as Skip
 from module.singletons import get_request_factory
 from module.util.compatibility import IS_WINDOWS
 
-from .misc import (DB, Config, decode, encode, exists, fixurl, format_exc,
-                   fsjoin, html_unescape, parse_html_header, remove,
-                   set_cookies)
+from .misc import (
+    DB,
+    Config,
+    decode,
+    encode,
+    exists,
+    fixurl,
+    format_exc,
+    fsjoin,
+    html_unescape,
+    parse_html_header,
+    remove,
+    set_cookies,
+)
 
 if not IS_WINDOWS:
     import grp

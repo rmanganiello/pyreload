@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import time
 
 from module.network.HTTPRequest import BadHeader
@@ -7,6 +14,7 @@ from module.network.RequestFactory import getURL as get_url
 
 from ..internal.Account import Account
 from ..internal.misc import json
+
 
 class TenluaVn(Account):
     __name__ = "TenluaVn"
@@ -50,4 +58,3 @@ class TenluaVn(Account):
                 self.fail_login(_("BadHeader %s") % e.code)
 
         data['sid'] = login_info[0]
-
