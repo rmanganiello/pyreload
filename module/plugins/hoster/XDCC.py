@@ -396,7 +396,7 @@ class IRC(object):
                     m = re.match(r'\x01DCC ACCEPT .*? %s (?P<RESUME_POS>\d+)\x01' % dcc_port, text)
                     if m:
                         self.plugin.log_debug(_("Bot '%s' acknowledged resume at position %s") % (sender_nick, m.group('RESUME_POS')))
-                        return long(m.group('RESUME_POS'))
+                        return int(m.group('RESUME_POS'))
 
                 else:
                     time.sleep(0.1)
@@ -651,10 +651,9 @@ class XDCC(Hoster):
             self.dcc_port = int(m.group('PORT'))
             self.dcc_file_name = m.group('NAME')
             self.dcc_sender_bot = origin.split('@')[0].split('!')[0]
-            file_size = long(m.group('SIZE')) if m.group('SIZE') else 0
+            file_size = int(m.group('SIZE') or 0)
 
             self.do_download(ip, self.dcc_port, self.dcc_file_name, file_size)
-
 
     @threaded
     def do_download(self, ip, port, file_name, file_size):

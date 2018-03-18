@@ -80,10 +80,12 @@ class OneFichierCom(SimpleHoster):
                         else:
                             name = url
 
-                        info = {'name': name,
-                                'size': long(headers.get('content-length')),
-                                'status': 7,
-                                'url': url}
+                        info = {
+                            'name': name,
+                            'size': int(headers.get('content-length')),
+                            'status': 7,
+                            'url': url,
+                        }
 
                     else:
                         info = super(OneFichierCom, cls).get_info(url, html)

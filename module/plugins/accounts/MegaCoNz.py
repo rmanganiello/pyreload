@@ -87,7 +87,7 @@ class MegaCoNz(Account):
 
         elif 'csid' in res:
             privk = MegaCrypto.a32_to_str(MegaCrypto.decrypt_key(res['privk'], master_key))
-            rsa_private_key = [long(0), long(0), long(0), long(0)]
+            rsa_private_key = [0, 0, 0, 0]
 
             for i in range(4):
                 l = ((ord(privk[0]) * 256 + ord(privk[1]) + 7) / 8) + 2
@@ -98,7 +98,7 @@ class MegaCoNz(Account):
             rsa = Crypto.PublicKey.RSA.construct(
                 (rsa_private_key[0] *
                  rsa_private_key[1],
-                 long(0),
+                 0,
                  rsa_private_key[2],
                  rsa_private_key[0],
                  rsa_private_key[1]))
@@ -144,5 +144,5 @@ class MegaCoNz(Account):
 
     def mpi_to_int(self, s):
         """ Convert GCRYMPI_FMT_PGP bignum format to integer """
-        return long("".join("%02x" % ord(s[2:][x])
+        return int("".join("%02x" % ord(s[2:][x])
                            for x in range(0, len(s[2:]))), 16)
