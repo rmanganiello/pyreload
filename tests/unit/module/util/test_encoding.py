@@ -12,6 +12,7 @@ import six
 
 from module.util.encoding import (
     smart_bytes,
+    smart_str,
     smart_text,
 )
 
@@ -47,3 +48,20 @@ class TestEncoding(unittest.TestCase):
             result = smart_text(value)
             self.assertEqual(result, expected)
             self.assertIsInstance(result, six.text_type)
+
+    def test_smart_str(self):
+        value_to_expected_tuples = (
+            (b'testing', b'testing', u'testing'),
+            (u'testing', b'testing', u'testing'),
+            (b'A\xc3\xb1o', b'A\xc3\xb1o', u'Año'),
+            (u'Año', b'A\xc3\xb1o', u'Año'),
+            (123, b'123', u'123'),
+            (None, b'None', u'None'),
+        )
+
+        expected_type = six.text_type if six.PY3 else six.binary_type
+
+        for value, expected_py2, expected_py3 in value_to_expected_tuples:
+            result = smart_str(value)
+            self.assertEqual(result, expected_py3 if six.PY3 else expected_py2)
+            self.assertIsInstance(result, expected_type)

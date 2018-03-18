@@ -12,6 +12,8 @@ import gzip
 
 import six
 
+from module.util.encoding import smart_str
+
 
 class StripPathMiddleware(object):
     def __init__(self, app):
@@ -42,6 +44,7 @@ class PrefixMiddleware(object):
 # WSGI middleware
 # Gzip-encodes the response.
 
+
 class GZipMiddleWare(object):
 
     def __init__(self, application, compress_level=6):
@@ -61,20 +64,24 @@ class GZipMiddleWare(object):
 
         return response.write()
 
+
 def header_value(headers, key):
     for header, value in headers:
         if key.lower() == header.lower():
             return value
 
+
 def update_header(headers, key, value):
     remove_header(headers, key)
     headers.append((key, value))
+
 
 def remove_header(headers, key):
     for header, value in headers:
         if key.lower() == header.lower():
             headers.remove((header, value))
             break
+
 
 class GzipResponse(object):
 
@@ -88,22 +95,29 @@ class GzipResponse(object):
 
     def gzip_start_response(self, status, headers, exc_info=None):
         self.headers = headers
-        ct = header_value(headers,'content-type')
-        ce = header_value(headers,'content-encoding')
-        cl = header_value(headers, 'content-length')
-        if cl:
-            cl = int(cl)
-        else:
-            cl = 201
+        ct = header_value(headers, smart_str('content-type'))
+        ce = header_value(headers, smart_str('content-encoding'))
+        cl = header_value(headers, smart_str('content-length'))
+        cl = int(cl) if cl else 201
+
         self.compressible = False
-        if ct and (ct.startswith('text/') or ct.startswith('application/')) \
-            and 'zip' not in ct and cl > 200:
+        if (
+            ct and
+            any(
+                ct.startswith(smart_str(pattern))
+                for pattern in ('text/', 'application/')
+            ) and
+            smart_str('zip') not in ct and
+            cl > 200
+        ):
             self.compressible = True
         if ce:
             self.compressible = False
+
         if self.compressible:
-            headers.append(('content-encoding', 'gzip'))
-        remove_header(headers, 'content-length')
+            headers.append((smart_str('content-encoding'), smart_str('gzip')))
+
+        remove_header(headers, smart_str('content-length'))
         self.headers = headers
         self.status = status
         return self.buffer.write
@@ -117,10 +131,14 @@ class GzipResponse(object):
 
     def finish_response(self, app_iter):
         if self.compressible:
-            output = gzip.GzipFile(mode='wb', compresslevel=self.compress_level,
-                fileobj=self.buffer)
+            output = gzip.GzipFile(
+                mode='wb',
+                compresslevel=self.compress_level,
+                fileobj=self.buffer,
+            )
         else:
             output = self.buffer
+
         try:
             for s in app_iter:
                 output.write(s)
@@ -130,9 +148,9 @@ class GzipResponse(object):
             if hasattr(app_iter, 'close'):
                 try:
                     app_iter.close()
-                except :
+                except Exception:
                     pass
 
         content_length = self.buffer.tell()
-        update_header(self.headers, "Content-Length" , str(content_length))
+        update_header(self.headers, smart_str('Content-Length'), smart_str(content_length))
         self.start_response(self.status, self.headers)

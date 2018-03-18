@@ -38,7 +38,6 @@ from os.path import (
     isfile,
     join,
 )
-from sys import getfilesystemencoding
 
 import six
 from six.moves.urllib.parse import unquote
@@ -52,6 +51,7 @@ from bottle import (
     route,
     static_file,
 )
+from module.util.encoding import smart_str
 from module.utils import (
     formatSize,
     fs_decode,
@@ -212,13 +212,20 @@ def error500(error):
     return base(["An Error occured, please enable debug mode to get more details.", error,
                  error.traceback.replace("\n", "<br>") if error.traceback else "No Traceback"])
 
+
 # render js
 @route("/media/js/<path:re:.+\.js>")
 def js_dynamic(path):
-    response.headers['Expires'] = time.strftime("%a, %d %b %Y %H:%M:%S GMT",
-                                                time.gmtime(time.time() + 60 * 60 * 24 * 2))
-    response.headers['Cache-control'] = "public"
-    response.headers['Content-Type'] = "text/javascript; charset=UTF-8"
+    response.headers.update({
+        smart_str('Expires'): smart_str(
+            time.strftime(
+                "%a, %d %b %Y %H:%M:%S GMT",
+                time.gmtime(time.time() + 60 * 60 * 24 * 2),
+            )
+        ),
+        smart_str('Cache-control'): smart_str('public'),
+        smart_str('Content-Type'): smart_str('text/javascript; charset=UTF-8'),
+    })
 
     try:
         # static files are not rendered
@@ -227,15 +234,23 @@ def js_dynamic(path):
             return t.render()
         else:
             return static_file(path, root=join(PROJECT_DIR, "media", "js"))
-    except:
+    except Exception:
         return HTTPError(404, "Not Found")
+
 
 @route('/media/<path:path>')
 def server_static(path):
-    response.headers['Expires'] = time.strftime("%a, %d %b %Y %H:%M:%S GMT",
-                                                time.gmtime(time.time() + 60 * 60 * 24 * 7))
-    response.headers['Cache-control'] = "public"
+    response.headers.update({
+        smart_str('Expires'): smart_str(
+            time.strftime(
+                "%a, %d %b %Y %H:%M:%S GMT",
+                time.gmtime(time.time() + 60 * 60 * 24 * 7),
+            )
+        ),
+        smart_str('Cache-control'): smart_str('public'),
+    })
     return static_file(path, root=join(PROJECT_DIR, "media"))
+
 
 @route('/favicon.ico')
 def favicon():

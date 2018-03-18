@@ -24,3 +24,10 @@ def smart_text(value, encoding='utf-8', **kwargs):
         return value.decode(encoding=encoding, **kwargs)
     else:
         return six.text_type(value)
+
+
+def smart_str(value, encoding='utf-8', **kwargs):
+    """Returns a bytestring on Python 2 and unicode string on Python 3."""
+    if six.PY2:
+        return smart_bytes(value, encoding, **kwargs)
+    return smart_text(value, encoding, **kwargs)
