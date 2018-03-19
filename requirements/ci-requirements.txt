@@ -1,0 +1,3 @@
+codacy-coverage
+codeclimate-test-reporter
+coverage>4.0,<4.4

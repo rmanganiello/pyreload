@@ -7,8 +7,10 @@ python:
   - "3.6"
 
 install:
-  - pip install mock pytest pytest-cov "coverage>4.0,<4.4" codeclimate-test-reporter codacy-coverage
-  - python setup.py -q install
+  - pip install \
+        -r requirements/install-requirements.txt \
+        -r requirements/test-requirements.txt \
+        -r requirements/ci-requirements.txt
 
 script:
   - py.test --cov=module tests

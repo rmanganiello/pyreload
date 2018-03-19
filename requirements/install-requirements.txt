@@ -1,0 +1,8 @@
+Beaker
+beautifulsoup4
+bottle
+click
+jinja2
+pycrypto
+pycurl
+thrift >= 0.8.0
