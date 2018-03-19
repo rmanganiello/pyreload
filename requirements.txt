@@ -1,0 +1,3 @@
+-r requirements/install-requirements.txt
+-r requirements/test-requirements.txt
+-r requirements/ci-requirements.txt
