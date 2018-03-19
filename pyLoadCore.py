@@ -172,7 +172,7 @@ class Core(object):
         self.running = False
         self.pidfile = kwargs.get('pidfile') or 'pyload.pid'
         self.doDebug = bool(kwargs.get('do_debug'))
-        self.remote = bool(kwargs.get('no_remote', True))
+        self.remote = not bool(kwargs.get('no_remote'))
         self.daemon = bool(kwargs.get('is_daemon'))
         self.deleteLinks = bool(kwargs.get('do_clear'))  # will delete links on startup
 
