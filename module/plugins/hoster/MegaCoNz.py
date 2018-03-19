@@ -15,7 +15,9 @@ import struct
 
 import Crypto.Cipher.AES
 import Crypto.Util.Counter
+
 from module.network.HTTPRequest import BadHeader
+from module.util.encoding import smart_bytes
 
 from ..internal.Hoster import Hoster
 from ..internal.misc import (
@@ -61,12 +63,13 @@ class MegaCrypto(object):
     @staticmethod
     def base64_decode(data):
         #: Add padding, we need a string with a length multiple of 4
-        data += '=' * (-len(data) % 4)
-        return base64.b64decode(str(data), "-_")
+        data = smart_bytes(data)
+        data += b'=' * (-len(data) % 4)
+        return base64.b64decode(data, b'-_')
 
     @staticmethod
     def base64_encode(data):
-        return base64.b64encode(data, "-_")
+        return base64.b64encode(smart_bytes(data), b'-_')
 
     @staticmethod
     def a32_to_str(a):
@@ -75,7 +78,8 @@ class MegaCrypto(object):
     @staticmethod
     def str_to_a32(s):
         # Add padding, we need a string with a length multiple of 4
-        s += '\0' * (-len(s) % 4)
+        s = smart_bytes(s)
+        s += b'\0' * (-len(s) % 4)
         #: big-endian, unsigned int
         return struct.unpack(">%dI" % (len(s) / 4), s)
 

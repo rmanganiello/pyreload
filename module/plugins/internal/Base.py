@@ -433,7 +433,9 @@ class Base(Plugin):
 
         raise Fail(encode(msg))  # @TODO: Remove `encode` in 0.4.10
 
-    def error(self, msg="", type=_("Parse")):
+    def error(self, msg="", type=None):
+        if type is None:
+            type = _('Parse')
         type = _("%s error") % type.strip(
         ).capitalize() if type else _("Unknown")
         msg = _("%(type)s: %(msg)s | Plugin may be out of date"
@@ -508,8 +510,9 @@ class Base(Plugin):
 
         raise Retry(encode(msg))  # @TODO: Remove `encode` in 0.4.10
 
-    def retry_captcha(self, attemps=10, wait=1,
-                      msg=_("Max captcha retries reached")):
+    def retry_captcha(self, attemps=10, wait=1, msg=None):
+        if msg is None:
+            msg = _("Max captcha retries reached")
         self.captcha.invalid()
         self.retry(attemps, wait, msg)
 
