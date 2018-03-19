@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
-try:
-    from PIL import Image
-
-except ImportError:
-    import Image
-
 from __future__ import (
     absolute_import,
     division,
     print_function,
     unicode_literals,
 )
+
+try:
+    from PIL import Image
+
+except ImportError:
+    import Image
 
 import glob
 import os

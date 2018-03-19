@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 try:
     from beaker.crypto.pbkdf2 import PBKDF2
 
@@ -17,13 +24,6 @@ except ImportError:
         def hexread(self, octets):
             return b2a_hex(
                 pbkdf2(self.passphrase, self.salt, self.iterations, octets))
-
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
 
 from ..internal.Account import Account
 from ..internal.misc import json
