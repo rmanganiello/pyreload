@@ -42,7 +42,7 @@ def decode(string):
 
 def remove_chars(string, repl):
     """ removes all chars in repl from string"""
-    if isinstance(string, six.binary_text):
+    if isinstance(string, six.binary_type):
         return string.translate(maketrans(b"", b""), repl)
     elif isinstance(string, six.text_type):
         return string.translate(dict([(ord(s), None) for s in repl]))

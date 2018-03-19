@@ -19,6 +19,8 @@ from bottle import (
     request,
     route,
 )
+
+from module.util.encoding import smart_text
 from module.utils import (
     decode,
     formatSize,
@@ -192,14 +194,13 @@ def add_package():
     except:
         pass
 
-    name = name.decode("utf8", "ignore")
+    name = smart_text(name, errors='ignore')
 
-    links = map(lambda x: x.strip(), links)
-    links = filter(lambda x: x != "", links)
+    links = list(filter(None, map(lambda link: link.strip(), links)))
 
     pack = PYLOAD.addPackage(name, links, queue)
     if pw:
-        pw = pw.decode("utf8", "ignore")
+        pw = smart_text(pw, errors='ignore')
         data = {"password": pw}
         PYLOAD.setPackageData(pack, data)
 
