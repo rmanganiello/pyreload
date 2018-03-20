@@ -106,10 +106,13 @@ from module.utils import (
 )
 from module.web.ServerThread import WebServer
 
+
 CURRENT_VERSION = '0.4.9'
 
-enc = get_console_encoding(sys.stdout.encoding)
-sys.stdout = getwriter(enc)(sys.stdout, errors="replace")
+# TODO: Why is this required? Is it also required on Python 3?
+if six.PY2:
+    enc = get_console_encoding(sys.stdout.encoding)
+    sys.stdout = getwriter(enc)(sys.stdout, errors='replace')
 
 # TODO List
 # - configurable auth system ldap/mysql
