@@ -1,3 +1,12 @@
+# pyreload
+
+|                  |     Status     |
+| ---------------- | -------------- |
+| Build            | [![Build Status](https://travis-ci.org/pyreload/pyreload.svg?branch=master)](https://travis-ci.org/pyreload/pyreload) |
+| Code quality     | [![Maintainability](https://api.codeclimate.com/v1/badges/dfcf925fdb8be0544c5e/maintainability)](https://codeclimate.com/github/pyreload/pyreload/maintainability) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f146f220efef4a0f84ee1aff0e1a224f)](https://www.codacy.com/app/adamantike/pyreload) |
+| Test coverage    | [![Test Coverage](https://api.codeclimate.com/v1/badges/dfcf925fdb8be0544c5e/test_coverage)](https://codeclimate.com/github/pyreload/pyreload/test_coverage) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/f146f220efef4a0f84ee1aff0e1a224f)](https://www.codacy.com/app/adamantike/pyreload) |
+
+
 Description
 ===========
 
