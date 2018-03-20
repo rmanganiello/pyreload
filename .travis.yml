@@ -12,5 +12,5 @@ install:
 script:
   - py.test --cov=module tests
   - coverage xml
-#  - codeclimate-test-reporter --file .coverage
+  - codeclimate-test-reporter --file .coverage
   - python-codacy-coverage -r coverage.xml
