@@ -11,6 +11,6 @@ install:
 
 script:
   - py.test --cov=module tests
-  - coverage xml
-  - codeclimate-test-reporter --file .coverage
-  - python-codacy-coverage -r coverage.xml
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then coverage xml; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then codeclimate-test-reporter --file .coverage; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then python-codacy-coverage -r coverage.xml; fi'
