@@ -3,6 +3,6 @@ beautifulsoup4
 bottle
 click
 jinja2
-pycrypto
+pycryptodomex
 pycurl
 thrift >= 0.8.0

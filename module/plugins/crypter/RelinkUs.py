@@ -10,7 +10,7 @@ from __future__ import (
 import binascii
 import re
 
-import Crypto.Cipher.AES
+import Cryptodome.Cipher.AES
 
 from ..captcha.SolveMedia import SolveMedia
 from ..internal.Captcha import Captcha
@@ -200,7 +200,7 @@ class RelinkUs(Crypter):
         m = re.search(self.FILE_TITLE_PATTERN, self.data)
         if m is not None:
             title = m.group(1).strip()
-            if not self.FILE_NOTITLE in title:
+            if self.FILE_NOTITLE not in title:
                 name = folder = title
                 self.log_debug(
                     "Found name [%s] and folder [%s] in package info" %
@@ -328,7 +328,7 @@ class RelinkUs(Crypter):
         #: Decrypt
         Key = key
         IV = key
-        obj = Crypto.Cipher.AES.new(Key, Crypto.Cipher.AES.MODE_CBC, IV)
+        obj = Cryptodome.Cipher.AES.new(Key, Cryptodome.Cipher.AES.MODE_CBC, IV)
         text = obj.decrypt(crypted.decode('base64'))
 
         #: Extract links

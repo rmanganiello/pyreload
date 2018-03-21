@@ -26,10 +26,10 @@ def main():
         print(("pycurl:", "missing"))
 
     try:
-        import Crypto
-        print(("py-crypto:", Crypto.__version__))
+        import Cryptodome
+        print(("py-cryptodome:", Cryptodome.__version__))
     except:
-        print(("py-crypto:", "missing"))
+        print(("py-cryptodome:", "missing"))
 
     try:
         import OpenSSL
