@@ -7,7 +7,7 @@ from __future__ import (
     unicode_literals,
 )
 
-import Crypto.PublicKey.RSA
+import Cryptodome.PublicKey.RSA
 
 from ..hoster.MegaCoNz import (
     MegaClient,
@@ -95,7 +95,7 @@ class MegaCoNz(Account):
                 privk = privk[l:]
 
             encrypted_sid = self.mpi_to_int(MegaCrypto.base64_decode(res['csid']))
-            rsa = Crypto.PublicKey.RSA.construct(
+            rsa = Cryptodome.PublicKey.RSA.construct(
                 (rsa_private_key[0] *
                  rsa_private_key[1],
                  0,

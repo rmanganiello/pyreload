@@ -10,7 +10,7 @@ from __future__ import (
 import re
 import xml.dom.minidom
 
-import Crypto.Cipher.AES
+import Cryptodome.Cipher.AES
 
 from ..internal.Container import Container
 from ..internal.misc import (
@@ -60,9 +60,9 @@ class DLC(Container):
         except AttributeError:
             self.fail(_("Container is corrupted"))
 
-        key = iv = Crypto.Cipher.AES.new(self.KEY, Crypto.Cipher.AES.MODE_CBC, self.IV).decrypt(rc)
+        key = iv = Cryptodome.Cipher.AES.new(self.KEY, Cryptodome.Cipher.AES.MODE_CBC, self.IV).decrypt(rc)
 
-        self.data = Crypto.Cipher.AES.new(key, Crypto.Cipher.AES.MODE_CBC, iv).decrypt(dlc_data).decode('base64')
+        self.data = Cryptodome.Cipher.AES.new(key, Cryptodome.Cipher.AES.MODE_CBC, iv).decrypt(dlc_data).decode('base64')
 
         self.packages = [(name or pyfile.name, links, name or pyfile.name)
                          for name, links in self.get_packages()]

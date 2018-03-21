@@ -108,7 +108,7 @@ class Setup():
         print("")
 
         avail = []
-        if self.check_module("Crypto"): avail.append(_("container decrypting"))
+        if self.check_module("Cryptodome"): avail.append(_("container decrypting"))
         if ssl: avail.append(_("ssl connection"))
         if captcha: avail.append(_("automatic captcha decryption"))
         if gui: avail.append(_("GUI"))
@@ -127,7 +127,7 @@ class Setup():
             print(_("Featues missing: "))
             print("")
 
-            if not self.check_module("Crypto"):
+            if not self.check_module("Cryptodome"):
                 print(_("** no py-crypto available **"))
                 print(_("You need this if you want to decrypt container files."))
                 print("")
@@ -217,8 +217,8 @@ class Setup():
 
         print("")
 
-        crypto = self.check_module("Crypto")
-        self.print_dep("pycrypto", crypto)
+        crypto = self.check_module("Cryptodome")
+        self.print_dep("pycryptodome", crypto)
 
         ssl = self.check_module("OpenSSL")
         self.print_dep("py-OpenSSL", ssl)

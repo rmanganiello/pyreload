@@ -36,7 +36,7 @@ from six.moves.urllib.parse import unquote
 from .RemoteManager import BackendBase
 
 try:
-    from Crypto.Cipher import AES
+    from Cryptodome.Cipher import AES
 except:
     pass
 

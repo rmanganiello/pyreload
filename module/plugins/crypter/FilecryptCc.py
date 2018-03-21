@@ -15,7 +15,7 @@ import re
 
 from six.moves.urllib.parse import urljoin
 
-import Crypto.Cipher.AES
+import Cryptodome.Cipher.AES
 from module.network.CookieJar import CookieJar
 from module.network.HTTPRequest import (
     BadHeader,
@@ -255,7 +255,7 @@ class FilecryptCc(Crypter):
         #: Decrypt
         #Key = key
         #IV = key
-        obj = Crypto.Cipher.AES.new(key, Crypto.Cipher.AES.MODE_CBC, key)
+        obj = Cryptodome.Cipher.AES.new(key, Cryptodome.Cipher.AES.MODE_CBC, key)
         text = obj.decrypt(crypted.decode('base64'))
 
         #: Extract links

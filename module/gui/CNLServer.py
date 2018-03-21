@@ -40,7 +40,7 @@ from threading import Thread
 from six.moves.urllib.parse import unquote
 
 try:
-    from Crypto.Cipher import AES
+    from Cryptodome.Cipher import AES
 except:
     pass
 

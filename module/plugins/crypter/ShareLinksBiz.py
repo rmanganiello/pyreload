@@ -10,7 +10,7 @@ from __future__ import (
 import binascii
 import re
 
-import Crypto.Cipher.AES
+import Cryptodome.Cipher.AES
 
 from ..internal.Crypter import Crypter
 
@@ -320,7 +320,7 @@ class ShareLinksBiz(Crypter):
         #: Decrypt
         Key = key
         IV = key
-        obj = Crypto.Cipher.AES.new(Key, Crypto.Cipher.AES.MODE_CBC, IV)
+        obj = Cryptodome.Cipher.AES.new(Key, Cryptodome.Cipher.AES.MODE_CBC, IV)
         text = obj.decrypt(crypted.decode('base64'))
 
         #: Extract links

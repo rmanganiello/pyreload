@@ -10,7 +10,7 @@ from __future__ import (
 import binascii
 import re
 
-import Crypto.Cipher.AES
+import Cryptodome.Cipher.AES
 
 from ..internal.Container import Container
 from ..internal.misc import encode
@@ -40,8 +40,8 @@ class RSDF(Container):
         KEY = binascii.unhexlify(self.KEY)
         IV = binascii.unhexlify(self.IV)
 
-        iv = Crypto.Cipher.AES.new(KEY, Crypto.Cipher.AES.MODE_ECB).encrypt(IV)
-        cipher = Crypto.Cipher.AES.new(KEY, Crypto.Cipher.AES.MODE_CFB, iv)
+        iv = Cryptodome.Cipher.AES.new(KEY, Cryptodome.Cipher.AES.MODE_ECB).encrypt(IV)
+        cipher = Cryptodome.Cipher.AES.new(KEY, Cryptodome.Cipher.AES.MODE_CFB, iv)
 
         try:
             fs_filename = encode(pyfile.url)

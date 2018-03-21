@@ -11,7 +11,7 @@ import time
 
 import pycurl
 
-import Crypto.Hash.SHA
+import Cryptodome.Hash.SHA
 
 from ..internal.misc import json
 from ..internal.MultiHoster import MultiHoster
@@ -47,7 +47,7 @@ class DebridlinkFr(MultiHoster):
         if session:
             ts = str(int(time.time() - float(session['tsd'])))
 
-            sha1 = Crypto.Hash.SHA.new()
+            sha1 = Cryptodome.Hash.SHA.new()
             sha1.update(ts + method + session['key'])
             sign = sha1.hexdigest()
 

@@ -15,7 +15,7 @@ import time
 import pycurl
 from six.moves.urllib.parse import quote
 
-import Crypto.Cipher.ARC4
+import Cryptodome.Cipher.ARC4
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..internal.misc import timestamp
@@ -171,7 +171,7 @@ class TurbobitNet(SimpleHoster):
         self.wait()
 
     def decrypt(self, data):
-        cipher = Crypto.Cipher.ARC4.new(binascii.hexlify(
+        cipher = Cryptodome.Cipher.ARC4.new(binascii.hexlify(
             'E\x15\xa1\x9e\xa3M\xa0\xc6\xa0\x84\xb6H\x83\xa8o\xa0'))
         return binascii.unhexlify(cipher.encrypt(binascii.unhexlify(data)))
 
