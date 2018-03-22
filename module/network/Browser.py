@@ -10,8 +10,8 @@ from __future__ import (
 
 from logging import getLogger
 
-from .HTTPDownload import HTTPDownload
-from .HTTPRequest import HTTPRequest
+from module.network.HTTPDownload import HTTPDownload
+from module.network.HTTPRequest import HTTPRequest
 
 
 class Browser(object):
