@@ -50,7 +50,8 @@ class RequestFactory():
         self.lock.acquire()
 
         options = self.getOptions()
-        options.update(kwargs)  # submit kwargs as additional options
+        # Submit kwargs as additional options
+        options.update(kwargs)
 
         if type == "XDCC":
             req = XDCCRequest(self.bucket, options)
@@ -68,13 +69,13 @@ class RequestFactory():
         return req
 
     def getHTTPRequest(self, **kwargs):
-        """ returns a http request, dont forget to close it ! """
+        """Returns a http request, don't forget to close it!"""
         options = self.getOptions()
         options.update(kwargs)  # submit kwargs as additional options
         return HTTPRequest(CookieJar(None), options)
 
     def getURL(self, *args, **kwargs):
-        """ see HTTPRequest for argument list """
+        """See HTTPRequest for argument list."""
         h = HTTPRequest(None, self.getOptions())
         try:
             rep = h.load(*args, **kwargs)
@@ -92,7 +93,7 @@ class RequestFactory():
         return cj
 
     def getProxies(self):
-        """ returns a proxy list for the request classes """
+        """Returns a proxy list for the request classes."""
         if not self.core.config["proxy"]["proxy"]:
             return {}
         else:
@@ -112,21 +113,23 @@ class RequestFactory():
                 pw = self.core.config["proxy"]["password"]
 
             return {
-                "type"    : type,
-                "address" : self.core.config["proxy"]["address"],
-                "port"    : self.core.config["proxy"]["port"],
+                "type": type,
+                "address": self.core.config["proxy"]["address"],
+                "port": self.core.config["proxy"]["port"],
                 "username": username,
                 "password": pw,
             }
 
     def getOptions(self):
-        """returns options needed for pycurl"""
-        return {"interface": self.iface(),
-                "proxies"  : self.getProxies(),
-                "ipv6"     : self.core.config["download"]["ipv6"]}
+        """Returns options needed for pycurl."""
+        return {
+            "interface": self.iface(),
+            "proxies": self.getProxies(),
+            "ipv6": self.core.config["download"]["ipv6"]
+        }
 
     def updateBucket(self):
-        """ set values in the bucket according to settings"""
+        """Set values in the bucket according to settings."""
         if not self.core.config["download"]["limit_speed"]:
             self.bucket.setRate(-1)
         else:

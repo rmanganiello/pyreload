@@ -37,14 +37,14 @@ from module.plugins.Plugin import Abort
 class XDCCRequest():
     def __init__(self, bucket=None, options={}):
         self.proxies = options.get('proxies', {})
-        self.bucket  = bucket
+        self.bucket = bucket
 
-        self.fh      = None
+        self.fh = None
         self.dccsock = None
 
         self.filesize = 0
         self.received = 0
-        self.speeds   = [0.0, 0.0, 0.0]
+        self.speeds = [0.0, 0.0, 0.0]
 
         self.sleep = 0.000
         self.last_recv_size = 0
@@ -53,7 +53,6 @@ class XDCCRequest():
         self.abort = False
 
         self.progressNotify = None
-
 
     def createSocket(self):
         # proxytype = None
@@ -76,7 +75,6 @@ class XDCCRequest():
         # sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 16384)
 
         return sock
-
 
     def _write_func(self, buf):
         size = len(buf)
@@ -102,7 +100,6 @@ class XDCCRequest():
 
             time.sleep(self.sleep)
 
-
     def _send_ack(self):
         # acknowledge data by sending number of recceived bytes
         try:
@@ -110,7 +107,6 @@ class XDCCRequest():
 
         except socket.error:
             pass
-
 
     def download(self, ip, port, filename, progressNotify=None, resume=None):
         self.progressNotify = progressNotify
@@ -188,37 +184,31 @@ class XDCCRequest():
 
         return filename
 
-
     def abortDownloads(self):
         self.abort = True
-
 
     def updateProgress(self):
         if self.progressNotify:
             self.progressNotify(self.percent)
 
-
     @property
     def size(self):
         return self.filesize
 
-
     @property
     def arrived(self):
         return self.received
-
 
     @property
     def speed(self):
         speeds = [x for x in self.speeds if x]
         return sum(speeds) / len(speeds)
 
-
     @property
     def percent(self):
-        if not self.filesize: return 0
+        if not self.filesize:
+            return 0
         return (self.received * 100) / self.filesize
-
 
     def close(self):
         pass

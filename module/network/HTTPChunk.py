@@ -107,7 +107,8 @@ class ChunkInfo():
         ci.loaded = True
         ci.setSize(size)
         while True:
-            if not fh.readline(): #skip line
+            # Skip line
+            if not fh.readline():
                 break
             name = fh.readline()[1:-1]
             range = fh.readline()[1:-1]
@@ -123,7 +124,8 @@ class ChunkInfo():
 
     def remove(self):
         fs_name = fs_encode("%s.chunks" % self.name)
-        if exists(fs_name): remove(fs_name)
+        if exists(fs_name):
+            remove(fs_name)
 
     def getCount(self):
         return len(self.chunks)
@@ -138,8 +140,10 @@ class ChunkInfo():
 class HTTPChunk(HTTPRequest):
     def __init__(self, id, parent, range=None, resume=False):
         self.id = id
-        self.p = parent # HTTPDownload instance
-        self.range = range # tuple (start, end)
+        # HTTPDownload instance
+        self.p = parent
+        # Tuple (start, end)
+        self.range = range
         self.resume = resume
         self.log = parent.log
 
@@ -150,14 +154,16 @@ class HTTPChunk(HTTPRequest):
         self.c = pycurl.Curl()
 
         self.header = ""
-        self.headerParsed = False #indicates if the header has been processed
-
-        self.fp = None #file handle
+        # Indicates if the header has been processed
+        self.headerParsed = False
+        # File handle
+        self.fp = None
 
         self.initHandle()
         self.setInterface(self.p.options)
 
-        self.BOMChecked = False # check and remove byte order mark
+        # Check and remove byte order mark
+        self.BOMChecked = False
 
         self.rep = None
 
@@ -172,7 +178,7 @@ class HTTPChunk(HTTPRequest):
         return self.p.cj
 
     def getHandle(self):
-        """ returns a Curl handle ready to use for perform/multiperform """
+        """ Returns a Curl handle ready to use for perform/multiperform."""
 
         self.setRequestContext(self.p.url, self.p.get, self.p.post, self.p.referer, self.p.cj)
         self.c.setopt(pycurl.WRITEFUNCTION, self.writeBody)
@@ -188,10 +194,12 @@ class HTTPChunk(HTTPRequest):
                 self.arrived = stat(fs_name).st_size
 
             if self.range:
-                #do nothing if chunk already finished
-                if self.arrived + self.range[0] >= self.range[1]: return None
+                # Do nothing if chunk already finished
+                if self.arrived + self.range[0] >= self.range[1]:
+                    return None
 
-                if self.id == len(self.p.info.chunks) - 1: #as last chunk dont set end range, so we get everything
+                # As last chunk dont set end range, so we get everything
+                if self.id == len(self.p.info.chunks) - 1:
                     range = "%i-" % (self.arrived + self.range[0])
                 else:
                     range = "%i-%i" % (self.arrived + self.range[0], min(self.range[1] + 1, self.p.size - 1))
@@ -204,7 +212,8 @@ class HTTPChunk(HTTPRequest):
 
         else:
             if self.range:
-                if self.id == len(self.p.info.chunks) - 1: # see above
+                # See above
+                if self.id == len(self.p.info.chunks) - 1:
                     range = "%i-" % self.range[0]
                 else:
                     range = "%i-%i" % (self.range[0], min(self.range[1] + 1, self.p.size - 1))
@@ -218,11 +227,13 @@ class HTTPChunk(HTTPRequest):
 
     def writeHeader(self, buf):
         self.header += buf
-        #@TODO forward headers?, this is possibly unneeeded, when we just parse valid 200 headers
+        # TODO forward headers?, this is possibly unneeeded, when we just parse valid 200 headers
         # as first chunk, we will parse the headers
         if not self.range and self.header.endswith("\r\n\r\n"):
             self.parseHeader()
-        elif not self.range and buf.startswith("150") and "data connection" in buf: #ftp file size parsing
+
+        # Ftp file size parsing
+        elif not self.range and buf.startswith("150") and "data connection" in buf:
             size = search(r"(\d+) bytes", buf)
             if size:
                 self.p.size = int(size.group(1))
@@ -231,7 +242,7 @@ class HTTPChunk(HTTPRequest):
         self.headerParsed = True
 
     def writeBody(self, buf):
-        #ignore BOM, it confuses unrar
+        # Ignore BOM, it confuses unrar
         if not self.BOMChecked:
             if [ord(b) for b in buf[:3]] == [239, 187, 191]:
                 buf = buf[3:]
@@ -260,11 +271,11 @@ class HTTPChunk(HTTPRequest):
             sleep(self.sleep)
 
         if self.range and self.arrived > self.size:
-            return 0 #close if we have enough data
-
+            # Close if we have enough data
+            return 0
 
     def parseHeader(self):
-        """parse data from recieved header"""
+        """Parse data from recieved header."""
         for orgline in self.decodeResponse(self.header).splitlines():
             line = orgline.strip().lower()
             if line.startswith("accept-ranges") and "bytes" in line:
@@ -282,12 +293,12 @@ class HTTPChunk(HTTPRequest):
         self.headerParsed = True
 
     def stop(self):
-        """The download will not proceed after next call of writeBody"""
-        self.range = [0,0]
+        """The download will not proceed after next call of writeBody."""
+        self.range = [0, 0]
         self.size = 0
 
     def resetRange(self):
-        """ Reset the range, so the download will load all data available  """
+        """Reset the range, so the download will load all data available."""
         self.range = None
 
     def setRange(self, range):
@@ -295,13 +306,17 @@ class HTTPChunk(HTTPRequest):
         self.size = range[1] - range[0]
 
     def flushFile(self):
-        """  flush and close file """
+        """Flush and close file."""
         self.fp.flush()
-        fsync(self.fp.fileno()) #make sure everything was written to disk
-        self.fp.close() #needs to be closed, or merging chunks will fail
+        # Make sure everything was written to disk
+        fsync(self.fp.fileno())
+        # Needs to be closed, or merging chunks will fail
+        self.fp.close()
 
     def close(self):
-        """ closes everything, unusable after this """
-        if self.fp: self.fp.close()
+        """Closes everything, unusable after this."""
+        if self.fp:
+            self.fp.close()
         self.c.close()
-        if hasattr(self, "p"): del self.p
+        if hasattr(self, "p"):
+            del self.p
