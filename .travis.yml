@@ -1,16 +1,15 @@
 language: python
 
-python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
-
-install:
-  - pip install -r requirements.txt
+matrix:
+  include:
+    - python: 2.7
+      env: TOXENV=py27
+    - python: 3.4
+      env: TOXENV=py34
+    - python: 3.5
+      env: TOXENV=py35
+    - python: 3.6
+      env: TOXENV=py36
 
 script:
-  - py.test --cov=module tests
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then coverage xml; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then codeclimate-test-reporter --file .coverage; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then python-codacy-coverage -r coverage.xml; fi'
+  - tox
