@@ -6,12 +6,11 @@ from __future__ import (
     unicode_literals,
 )
 
-import unittest
-
 from module.plugins.hoster.MegaCoNz import MegaCrypto
+from tests.unit.base import BaseUnitTestCase
 
 
-class TestMegaCrypto(unittest.TestCase):
+class TestMegaCrypto(BaseUnitTestCase):
 
     def test_base64_decode(self):
         value_to_expected_tuples = (

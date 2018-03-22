@@ -5,8 +5,6 @@ from __future__ import (
     unicode_literals,
 )
 
-import unittest
-
 import mock
 
 from module.singletons import (
@@ -14,9 +12,10 @@ from module.singletons import (
     REQUEST_FACTORY_SINGLETON,
     SingletonFactory,
 )
+from tests.unit.base import BaseUnitTestCase
 
 
-class TestSingletons(unittest.TestCase):
+class TestSingletons(BaseUnitTestCase):
 
     def test_singleton_factory_before_instantiating(self):
         with self.assertRaises(ValueError):

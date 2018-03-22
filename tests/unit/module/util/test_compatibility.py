@@ -5,12 +5,11 @@ from __future__ import (
     unicode_literals,
 )
 
-import unittest
-
 from module.util.compatibility import maketrans
+from tests.unit.base import BaseUnitTestCase
 
 
-class TestCompatibility(unittest.TestCase):
+class TestCompatibility(BaseUnitTestCase):
 
     def test_maketrans(self):
         self.assertEqual(

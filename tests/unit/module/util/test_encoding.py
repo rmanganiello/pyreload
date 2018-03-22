@@ -6,8 +6,6 @@ from __future__ import (
     unicode_literals,
 )
 
-import unittest
-
 import six
 
 from module.util.encoding import (
@@ -15,9 +13,10 @@ from module.util.encoding import (
     smart_str,
     smart_text,
 )
+from tests.unit.base import BaseUnitTestCase
 
 
-class TestEncoding(unittest.TestCase):
+class TestEncoding(BaseUnitTestCase):
 
     def test_smart_bytes(self):
         value_to_expected_tuples = (

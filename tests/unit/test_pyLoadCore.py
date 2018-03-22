@@ -7,14 +7,14 @@ from __future__ import (
     unicode_literals,
 )
 
-import unittest
-
 import mock
 
 import pyLoadCore
 
+from tests.unit.base import BaseUnitTestCase
 
-class TestPyLoadCore(unittest.TestCase):
+
+class TestPyLoadCore(BaseUnitTestCase):
 
     def setUp(self):
         super(TestPyLoadCore, self).setUp()
