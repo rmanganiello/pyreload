@@ -30,7 +30,7 @@ from ..internal.Notifier import Notifier
 class IRC(Thread, Notifier):
     __name__ = "IRC"
     __type__ = "hook"
-    __version__ = "0.25"
+    __version__ = "0.26"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -364,11 +364,11 @@ class IRC(Thread, Notifier):
                 "ERROR: Use del command like this: del -p|-l <id> [...] (-p indicates that the ids are from packages, -l indicates that the ids are from links)"]
 
         if args[0] == "-p":
-            ret = self.pyload.api.deletePackages(map(int, args[1:]))
+            self.pyload.api.deletePackages(list(map(int, args[1:])))
             return ["INFO: Deleted %d packages!" % len(args[1:])]
 
         elif args[0] == "-l":
-            ret = self.pyload.api.delLinks(map(int, args[1:]))
+            self.pyload.api.delLinks(list(map(int, args[1:])))
             return ["INFO: Deleted %d links!" % len(args[1:])]
 
         else:

@@ -21,7 +21,7 @@ from ..internal.misc import (
 class YoutubeComFolder(Crypter):
     __name__ = "YoutubeComFolder"
     __type__ = "crypter"
-    __version__ = "1.10"
+    __version__ = "1.11"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.|m\.)?youtube\.com/(?P<TYPE>user|playlist|view_play_list)(/|.*?[?&](?:list|p)=)(?P<ID>[\w\-]+)'
@@ -81,7 +81,7 @@ class YoutubeComFolder(Crypter):
                 yield item
 
     def get_playlists(self, ch_id):
-        return map(self.get_playlist, self._get_playlists(ch_id))
+        return list(map(self.get_playlist, self._get_playlists(ch_id)))
 
     def _get_videos_id(self, id, token=None):
         req = {'part': "contentDetails", 'maxResults': "50", 'playlistId': id}
@@ -166,7 +166,7 @@ class YoutubeComFolder(Crypter):
                     "%s video\s available on playlist \"%s\" after duplicates cleanup" %
                     (len(p_urls), p_name))
             else:
-                p_urls = map(urlize, p_videos)
+                p_urls = list(map(urlize, p_videos))
 
             #: Folder is NOT recognized by pyload 0.4.9!
             self.packages.append((p_name, p_urls, p_folder))

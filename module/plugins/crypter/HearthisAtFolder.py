@@ -17,7 +17,7 @@ from ..internal.Crypter import Crypter
 class HearthisAtFolder(Crypter):
     __name__ = "HearthisAtFolder"
     __type__ = "crypter"
-    __version__ = "0.02"
+    __version__ = "0.03"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?hearthis\.at/.*(?<!#pyload)$'
@@ -42,7 +42,6 @@ class HearthisAtFolder(Crypter):
 
         else:
             #: Playlist
-            pass
             m = re.search(r'intInternalId = (\d+);', self.data)
             if m is None:
                 self.fail(_("Internal Id not found"))
@@ -52,6 +51,8 @@ class HearthisAtFolder(Crypter):
                                         'min': 0,
                                         'max': 200})
 
-            links = map(lambda x: urljoin(pyfile.url, x) + "#pyload",
-                        re.findall(r'<a class="player-link".+?href="(.+?)".+?</a>', self.data, re.S))
+            links = list(map(
+                lambda x: urljoin(pyfile.url, x) + "#pyload",
+                re.findall(r'<a class="player-link".+?href="(.+?)".+?</a>', self.data, re.S)
+            ))
             self.packages = [(pyfile.package().name, links, pyfile.package().folder)]

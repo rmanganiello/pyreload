@@ -17,7 +17,7 @@ from ..internal.Addon import Addon
 class JustPremium(Addon):
     __name__ = "JustPremium"
     __type__ = "hook"
-    __version__ = "0.28"
+    __version__ = "0.29"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -50,10 +50,14 @@ class JustPremium(Addon):
             if 'new_name' in hosterdict[hoster] and hosterdict[hoster]['new_name'] in premiumplugins
         }
 
-        excluded = map(lambda domain: "".join(part.capitalize() for part in re.split(r'(\.|\d+)', domain) if part != '.'),
-                       self.config.get('excluded').replace(' ', '').replace(',', '|').replace(';', '|').split('|'))
-        included = map(lambda domain: "".join(part.capitalize() for part in re.split(r'(\.|\d+)', domain) if part != '.'),
-                       self.config.get('included').replace(' ', '').replace(',', '|').replace(';', '|').split('|'))
+        excluded = list(map(
+            lambda domain: "".join(part.capitalize() for part in re.split(r'(\.|\d+)', domain) if part != '.'),
+            self.config.get('excluded').replace(' ', '').replace(',', '|').replace(';', '|').split('|'),
+        ))
+        included = list(map(
+            lambda domain: "".join(part.capitalize() for part in re.split(r'(\.|\d+)', domain) if part != '.'),
+            self.config.get('included').replace(' ', '').replace(',', '|').replace(';', '|').split('|'),
+        ))
 
         hosterlist = (premiumplugins | multihosters).union(
             excluded).difference(included)

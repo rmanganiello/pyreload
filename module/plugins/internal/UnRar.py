@@ -32,7 +32,7 @@ from .misc import (
 class UnRar(Extractor):
     __name__ = "UnRar"
     __type__ = "extractor"
-    __version__ = "1.40"
+    __version__ = "1.41"
     __status__ = "testing"
 
     __config__ = [("ignore_warnings", "bool", "Ignore unrar warnings", False)]
@@ -266,7 +266,7 @@ class UnRar(Extractor):
         call = [self.CMD, command] + args + list(xargs)
         self.log_debug("EXECUTE " + " ".join(call))
 
-        call = map(encode, call)
+        call = list(map(encode, call))
         p = subprocess.Popen(
             call,
             stdout=subprocess.PIPE,

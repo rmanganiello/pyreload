@@ -61,7 +61,7 @@ class Crypter(Base):
         """
         name = self.info['pattern'].get("N")
         if name is None:
-            links = map(self.fixurl, self.links)
+            links = list(map(self.fixurl, self.links))
             pdict = self.pyload.api.generatePackages(links)
             packages = [(_name, _links, parse_name(_name))
                         for _name, _links in pdict.items()]
@@ -91,7 +91,7 @@ class Crypter(Base):
             self.log_info(_("Create package: %s") % name,
                           _("%d links") % len(links))
 
-            links = map(self.fixurl, links)
+            links = list(map(self.fixurl, links))
             self.log_debug("LINKS for package " + name, *links)
 
             pid = self.pyload.api.addPackage(name, links, pack_queue)

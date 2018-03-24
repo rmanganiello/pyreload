@@ -49,7 +49,7 @@ except ImportError:
 class misc(object):
     __name__ = "misc"
     __type__ = "plugin"
-    __version__ = "0.52"
+    __version__ = "0.53"
     __status__ = "stable"
 
     __pattern__ = r'^unmatchable$'
@@ -260,6 +260,7 @@ def format_time(value):
                             if getattr(dt, attr))
     return days + (" and " if days and tm else "") + tm
 
+
 def format_size(value):
     for unit in ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'):
         if abs(value) < 1024.0:
@@ -271,8 +272,8 @@ def format_size(value):
 
 
 def compare_time(start, end):
-    start = map(int, start)
-    end = map(int, end)
+    start = tuple(int(part) for part in start)
+    end = tuple(int(part) for part in end)
 
     if start == end:
         return True
@@ -520,8 +521,10 @@ def safepath(value):
     else:
         unt = ""
     drive, filename = os.path.splitdrive(value)
-    filename = os.path.join(os.sep if os.path.isabs(
-        filename) else "", *map(safename, filename.split(os.sep)))
+    filename = os.path.join(
+        os.sep if os.path.isabs(filename) else '',
+        *[safename(part) for part in filename.split(os.sep)]
+    )
     path = unt + drive + filename
 
     try:
@@ -752,11 +755,16 @@ def replace_patterns(value, rules):
     return value
 
 
-#@TODO: Remove in 0.4.10 and fix exp in CookieJar.setCookie
+# TODO: Remove in 0.4.10 and fix exp in CookieJar.setCookie
 def set_cookie(cj, domain, name, value, path='/',
                exp=time.time() + 180 * 24 * 3600):
-    args = map(encode, [domain, name, value, path]) + [int(exp)]
-    return cj.setCookie(*args)
+    return cj.setCookie(
+        encode(domain),
+        encode(name),
+        encode(value),
+        encode(path),
+        int(exp),
+    )
 
 
 def set_cookies(cj, cookies):

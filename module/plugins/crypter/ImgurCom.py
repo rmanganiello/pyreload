@@ -19,7 +19,7 @@ from ..internal.SimpleCrypter import SimpleCrypter
 class ImgurCom(SimpleCrypter):
     __name__ = "ImgurCom"
     __type__ = "crypter"
-    __version__ = "0.61"
+    __version__ = "0.62"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.|m\.)?imgur\.com/(a|gallery|)/?\w{5,7}'
@@ -115,8 +115,12 @@ class ImgurCom(SimpleCrypter):
             return []
 
         # Translate new IDs to Direct-URLs
-        return map(lambda id: "http://i.imgur.com/%s%s" %
-                   (id, ids_json[id]), ids_indirect)
+        return list(
+            map(
+                lambda id: "http://i.imgur.com/%s%s" % (id, ids_json[id]),
+                ids_indirect
+            )
+        )
 
     def setup(self):
         self.gallery_name = None
@@ -127,7 +131,8 @@ class ImgurCom(SimpleCrypter):
 
         f = lambda url: "http://" + re.sub(r'(\w{7})s\.', r'\1.', url)
         direct_links = uniqify(
-            map(f, re.findall(self.LINK_PATTERN, self.data)))
+            list(map(f, re.findall(self.LINK_PATTERN, self.data)))
+        )
 
         # Imgur Galleryies may contain more images than initially shown. Find
         # the rest now!

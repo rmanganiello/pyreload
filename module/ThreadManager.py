@@ -55,7 +55,7 @@ from module.utils import (
 from . import PluginThread
 
 
-class ThreadManager:
+class ThreadManager(object):
     """manages the download threads, assign jobs, reconnect etc"""
 
     def __init__(self, core):
@@ -273,22 +273,37 @@ class ThreadManager:
         self.log.debug("Cleaned up pycurl")
         return True
 
-    #----------------------------------------------------------------------
     def assignJob(self):
         """assing a job to a thread if possible"""
 
-        if self.pause or not self.core.api.isTimeDownload(): return
+        if self.pause or not self.core.api.isTimeDownload():
+            return
 
-        #if self.downloaded > 20:
-        #    if not self.cleanPyCurl(): return
+        # if self.downloaded > 20:
+        #     if not self.cleanPyCurl(): return
 
         free = [x for x in self.threads if not x.active]
 
-        inuse = set([(x.active.pluginname,self.getLimit(x)) for x in self.threads if x.active and x.active.hasPlugin() and x.active.plugin.account])
-        inuse = map(lambda x : (x[0], x[1], len([y for y in self.threads if y.active and y.active.pluginname == x[0]])) ,inuse)
+        inuse = {
+            (x.active.pluginname, self.getLimit(x))
+            for x in self.threads
+            if x.active and x.active.hasPlugin() and x.active.plugin.account
+        }
+        inuse = [
+            (
+                x[0],
+                x[1],
+                len([y for y in self.threads if y.active and y.active.pluginname == x[0]]),
+            )
+            for x in inuse
+        ]
         onlimit = [x[0] for x in inuse if x[1] > 0 and x[2] >= x[1]]
 
-        occ = [x.active.pluginname for x in self.threads if x.active and x.active.hasPlugin() and not x.active.plugin.multiDL] + onlimit
+        occ = [
+            x.active.pluginname
+            for x in self.threads
+            if x.active and x.active.hasPlugin() and not x.active.plugin.multiDL
+        ] + onlimit
 
         occ.sort()
         occ = tuple(set(occ))

@@ -81,13 +81,14 @@ class ManageFiles(Handler):
                 [self.client.restartPackage(x) for x in packs]
 
         elif self.mode:
-            #edit links
+            # Edit links
             links = self.parseInput(input, False)
 
             if self.mode == "d":
                 self.client.deleteFiles(links)
             elif self.mode == "r":
-                map(self.client.restartFile, links)
+                for link in links:
+                    self.client.restartFile(link)
 
         else:
             #look into package

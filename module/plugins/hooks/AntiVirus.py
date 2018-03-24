@@ -29,7 +29,7 @@ except ImportError:
 class AntiVirus(Addon):
     __name__ = "AntiVirus"
     __type__ = "hook"
-    __version__ = "0.21"
+    __version__ = "0.22"
     __status__ = "broken"
 
     #@TODO: add trash option (use Send2Trash lib)
@@ -83,7 +83,7 @@ class AntiVirus(Addon):
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
 
-            out, err = map(str.strip, p.communicate())
+            out, err = list(map(str.strip, p.communicate()))
 
             if out:
                 self.log_info(target_repr, out)

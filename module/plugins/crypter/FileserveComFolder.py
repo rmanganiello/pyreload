@@ -15,7 +15,7 @@ from ..internal.Crypter import Crypter
 class FileserveComFolder(Crypter):
     __name__ = "FileserveComFolder"
     __type__ = "crypter"
-    __version__ = "0.18"
+    __version__ = "0.19"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?fileserve\.com/list/\w+'
@@ -43,4 +43,5 @@ class FileserveComFolder(Crypter):
 
         if new_links:
             self.links = [
-                map(lambda s: "http://fileserve.com%s" % s, new_links)]
+                list(map(lambda s: "http://fileserve.com%s" % s, new_links)),
+            ]

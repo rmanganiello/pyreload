@@ -13,7 +13,7 @@ from ..internal.MultiAccount import MultiAccount
 class PremiumTo(MultiAccount):
     __name__ = "PremiumTo"
     __type__ = "account"
-    __version__ = "0.19"
+    __version__ = "0.20"
     __status__ = "testing"
 
     __config__ = [("mh_mode", "all;listed;unlisted", "Filter hosters to use", "all"),
@@ -46,7 +46,7 @@ class PremiumTo(MultiAccount):
 
         if self.req.code == 200:
             # @TODO: Remove `/ 1024` in 0.4.10
-            trafficleft = sum(map(float, traffic.split(';'))) / 1024
+            trafficleft = sum(float(part) for part in traffic.split(';')) / 1024
             return {'premium': True, 'trafficleft': trafficleft, 'validuntil': -1}
 
         else:

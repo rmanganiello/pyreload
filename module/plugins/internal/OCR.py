@@ -29,7 +29,7 @@ except ImportError:
 class OCR(Plugin):
     __name__ = "OCR"
     __type__ = "ocr"
-    __version__ = "0.28"
+    __version__ = "0.29"
     __status__ = "stable"
 
     __description__ = """OCR base plugin"""
@@ -67,7 +67,7 @@ class OCR(Plugin):
         call = (command,) + args
         self.log_debug("EXECUTE " + " ".join(call))
 
-        call = map(encode, call)
+        call = list(map(encode, call))
         popen = subprocess.Popen(
             call,
             bufsize=-1,

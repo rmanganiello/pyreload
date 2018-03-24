@@ -31,7 +31,7 @@ from .misc import (
 class SevenZip(Extractor):
     __name__ = "SevenZip"
     __type__ = "extractor"
-    __version__ = "0.29"
+    __version__ = "0.30"
     __status__ = "testing"
 
     __description__ = """7-Zip extractor plugin"""
@@ -209,7 +209,7 @@ class SevenZip(Extractor):
         call = [self.CMD, command] + args + list(xargs)
         self.log_debug("EXECUTE " + " ".join(call))
 
-        call = map(encode, call)
+        call = list(map(encode, call))
         p = subprocess.Popen(
             call,
             stdout=subprocess.PIPE,

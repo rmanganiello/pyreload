@@ -17,7 +17,7 @@ from ..internal.Crypter import Crypter
 class EmbeduploadCom(Crypter):
     __name__ = "EmbeduploadCom"
     __type__ = "crypter"
-    __version__ = "0.08"
+    __version__ = "0.09"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?embedupload\.com/\?d=.+'
@@ -44,7 +44,7 @@ class EmbeduploadCom(Crypter):
         m = re.findall(self.LINK_PATTERN, self.data)
         if m is not None:
             prefered_set = set(self.config.get('preferedHoster').split('|'))
-            prefered_set = map(lambda s: s.lower().split('.')[0], prefered_set)
+            prefered_set = list(map(lambda s: s.lower().split('.')[0], prefered_set))
 
             self.log_debug("PF: %s" % prefered_set)
 

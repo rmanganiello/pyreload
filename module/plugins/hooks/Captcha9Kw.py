@@ -20,7 +20,7 @@ from ..internal.misc import threaded
 class Captcha9Kw(Addon):
     __name__ = "Captcha9Kw"
     __type__ = "hook"
-    __version__ = "0.39"
+    __version__ = "0.40"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", False),
@@ -88,7 +88,7 @@ class Captcha9Kw(Addon):
                   'cpm': self.config.get('captchapermin')}
 
         for opt in str(self.config.get('hoster_options').split('|')):
-            details = map(str.strip, opt.split(';'))
+            details = list(map(str.strip, opt.split(';')))
 
             if not details or details[0].lower() != pluginname.lower():
                 continue
@@ -199,7 +199,7 @@ class Captcha9Kw(Addon):
             self.fail(_("Too many captchas in queue"))
 
         for opt in str(self.config.get('hoster_options').split('|')):
-            details = map(str.strip, opt.split(':'))
+            details = list(map(str.strip, opt.split(':')))
 
             if not details or details[0].lower() != pluginname.lower():
                 continue
