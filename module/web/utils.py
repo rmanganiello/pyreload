@@ -151,7 +151,7 @@ def toDict(obj):
 
 class CherryPyWSGI(ServerAdapter):
     def run(self, handler):
-        from wsgiserver import CherryPyWSGIServer
+        from cherrypy.wsgiserver import CherryPyWSGIServer
 
         server = CherryPyWSGIServer((self.host, self.port), handler)
         server.start()

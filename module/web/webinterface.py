@@ -145,7 +145,7 @@ def run_lightweight(host="0.0.0.0", port="8000"):
 
 
 def run_threaded(host="0.0.0.0", port="8000", theads=3, cert="", key=""):
-    from wsgiserver import CherryPyWSGIServer
+    from cherrypy.wsgiserver import CherryPyWSGIServer
 
     if cert and key:
         CherryPyWSGIServer.ssl_certificate = cert
