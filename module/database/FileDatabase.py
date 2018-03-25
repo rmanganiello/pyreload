@@ -53,16 +53,13 @@ from module.utils import (
 )
 
 
-class FileHandler:
+class FileHandler(object):
     """Handles all request made to obtain information,
     modify status or other request for links or packages"""
 
     def __init__(self, core):
         """Constructor"""
         self.core = core
-
-        # translations
-        self.statusMsg = [_("finished"), _("offline"), _("online"), _("queued"), _("skipped"), _("waiting"), _("temp. offline"), _("starting"), _("failed"), _("aborted"), _("decrypting"), _("custom"), _("downloading"), _("processing"), _("unknown")]
 
         self.cache = {} #holds instances for files
         self.packageCache = {}  # same for packages
@@ -680,6 +677,10 @@ class FileMethods():
         }
 
         """
+        # Inner import to have _ function in builtins
+        # TODO: Remove _ from builtins
+        from module.util.constants import FILE_STATUS_MESSAGES
+
         self.c.execute('SELECT l.id,l.url,l.name,l.size,l.status,l.error,l.plugin,l.package,l.linkorder FROM links as l INNER JOIN packages as p ON l.package=p.id WHERE p.queue=? ORDER BY l.linkorder', (q,))
         data = {}
         for r in self.c:
@@ -690,7 +691,7 @@ class FileMethods():
                 'size': r[3],
                 'format_size': formatSize(r[3]),
                 'status': r[4],
-                'statusmsg': self.manager.statusMsg[r[4]],
+                'statusmsg': FILE_STATUS_MESSAGES[r[4]],
                 'error': r[5],
                 'plugin': r[6],
                 'package': r[7],
@@ -744,6 +745,11 @@ class FileMethods():
         r = self.c.fetchone()
         if not r:
             return None
+
+        # Inner import to have _ function in builtins
+        # TODO: Remove _ from builtins
+        from module.util.constants import FILE_STATUS_MESSAGES
+
         data[r[0]] = {
             'id': r[0],
             'url': r[1],
@@ -751,7 +757,7 @@ class FileMethods():
             'size': r[3],
             'format_size': formatSize(r[3]),
             'status': r[4],
-            'statusmsg': self.manager.statusMsg[r[4]],
+            'statusmsg': FILE_STATUS_MESSAGES[r[4]],
             'error': r[5],
             'plugin': r[6],
             'package': r[7],
@@ -763,6 +769,10 @@ class FileMethods():
     @style.queue
     def getPackageData(self, id):
         """get data about links for a package"""
+        # Inner import to have _ function in builtins
+        # TODO: Remove _ from builtins
+        from module.util.constants import FILE_STATUS_MESSAGES
+
         self.c.execute('SELECT id,url,name,size,status,error,plugin,package,linkorder FROM links WHERE package=? ORDER BY linkorder', (str(id), ))
 
         data = {}
@@ -774,7 +784,7 @@ class FileMethods():
                 'size': r[3],
                 'format_size': formatSize(r[3]),
                 'status': r[4],
-                'statusmsg': self.manager.statusMsg[r[4]],
+                'statusmsg': FILE_STATUS_MESSAGES[r[4]],
                 'error': r[5],
                 'plugin': r[6],
                 'package': r[7],

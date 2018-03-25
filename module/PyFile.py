@@ -144,9 +144,13 @@ class PyFile(object):
 
     def getStatusName(self):
         if self.status not in (13, 14) or not self.statusname:
-            return self.m.statusMsg[self.status]
-        else:
-            return self.statusname
+            # Inner import to have _ function in builtins
+            # TODO: Remove _ from builtins
+            from module.util.constants import FILE_STATUS_MESSAGES
+
+            return FILE_STATUS_MESSAGES[self.status]
+
+        return self.statusname
 
     def hasStatus(self, status):
         return statusMap[status] == self.status
