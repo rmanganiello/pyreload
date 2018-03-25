@@ -24,7 +24,7 @@ from ..internal.misc import (
 class RelinkUs(Crypter):
     __name__ = "RelinkUs"
     __type__ = "crypter"
-    __version__ = "3.23"
+    __version__ = "3.24"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?relink\.(?:us|to)/(f/|((view|go)\.php\?id=))(?P<ID>.+)'
@@ -333,7 +333,7 @@ class RelinkUs(Crypter):
 
         #: Extract links
         text = text.replace("\x00", "").replace("\r", "")
-        links = filter(bool, text.split('\n'))
+        links = list(filter(None, text.split('\n')))
 
         #: Log and return
         self.log_debug("Package has %d links" % len(links))

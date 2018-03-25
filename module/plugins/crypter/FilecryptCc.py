@@ -56,7 +56,7 @@ class BIGHTTPRequest(HTTPRequest):
 class FilecryptCc(Crypter):
     __name__ = "FilecryptCc"
     __type__ = "crypter"
-    __version__ = "0.38"
+    __version__ = "0.39"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?filecrypt\.cc/Container/\w+'
@@ -260,7 +260,7 @@ class FilecryptCc(Crypter):
 
         #: Extract links
         text = text.replace("\x00", "").replace("\r", "")
-        links = filter(bool, text.split('\n'))
+        links = list(filter(None, text.split('\n')))
 
         return links
 

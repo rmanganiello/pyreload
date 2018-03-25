@@ -18,7 +18,7 @@ from ..internal.Crypter import Crypter
 class ShareLinksBiz(Crypter):
     __name__ = "ShareLinksBiz"
     __type__ = "crypter"
-    __version__ = "1.29"
+    __version__ = "1.30"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?(share-links|s2l)\.biz/(?P<ID>_?\w+)'
@@ -325,7 +325,7 @@ class ShareLinksBiz(Crypter):
 
         #: Extract links
         text = text.replace("\x00", "").replace("\r", "")
-        links = filter(bool, text.split('\n'))
+        links = list(filter(None, text.split('\n')))
 
         #: Log and return
         self.log_debug("Block has %d links" % len(links))

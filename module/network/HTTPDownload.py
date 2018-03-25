@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
     @author: RaNaN
 """
 
@@ -264,14 +264,13 @@ class HTTPDownload():
                     if failed and init not in failed and init.c not in chunksDone:
                         self.log.error(_("Download chunks failed, fallback to single connection | %s" % (str(ex))))
 
-                        #list of chunks to clean and remove
-                        to_clean = filter(lambda x: x is not init, self.chunks)
-                        for chunk in to_clean:
+                        # List of chunks to clean and remove
+                        for chunk in filter(lambda x: x is not init, self.chunks):
                             self.closeChunk(chunk)
                             self.chunks.remove(chunk)
                             remove(fs_encode(self.info.getChunkName(chunk.id)))
 
-                        #let first chunk load the rest and update the info file
+                        # Let first chunk load the rest and update the info file
                         init.resetRange()
                         self.info.clear()
                         self.info.addChunk("%s.chunk0" % self.filename, (0, self.size))

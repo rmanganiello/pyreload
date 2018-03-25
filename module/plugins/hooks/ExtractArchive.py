@@ -72,7 +72,7 @@ class ArchiveQueue(object):
 class ExtractArchive(Addon):
     __name__ = "ExtractArchive"
     __type__ = "hook"
-    __version__ = "1.68"
+    __version__ = "1.69"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", True),
@@ -267,8 +267,13 @@ class ExtractArchive(Addon):
                 new_files_ids = []
 
                 if extensions:  #: Include only specified archive types
-                    files_ids = filter(lambda file_id: any([Extractor.archivetype(file_id[1].lower()) in extensions
-                                                            for Extractor in self.extractors]), files_ids)
+                    files_ids = list(filter(
+                        lambda file_id: any(
+                            Extractor.archivetype(file_id[1].lower()) in extensions
+                            for Extractor in self.extractors
+                        ),
+                        files_ids,
+                    ))
 
                 #: Sort by filename to ensure (or at least try) that a multivolume archive is targeted by its first part
                 #: This is important because, for example, UnRar ignores preceding parts in listing mode

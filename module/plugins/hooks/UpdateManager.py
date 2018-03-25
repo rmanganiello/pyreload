@@ -33,7 +33,7 @@ from ..internal.misc import (
 class UpdateManager(Addon):
     __name__ = "UpdateManager"
     __type__ = "hook"
-    __version__ = "1.24"
+    __version__ = "1.25"
     __status__ = "testing"
 
     __config__ = [("activated", "bool", "Activated", True),
@@ -115,11 +115,11 @@ class UpdateManager(Addon):
         Reload and reindex all modified plugins
         """
         reloads = []
-        modules = filter(
+        modules = list(filter(
             lambda m: m and (m.__name__.startswith("module.plugins.") or
                              m.__name__.startswith("userplugins.")) and
             m.__name__.count(".") >= 2, sys.modules.values()
-        )
+        ))
 
         plugin_manager = get_plugin_manager()
 

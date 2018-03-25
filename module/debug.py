@@ -91,9 +91,9 @@ def initReport():
 			dest.append(line)
 
 
-	frame_c = filter(filter_info, frame_c)
-	plugin_c = filter(filter_info, plugin_c)
-	pyfile_c = filter(filter_info, pyfile_c)
+	frame_c = list(filter(filter_info, frame_c))
+	plugin_c = list(filter(filter_info, plugin_c))
+	pyfile_c = list(filter(filter_info, pyfile_c))
 
 	frame_c = appendName(frame_c, "frame")
 	plugin_c = appendName(plugin_c, "plugin")

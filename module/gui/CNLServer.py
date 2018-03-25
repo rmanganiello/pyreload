@@ -156,7 +156,7 @@ class CNLHandler(BaseHTTPRequestHandler):
 
     def add(self):
         package = self.get_post('referer', 'ClickAndLoad Package')
-        urls = filter(lambda x: x != "", self.get_post('urls').split("\n"))
+        urls = list(filter(None, self.get_post('urls').split("\n")))
 
         self.add_package(package, urls, 0)
 
@@ -178,17 +178,16 @@ class CNLHandler(BaseHTTPRequestHandler):
         IV = Key
 
         obj = AES.new(Key, AES.MODE_CBC, IV)
-        result = obj.decrypt(crypted).replace("\x00", "").replace("\r","").split("\n")
+        result = obj.decrypt(crypted).replace("\x00", "").replace("\r", "").split("\n")
 
-        result = filter(lambda x: x != "", result)
+        result = list(filter(None, result))
 
         self.add_package(package, result, 0)
-
 
     def flashgot(self):
         autostart = int(self.get_post('autostart', 0))
         package = self.get_post('package', "FlashGot")
-        urls = filter(lambda x: x != "", self.get_post('urls').split("\n"))
+        urls = list(filter(None, self.get_post('urls').split("\n")))
 
         self.add_package(package, urls, autostart)
 

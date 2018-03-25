@@ -56,7 +56,7 @@ def find(domain, localedir=None, languages=None, all=False):
         else:
             results.extend(res)
     if all is False:
-        results = filter(lambda x: x is not None, results)
+        results = list(filter(lambda x: x is not None, results))
         if len(results) == 0:
             return None
         else:

@@ -19,7 +19,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class ZippyshareCom(SimpleHoster):
     __name__ = "ZippyshareCom"
     __type__ = "hoster"
-    __version__ = "0.96"
+    __version__ = "0.97"
     __status__ = "testing"
 
     __pattern__ = r'http://(?P<HOST>www\d{0,3}\.zippyshare\.com)/(?:[vd]/|view\.jsp.*key=)(?P<KEY>[\w^_]+)'
@@ -96,10 +96,10 @@ class ZippyshareCom(SimpleHoster):
         eltRE = r'getElementById\([\'"](.+?)[\'"]\)(\.)?(getAttribute\([\'"])?(\w+)?([\'"]\))?'
         for m in re.findall(eltRE, ' '.join(scripts)):
             JSid, JSattr = m[0], m[3]
-            values = filter(None, (
+            values = list(filter(None, (
                 elt.get(JSattr, None)
                 for elt in soup.find_all(id=JSid)
-            ))
+            )))
             if values:
                 inits.append('document.getElementById("%s")["%s"] = "%s"' % (
                     JSid, JSattr, values[-1]))

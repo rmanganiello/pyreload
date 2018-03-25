@@ -19,7 +19,7 @@ from ..internal.Crypter import Crypter
 class NCryptIn(Crypter):
     __name__ = "NCryptIn"
     __type__ = "crypter"
-    __version__ = "1.43"
+    __version__ = "1.44"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?ncrypt\.in/(?P<TYPE>folder|link|frame)-([^/\?]+)'
@@ -315,7 +315,7 @@ class NCryptIn(Crypter):
 
         #: Extract links
         text = text.replace("\x00", "").replace("\r", "")
-        links = filter(bool, text.split('\n'))
+        links = list(filter(None, text.split('\n')))
 
         #: Log and return
         self.log_debug("Block has %d links" % len(links))

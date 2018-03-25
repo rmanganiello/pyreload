@@ -37,12 +37,12 @@ from .RemoteManager import BackendBase
 
 try:
     from Cryptodome.Cipher import AES
-except:
+except ImportError:
     pass
-
 
 core = None
 js = None
+
 
 class ClickAndLoadBackend(BackendBase):
     def setup(self, host, port):
@@ -54,6 +54,7 @@ class ClickAndLoadBackend(BackendBase):
     def serve(self):
         while self.enabled:
             self.httpd.handle_request()
+
 
 class CNLHandler(BaseHTTPRequestHandler):
 
@@ -129,7 +130,7 @@ class CNLHandler(BaseHTTPRequestHandler):
 
     def add(self):
         package = self.get_post('referer', 'ClickAndLoad Package')
-        urls = filter(lambda x: x != "", self.get_post('urls').split("\n"))
+        urls = list(filter(None, self.get_post('urls').split("\n")))
 
         self.add_package(package, urls, 0)
 
@@ -153,7 +154,7 @@ class CNLHandler(BaseHTTPRequestHandler):
         obj = AES.new(Key, AES.MODE_CBC, IV)
         result = obj.decrypt(crypted).replace("\x00", "").replace("\r","").split("\n")
 
-        result = filter(lambda x: x != "", result)
+        result = list(filter(None, result))
 
         self.add_package(package, result, 0)
 
@@ -161,7 +162,7 @@ class CNLHandler(BaseHTTPRequestHandler):
     def flashgot(self):
         autostart = int(self.get_post('autostart', 0))
         package = self.get_post('package', "FlashGot")
-        urls = filter(lambda x: x != "", self.get_post('urls').split("\n"))
+        urls = list(filter(None, self.get_post('urls').split("\n")))
 
         self.add_package(package, urls, autostart)
 

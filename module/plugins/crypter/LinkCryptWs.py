@@ -24,7 +24,7 @@ from ..internal.misc import (
 class LinkCryptWs(Crypter):
     __name__ = "LinkCryptWs"
     __type__ = "crypter"
-    __version__ = "0.21"
+    __version__ = "0.22"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?linkcrypt\.ws/(dir|container)/(?P<ID>\w+)'
@@ -328,7 +328,7 @@ class LinkCryptWs(Crypter):
 
         #: Extract links
         text = text.replace("\x00", "").replace("\r", "")
-        links = filter(bool, text.split('\n'))
+        links = list(filter(None, text.split('\n')))
 
         #: Log and return
         self.log_debug("Package has %s links" % len(links))
