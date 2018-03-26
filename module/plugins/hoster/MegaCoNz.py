@@ -17,7 +17,10 @@ import Cryptodome.Cipher.AES
 import Cryptodome.Util.Counter
 
 from module.network.HTTPRequest import BadHeader
-from module.util.encoding import smart_bytes
+from module.util.encoding import (
+    smart_bytes,
+    smart_text,
+)
 
 from ..internal.Hoster import Hoster
 from ..internal.misc import (
@@ -96,7 +99,8 @@ class MegaCrypto(object):
         cbc = Cryptodome.Cipher.AES.new(
             MegaCrypto.a32_to_str(key),
             Cryptodome.Cipher.AES.MODE_CBC,
-            "\0" * 16)
+            b'\0' * 16,
+        )
         return cbc.decrypt(data)
 
     @staticmethod
@@ -104,7 +108,8 @@ class MegaCrypto(object):
         cbc = Cryptodome.Cipher.AES.new(
             MegaCrypto.a32_to_str(key),
             Cryptodome.Cipher.AES.MODE_CBC,
-            "\0" * 16)
+            b'\0' * 16,
+        )
         return cbc.encrypt(data)
 
     @staticmethod
@@ -129,11 +134,11 @@ class MegaCrypto(object):
         """
         data = MegaCrypto.base64_decode(data)
         k, iv, meta_mac = MegaCrypto.get_cipher_key(key)
-        attr = MegaCrypto.cbc_decrypt(data, k)
+        attr = smart_text(MegaCrypto.cbc_decrypt(data, k))
 
         #: Data is padded, 0-bytes must be stripped
         return json.loads(
-            re.search(r'{.+?}', attr).group(0)) if attr[:6] == 'MEGA{"' else False
+            re.search(r'{.+?}', attr).group(0)) if attr.startswith('MEGA{"') else False
 
     @staticmethod
     def decrypt_key(data, key):
@@ -285,7 +290,7 @@ class MegaClient(object):
 class MegaCoNz(Hoster):
     __name__ = "MegaCoNz"
     __type__ = "hoster"
-    __version__ = "0.51"
+    __version__ = "0.52"
     __status__ = "testing"
 
     __pattern__ = r'(https?://(?:www\.)?mega(\.co)?\.nz/|mega:|chrome:.+?)#(?P<TYPE>N|)!(?P<ID>[\w^_]+)!(?P<KEY>[\w\-,=]+)(?:###n=(?P<OWNER>[\w^_]+))?'

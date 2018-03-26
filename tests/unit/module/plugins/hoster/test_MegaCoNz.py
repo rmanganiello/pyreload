@@ -56,3 +56,16 @@ class TestMegaCrypto(BaseUnitTestCase):
 
         for value, expected in value_to_expected_tuples:
             self.assertEqual(expected, MegaCrypto.str_to_a32(value))
+
+    def test_cbc_encrypt_and_decrypt(self):
+        key = (1952805748, 1597046784, 1597046784, 1597046784)
+        encrypted_to_decrypted_tuples = (
+            (
+                b'\xfa\xb9\xcf\xc2lcT\xa2\xdf-\xe0\xe0\\[\xfeK\xb1\x98\x19\nZ\xd3\xbe\xfa\t\xfb\xb9\x02\xd3\xbd\x8b\xb5',
+                b'\x16<\xccQ\xa7\xad[\rF\x03\x0e\xd8j\xe0\xee\x89\x9eL\xccH\xa5\x0e\x82\xa7\x9f\xb6\xe0\x05\x9dAy\xb8',
+            ),
+        )
+
+        for encrypted, decrypted in encrypted_to_decrypted_tuples:
+            self.assertEqual(decrypted, MegaCrypto.cbc_decrypt(encrypted, key))
+            self.assertEqual(encrypted, MegaCrypto.cbc_encrypt(decrypted, key))
