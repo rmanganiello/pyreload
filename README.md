@@ -4,7 +4,7 @@
 | --------------------- | -------------- |
 | Build                 | [![Build Status](https://travis-ci.org/pyreload/pyreload.svg?branch=master)](https://travis-ci.org/pyreload/pyreload) |
 | Code quality          | [![Maintainability](https://api.codeclimate.com/v1/badges/dfcf925fdb8be0544c5e/maintainability)](https://codeclimate.com/github/pyreload/pyreload/maintainability) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f146f220efef4a0f84ee1aff0e1a224f)](https://www.codacy.com/app/adamantike/pyreload) |
-| Test coverage         | [![Test Coverage](https://api.codeclimate.com/v1/badges/dfcf925fdb8be0544c5e/test_coverage)](https://codeclimate.com/github/pyreload/pyreload/test_coverage) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/f146f220efef4a0f84ee1aff0e1a224f)](https://www.codacy.com/app/adamantike/pyreload) |
+| Test coverage         | [![Coverage Status](https://coveralls.io/repos/github/pyreload/pyreload/badge.svg?branch=master)](https://coveralls.io/github/pyreload/pyreload?branch=master) [![Test Coverage](https://api.codeclimate.com/v1/badges/dfcf925fdb8be0544c5e/test_coverage)](https://codeclimate.com/github/pyreload/pyreload/test_coverage) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/f146f220efef4a0f84ee1aff0e1a224f)](https://www.codacy.com/app/adamantike/pyreload) |
 | Dependency management | [![Requirements Status](https://requires.io/github/pyreload/pyreload/requirements.svg?branch=master)](https://requires.io/github/pyreload/pyreload/requirements/?branch=master) |
 
 Description
