@@ -8,7 +8,6 @@ from __future__ import (
 )
 
 import mock
-import pytest
 import six
 
 from module.database.DatabaseBackend import DatabaseBackend
@@ -79,7 +78,6 @@ class TestFileMethods(BaseUnitTestCase):
         for key in unicode_keys:
             self.assertIsInstance(link[link_id][key], six.text_type)
 
-    @pytest.mark.skip(reason='Database must return unicode when retrieving objects')
     def test_create_and_retrieve_link_with_bytestring(self):
         package_id = self._create_package()
 

@@ -33,6 +33,7 @@ from module.database import (
     DatabaseBackend,
     style,
 )
+from module.db.models.link import Link
 from module.PullEvents import (
     InsertEvent,
     ReloadAllEvent,
@@ -632,8 +633,15 @@ class FileMethods():
     @style.queue
     def addLink(self, url, name, plugin, package):
         order = self._nextFileOrder(package)
-        self.c.execute('INSERT INTO links(url, name, plugin, package, linkorder) VALUES(?,?,?,?,?)', (url, name, plugin, package, order))
-        return self.c.lastrowid
+
+        link = Link.create(
+            url=url,
+            name=name,
+            plugin=plugin,
+            package=package,
+            linkorder=order,
+        )
+        return link.id
 
     @style.queue
     def addLinks(self, links, package):
@@ -738,33 +746,32 @@ class FileMethods():
         return data
 
     @style.queue
-    def getLinkData(self, id):
+    def getLinkData(self, link_id):
         """get link information as dict"""
-        self.c.execute('SELECT id,url,name,size,status,error,plugin,package,linkorder FROM links WHERE id=?', (str(id), ))
-        data = {}
-        r = self.c.fetchone()
-        if not r:
+        link = Link.get_or_none(Link.id == link_id)
+
+        if not link:
             return None
 
         # Inner import to have _ function in builtins
         # TODO: Remove _ from builtins
         from module.util.constants import FILE_STATUS_MESSAGES
 
-        data[r[0]] = {
-            'id': r[0],
-            'url': r[1],
-            'name': r[2],
-            'size': r[3],
-            'format_size': formatSize(r[3]),
-            'status': r[4],
-            'statusmsg': FILE_STATUS_MESSAGES[r[4]],
-            'error': r[5],
-            'plugin': r[6],
-            'package': r[7],
-            'order': r[8],
+        return {
+            link.id: {
+                'id': link.id,
+                'url': link.url,
+                'name': link.name,
+                'size': link.size,
+                'format_size': formatSize(link.size),
+                'status': link.status,
+                'statusmsg': FILE_STATUS_MESSAGES[link.status],
+                'error': link.error,
+                'plugin': link.plugin,
+                'package': link.package_id,
+                'order': link.linkorder,
+            }
         }
-
-        return data
 
     @style.queue
     def getPackageData(self, id):

@@ -35,6 +35,7 @@ from traceback import print_exc
 
 from six.moves import queue
 
+from module import settings
 from module.util.encoding import smart_bytes
 from module.utils import chmod
 
@@ -138,8 +139,8 @@ class DatabaseBackend(Thread):
         # Explicitly clear isolation level, so open transactions are committed
         # before DDL transactions.
         # See: https://github.com/ghaering/pysqlite/issues/109
-        self.conn = sqlite3.connect("files.db", isolation_level=None)
-        chmod("files.db", 0o600)
+        self.conn = sqlite3.connect(settings.DATABASE_FILENAME, isolation_level=None)
+        chmod(settings.DATABASE_FILENAME, 0o600)
 
         self.c = self.conn.cursor() #compatibility
 
@@ -184,7 +185,7 @@ class DatabaseBackend(Thread):
                 except:
                     print("Filedatabase was deleted due to incompatible version.")
                 remove("files.version")
-                move("files.db", "files.backup.db")
+                move(settings.DATABASE_FILENAME, "files.backup.db")
             f = open("files.version", "wb")
             f.write(smart_bytes(DB_VERSION))
             f.close()
