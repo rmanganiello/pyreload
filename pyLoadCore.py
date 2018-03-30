@@ -94,7 +94,10 @@ from module.singletons import (
     set_request_factory,
     set_thread_manager,
 )
-from module.util.compatibility import IS_WINDOWS
+from module.util.compatibility import (
+    IS_WINDOWS,
+    install_translation,
+)
 from module.util.encoding import (
     smart_bytes,
     smart_text,
@@ -302,7 +305,7 @@ class Core(object):
         gettext.setpaths([join(os.sep, "usr", "share", "pyload", "locale"), None])
         translation = gettext.translation("pyLoad", self.path("locale"),
                                           languages=[self.config['general']['language'],"en"],fallback=True)
-        translation.install(True)
+        install_translation(translation)
 
         self.debug = self.doDebug or self.config['general']['debug_mode']
         self.remote &= self.config['remote']['activated']

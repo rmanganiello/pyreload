@@ -68,7 +68,10 @@ from module.remote.thriftbackend.ThriftClient import (
     ThriftClient,
     WrongLogin,
 )
-from module.util.compatibility import IS_WINDOWS
+from module.util.compatibility import (
+    IS_WINDOWS,
+    install_translation,
+)
 from module.utils import (
     decode,
     formatSize,
@@ -522,9 +525,13 @@ def main():
             config[opt[0]] = opt[1]
 
     gettext.setpaths([join(os.sep, "usr", "share", "pyload", "locale"), None])
-    translation = gettext.translation("pyLoadCli", join(pypath, "locale"),
-        languages=[config["language"],"en"],fallback=True)
-    translation.install(unicode=True)
+    translation = gettext.translation(
+        "pyLoadCli",
+        join(pypath, "locale"),
+        languages=[config["language"], "en"],
+        fallback=True,
+    )
+    install_translation(translation)
 
     interactive = False
     command = None
@@ -548,9 +555,13 @@ def main():
             elif option in ("-l", "--language"):
                 config["language"] = params
                 gettext.setpaths([join(os.sep, "usr", "share", "pyload", "locale"), None])
-                translation = gettext.translation("pyLoadCli", join(pypath, "locale"),
-                    languages=[config["language"],"en"],fallback=True)
-                translation.install(unicode=True)
+                translation = gettext.translation(
+                    "pyLoadCli",
+                    join(pypath, "locale"),
+                    languages=[config["language"], "en"],
+                    fallback=True,
+                )
+                install_translation(translation)
             elif option in ("-h", "--help"):
                 print_help(config)
                 exit()

@@ -35,7 +35,10 @@ from sys import exit
 from six.moves import input
 
 import module.common.pylgettext as gettext
-from module.util.compatibility import IS_WINDOWS
+from module.util.compatibility import (
+    IS_WINDOWS,
+    install_translation,
+)
 from module.util.encoding import smart_text
 from module.utils import get_console_encoding
 
@@ -54,8 +57,13 @@ class Setup():
         langs = self.config.getMetaData("general", "language")["type"].split(";")
         lang = self.ask("Choose your Language / Wähle deine Sprache", "en", langs)
         gettext.setpaths([os.path.join(os.sep, "usr", "share", "pyload", "locale"), None])
-        translation = gettext.translation("setup", os.path.join(self.path, "locale"), languages=[lang, "en"], fallback=True)
-        translation.install(True)
+        translation = gettext.translation(
+            "setup",
+            os.path.join(self.path, "locale"),
+            languages=[lang, "en"],
+            fallback=True,
+        )
+        install_translation(translation)
 
         #Input shorthand for yes
         self.yes = _("y")
@@ -362,9 +370,13 @@ class Setup():
 
     def set_user(self):
         gettext.setpaths([os.path.join(os.sep, "usr", "share", "pyload", "locale"), None])
-        translation = gettext.translation("setup", os.path.join(self.path, "locale"),
-            languages=[self.config["general"]["language"], "en"], fallback=True)
-        translation.install(True)
+        translation = gettext.translation(
+            "setup",
+            os.path.join(self.path, "locale"),
+            languages=[self.config["general"]["language"], "en"],
+            fallback=True,
+        )
+        install_translation(translation)
 
         from module.database import DatabaseBackend
 
@@ -413,9 +425,13 @@ class Setup():
     def conf_path(self, trans=False):
         if trans:
             gettext.setpaths([os.path.join(os.sep, "usr", "share", "pyload", "locale"), None])
-            translation = gettext.translation("setup", os.path.join(self.path, "locale"),
-                languages=[self.config["general"]["language"], "en"], fallback=True)
-            translation.install(True)
+            translation = gettext.translation(
+                "setup",
+                os.path.join(self.path, "locale"),
+                languages=[self.config["general"]["language"], "en"],
+                fallback=True,
+            )
+            install_translation(translation)
 
         print(_("Setting new configpath, current configuration will not be transfered!"))
         path = self.ask(_("Configpath"), os.path.abspath(""))

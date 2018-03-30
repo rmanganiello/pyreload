@@ -37,6 +37,7 @@ sys.path.append(PYLOAD_DIR)
 
 import module.common.pylgettext as gettext
 from module import InitHomeDir
+from module.util.compatibility import install_translation
 from module.util.encoding import smart_text
 from module.utils import decode, formatSize
 
@@ -109,9 +110,13 @@ env.filters["getitem"] = lambda x, y: x.__getitem__(y)
 env.filters["url"] = lambda x: PREFIX + x if x.startswith("/") else x
 
 gettext.setpaths([join(os.sep, "usr", "share", "pyload", "locale"), None])
-translation = gettext.translation("django", join(PYLOAD_DIR, "locale"),
-    languages=[config.get("general", "language"), "en"],fallback=True)
-translation.install(True)
+translation = gettext.translation(
+    "django",
+    join(PYLOAD_DIR, "locale"),
+    languages=[config.get("general", "language"), "en"],
+    fallback=True,
+)
+install_translation(translation)
 env.install_gettext_translations(translation)
 
 from beaker.middleware import SessionMiddleware

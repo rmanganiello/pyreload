@@ -54,6 +54,7 @@ from module.gui.Overview import *
 from module.gui.Queue import *
 from module.gui.XMLParser import *
 from module.lib.rename_process import renameProcess
+from module.util.compatibility import install_translation
 from module.utils import (
     formatSize,
     formatSpeed,
@@ -91,12 +92,14 @@ class main(QObject):
             lang = parser.xml.elementsByTagName("language").item(0).toElement().text()
 
         gettext.setpaths([join(os.sep, "usr", "share", "pyload", "locale"), None])
-        translation = gettext.translation("pyLoadGui", join(pypath, "locale"), languages=[str(lang), "en"], fallback=True)
-        try:
-            translation.install(unicode=sys.stdout.encoding.lower().startswith("utf"))
-        except:
-            translation.install(unicode=False)
+        translation = gettext.translation(
+            "pyLoadGui",
+            join(pypath, "locale"),
+            languages=[str(lang), "en"],
+            fallback=True,
+        )
 
+        install_translation(translation)
 
         self.connector = Connector()
         self.mainWindow = MainWindow(self.connector)
