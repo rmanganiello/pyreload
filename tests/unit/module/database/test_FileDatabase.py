@@ -12,6 +12,7 @@ import six
 
 from module.database.DatabaseBackend import DatabaseBackend
 from module.database.FileDatabase import FileMethods
+from module.db.models.link import Link
 from tests.unit.base import BaseUnitTestCase
 
 
@@ -173,3 +174,52 @@ class TestFileMethods(BaseUnitTestCase):
             unicode_keys = ('url', 'name', 'format_size', 'statusmsg', 'error', 'plugin')
             for key in unicode_keys:
                 self.assertIsInstance(link_information[link_id][key], six.text_type)
+
+    def test_next_file_order(self):
+        package_id = 1
+
+        self.assertEqual(0, self.db._nextFileOrder(package_id))
+
+        Link.create(
+            url='https://www.example.org/download_link?attr=1',
+            package_id=package_id,
+            linkorder=5,
+        )
+        self.assertEqual(6, self.db._nextFileOrder(package_id))
+
+        Link.create(
+            url='https://www.example.org/download_link?attr=1',
+            package_id=package_id,
+            linkorder=100,
+        )
+        self.assertEqual(101, self.db._nextFileOrder(package_id))
+
+        Link.create(
+            url='https://www.example.org/download_link?attr=1',
+            package_id=package_id,
+            linkorder=0,
+        )
+        self.assertEqual(101, self.db._nextFileOrder(package_id))
+
+    def test_next_package_order(self):
+        queue = 1
+
+        self.assertEqual(0, self.db._nextPackageOrder(queue))
+
+        self._create_package(
+            queue=queue,
+            order=5,
+        )
+        self.assertEqual(6, self.db._nextPackageOrder(queue))
+
+        self._create_package(
+            queue=queue,
+            order=100,
+        )
+        self.assertEqual(101, self.db._nextPackageOrder(queue))
+
+        self._create_package(
+            queue=queue,
+            order=1,
+        )
+        self.assertEqual(101, self.db._nextPackageOrder(queue))

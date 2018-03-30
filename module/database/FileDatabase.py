@@ -27,6 +27,7 @@ from __future__ import (
 from threading import RLock
 from time import time
 
+from peewee import fn
 import six
 
 from module.database import (
@@ -34,6 +35,7 @@ from module.database import (
     style,
 )
 from module.db.models.link import Link
+from module.db.models.package import Package
 from module.PullEvents import (
     InsertEvent,
     ReloadAllEvent,
@@ -614,21 +616,23 @@ class FileMethods():
 
     @style.inner
     def _nextPackageOrder(self, queue=0):
-        self.c.execute('SELECT MAX(packageorder) FROM packages WHERE queue=?', (queue,))
-        max = self.c.fetchone()[0]
-        if max is not None:
-            return max + 1
-        else:
-            return 0
+        max_package_order = Package.select(
+            fn.MAX(Package.packageorder),
+        ).where(
+            Package.queue == queue,
+        ).scalar()
+
+        return max_package_order + 1 if max_package_order else 0
 
     @style.inner
     def _nextFileOrder(self, package):
-        self.c.execute('SELECT MAX(linkorder) FROM links WHERE package=?', (package,))
-        max = self.c.fetchone()[0]
-        if max is not None:
-            return max + 1
-        else:
-            return 0
+        max_link_order = Link.select(
+            fn.MAX(Link.linkorder),
+        ).where(
+            Link.package_id == package,
+        ).scalar()
+
+        return max_link_order + 1 if max_link_order else 0
 
     @style.queue
     def addLink(self, url, name, plugin, package):
@@ -638,7 +642,7 @@ class FileMethods():
             url=url,
             name=name,
             plugin=plugin,
-            package=package,
+            package_id=package,
             linkorder=order,
         )
         return link.id
