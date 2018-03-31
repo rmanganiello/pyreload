@@ -5,14 +5,14 @@ from __future__ import (
     unicode_literals,
 )
 
-import unittest
 from logging import Logger
 from mock import patch
 
 from module.network.Browser import Browser
+from tests.unit.base import BaseUnitTestCase
 
 
-class BrowserTestCase(unittest.TestCase):
+class BrowserTestCase(BaseUnitTestCase):
 
     def setUp(self):
         # Patchers

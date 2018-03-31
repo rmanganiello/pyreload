@@ -5,7 +5,6 @@ from __future__ import (
     unicode_literals,
 )
 
-import unittest
 from mock import (
     Mock,
     patch,
@@ -22,9 +21,10 @@ from module.network.HTTPRequest import (
     myurlencode,
 )
 from module.plugins.Plugin import Abort
+from tests.unit.base import BaseUnitTestCase
 
 
-class HTTPRequestCurlOptionsTestCase(unittest.TestCase):
+class HTTPRequestCurlOptionsTestCase(BaseUnitTestCase):
 
     def setUp(self):
         pycurl_patcher = patch('module.network.HTTPRequest.pycurl.Curl')
@@ -131,7 +131,7 @@ class HTTPRequestCurlOptionsTestCase(unittest.TestCase):
         self._assert_curl_options()
 
 
-class HTTPRequestTestCase(unittest.TestCase):
+class HTTPRequestTestCase(BaseUnitTestCase):
 
     def setUp(self):
         pycurl_patcher = patch('module.network.HTTPRequest.pycurl.Curl')

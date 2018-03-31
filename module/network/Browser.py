@@ -17,11 +17,11 @@ from module.network.HTTPRequest import HTTPRequest
 class Browser(object):
     __slots__ = ("log", "options", "bucket", "cj", "_size", "http", "dl")
 
-    def __init__(self, bucket=None, options={}):
+    def __init__(self, bucket=None, options=None):
         self.log = getLogger("log")
 
         # Holds pycurl options
-        self.options = options
+        self.options = options if options is not None else {}
         self.bucket = bucket
 
         # Needs to be setted later
@@ -154,15 +154,3 @@ class Browser(object):
             del self.dl
         if hasattr(self, "cj"):
             del self.cj
-
-
-if __name__ == "__main__":
-    browser = Browser()  # proxies={"socks5": "localhost:5000"})
-    ip = "http://www.whatismyip.com/automation/n09230945.asp"
-    # browser.getPage("http://google.com/search?q=bar")
-    # browser.getPage("https://encrypted.google.com/")
-    # print browser.getPage(ip)
-    # print browser.getRedirectLocation("http://google.com/")
-    # browser.getPage("https://encrypted.google.com/")
-    # browser.getPage("http://google.com/search?q=bar")
-    browser.httpDownload("http://speedtest.netcologne.de/test_10mb.bin", "test_10mb.bin")
