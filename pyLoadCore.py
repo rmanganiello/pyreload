@@ -749,8 +749,8 @@ def main(
     pidfile,
 ):
     # change name to 'pyLoadCore'
-    # from module.lib.rename_process import renameProcess
-    # renameProcess('pyLoadCore')
+    # from setproctitle import setproctitle
+    # setproctitle('pyLoadCore')
     if is_daemon:
         daemon()
     else:

@@ -45,6 +45,7 @@ from threading import (
 from time import sleep
 from traceback import print_exc
 
+from setproctitle import setproctitle
 import six
 from six.moves import (
     configparser,
@@ -60,7 +61,6 @@ from module.cli import (
 )
 from module.cli.printer import *
 from module.lib.Getch import Getch
-from module.lib.rename_process import renameProcess
 from module.remote.thriftbackend.ThriftClient import (
     ConnectionClosed,
     NoConnection,
@@ -91,7 +91,7 @@ class Cli:
         self.command = command
 
         if not self.command:
-            renameProcess('pyLoadCli')
+            setproctitle('pyLoadCli')
             self.getch = Getch()
             self.input = ""
             self.inputline = 0

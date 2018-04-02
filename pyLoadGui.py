@@ -41,6 +41,7 @@ from time import (
 )
 from uuid import uuid4 as uuid  # should be above PyQt imports
 
+from setproctitle import setproctitle
 from six.moves import _thread as thread
 
 import module.common.pylgettext as gettext
@@ -53,7 +54,6 @@ from module.gui.MainWindow import *
 from module.gui.Overview import *
 from module.gui.Queue import *
 from module.gui.XMLParser import *
-from module.lib.rename_process import renameProcess
 from module.util.compatibility import install_translation
 from module.utils import (
     formatSize,
@@ -773,6 +773,6 @@ class Notification(QObject):
             self.tray.showMessage("pyload", body)
 
 if __name__ == "__main__":
-    renameProcess('pyLoadGui')
+    setproctitle('pyLoadGui')
     app = main()
     app.loop()
