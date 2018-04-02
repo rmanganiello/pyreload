@@ -38,38 +38,35 @@ from module.utils import (
     save_join,
 )
 
-from .HTTPChunk import (
+from module.network.HTTPChunk import (
     ChunkInfo,
     HTTPChunk,
 )
-from .HTTPRequest import BadHeader
+from module.network.HTTPRequest import BadHeader
 
 
-class HTTPDownload():
-    """ loads a url http + ftp """
+class HTTPDownload(object):
+    """Loads a url http + ftp."""
 
-    def __init__(self, url, filename, get={}, post={}, referer=None, cj=None, bucket=None,
-                 options={}, progressNotify=None, disposition=False):
+    def __init__(self, url, filename, get=None, post=None, referer=None, cj=None, bucket=None,
+                 options=None, progressNotify=None, disposition=False):
         self.url = url
         # Complete file destination, not only name
         self.filename = filename
-        self.get = get
-        self.post = post
+        self.get = get or {}
+        self.post = post or {}
         self.referer = referer
         # Cookiejar if cookies are needed
         self.cj = cj
         self.bucket = bucket
-        self.options = options
+        self.options = options or {}
         self.disposition = disposition
-        # all arguments
-
+        # All arguments
         self.abort = False
         self.size = 0
         # Will be parsed from content disposition
         self.nameDisposition = None
-
         self.chunks = []
-
         self.log = getLogger("log")
 
         try:
@@ -344,7 +341,7 @@ class HTTPDownload():
         try:
             self.m.remove_handle(chunk.c)
         except pycurl.error as e:
-            self.log.debug("Error removing chunk: %s" % str(e))
+            self.log.debug("Error removing chunk: {0}".format(str(e)))
         finally:
             chunk.close()
 
@@ -361,18 +358,3 @@ class HTTPDownload():
             del self.cj
         if hasattr(self, "info"):
             del self.info
-
-
-if __name__ == "__main__":
-    url = "http://speedtest.netcologne.de/test_100mb.bin"
-
-    from .Bucket import Bucket
-
-    bucket = Bucket()
-    bucket.setRate(200 * 1024)
-    bucket = None
-
-    print("starting")
-
-    dwnld = HTTPDownload(url, "test_100mb.bin", bucket=bucket)
-    dwnld.download(chunks=3, resume=True)
