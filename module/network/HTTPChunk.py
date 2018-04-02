@@ -45,7 +45,7 @@ class WrongFormat(Exception):
     pass
 
 
-class ChunkInfo():
+class ChunkInfo(object):
     def __init__(self, name):
         self.name = smart_text(name)
         self.size = 0
