@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
     @author: RaNaN
 """
 
@@ -44,8 +44,10 @@ class Bucket:
         self.lock.release()
 
     def consumed(self, amount):
-        """ return time the process have to sleep, after consumed specified amount """
-        if self.rate < 10240: return 0 #min. 10kb, may become unresponsive otherwise
+        """Return time the process have to sleep, after consumed specified amount."""
+        # Min. 10kb, may become unresponsive otherwise
+        if self.rate < 10240:
+            return 0
         self.lock.acquire()
 
         self.calc_tokens()
@@ -55,7 +57,6 @@ class Bucket:
             time = -self.tokens/float(self.rate)
         else:
             time = 0
-        
 
         self.lock.release()
         return time

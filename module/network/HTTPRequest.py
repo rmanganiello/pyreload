@@ -79,23 +79,25 @@ unofficial_responses = {
     523: 'Origin Is Unreachable - CloudFlare could not reach the origin server',
     524: 'A Timeout Occurred - CloudFlare did not receive a timely HTTP response',
     525: 'SSL Handshake Failed - CloudFlare could not negotiate a SSL/TLS handshake with the origin server',
-    526: 'Invalid SSL Certificate - CloudFlare could not validate the SSL/TLS certificate that the origin server presented',
+    526: ('Invalid SSL Certificate - CloudFlare could not validate the SSL/TLS certificate '
+          'that the origin server presented'),
     527: 'Railgun Error - CloudFlare requests timeout or failed after the WAN connection has been established',
-    530: 'Site Is Frozen - Used by the Pantheon web platform to indicate a site that has been frozen due to inactivity'}
+    530: 'Site Is Frozen - Used by the Pantheon web platform to indicate a site that has been frozen due to inactivity'
+}
 
 
 class BadHeader(Exception):
     def __init__(self, code, header="", content=""):
         int_code = int(code)
-        Exception.__init__(
-            self, "Bad server response: %s %s" % (
-                code,
-                http_client.responses.get(
-                    int_code,
-                    unofficial_responses.get(int_code, "unknown error code"),
-                ),
-            ),
+        client_response = http_client.responses.get(
+            int_code,
+            unofficial_responses.get(int_code, "unknown error code"),
         )
+        message = "Bad server response: {0} {1}".format(
+            code,
+            client_response,
+        )
+        super(BadHeader, self).__init__(message)
         self.code = int_code
         self.header = header
         self.content = content
@@ -106,16 +108,19 @@ class HTTPRequest(object):
         self.c = pycurl.Curl()
         self.rep = None
 
-        self.cj = cookies #cookiejar
+        # Cookiejar
+        self.cj = cookies
 
         self.lastURL = None
         self.lastEffectiveURL = None
         self.abort = False
-        self.code = 0 # last http code
+        # Last http code
+        self.code = 0
 
         self.header = ""
 
-        self.headers = [] #temporary request header
+        # Temporary request header
+        self.headers = []
 
         self.initHandle()
         self.setInterface(options)
@@ -124,7 +129,6 @@ class HTTPRequest(object):
         self.c.setopt(pycurl.HEADERFUNCTION, self.writeHeader)
 
         self.log = getLogger("log")
-
 
     def initHandle(self):
         """ sets common options to curl handle """
@@ -138,22 +142,28 @@ class HTTPRequest(object):
         self.c.setopt(pycurl.SSL_VERIFYPEER, 0)
         self.c.setopt(pycurl.LOW_SPEED_TIME, 30)
         self.c.setopt(pycurl.LOW_SPEED_LIMIT, 5)
+        # self.c.setopt(pycurl.VERBOSE, 1)
+        self.c.setopt(
+            pycurl.USERAGENT,
+            "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55.0"
+        )
 
-        #self.c.setopt(pycurl.VERBOSE, 1)
-
-        self.c.setopt(pycurl.USERAGENT,
-            "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55.0")
         if pycurl.version_info()[7]:
             self.c.setopt(pycurl.ENCODING, "gzip, deflate")
-        self.c.setopt(pycurl.HTTPHEADER, ["Accept: */*",
-                                          "Accept-Language: en-US,en",
-                                          "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7",
-                                          "Connection: keep-alive",
-                                          "Keep-Alive: 300",
-                                          "Expect:"])
+
+        self.c.setopt(
+            pycurl.HTTPHEADER,
+            [
+                "Accept: */*",
+                "Accept-Language: en-US,en",
+                "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7",
+                "Connection: keep-alive",
+                "Keep-Alive: 300",
+                "Expect:",
+            ]
+        )
 
     def setInterface(self, options):
-
         interface, proxy, ipv6 = options["interface"], options["proxies"], options["ipv6"]
 
         if interface and interface.lower() != "none":
@@ -171,7 +181,10 @@ class HTTPRequest(object):
             self.c.setopt(pycurl.PROXYPORT, proxy["port"])
 
             if proxy["username"]:
-                self.c.setopt(pycurl.PROXYUSERPWD, str("%s:%s" % (proxy["username"], proxy["password"])))
+                self.c.setopt(
+                    pycurl.PROXYUSERPWD,
+                    "{0}:{1}".format(proxy["username"], proxy["password"])
+                )
 
         if ipv6:
             self.c.setopt(pycurl.IPRESOLVE, pycurl.IPRESOLVE_WHATEVER)
@@ -183,7 +196,6 @@ class HTTPRequest(object):
 
         if "timeout" in options:
             self.c.setopt(pycurl.LOW_SPEED_TIME, options["timeout"])
-
 
     def addCookies(self):
         """ put cookies from curl handle to cj """
@@ -209,7 +221,7 @@ class HTTPRequest(object):
 
         if get:
             get = urlencode(get)
-            url = "%s?%s" % (url, get)
+            url = "{0}?{1}".format(url, get)
 
         self.c.setopt(pycurl.URL, url)
         self.c.lastUrl = url
@@ -241,9 +253,22 @@ class HTTPRequest(object):
             self.c.setopt(pycurl.COOKIEJAR, "")
             self.getCookies()
 
-
-    def load(self, url, get={}, post={}, referer=True, cookies=True, just_header=False, multipart=False, decode=False):
+    def load(self,
+             url,
+             get=None,
+             post=None,
+             referer=True,
+             cookies=True,
+             just_header=False,
+             multipart=False,
+             decode=False):
         """ load and returns a given page """
+
+        if get is None:
+            get = {}
+
+        if post is None:
+            post = {}
 
         self.setRequestContext(url, get, post, referer, cookies, multipart)
 
@@ -285,7 +310,7 @@ class HTTPRequest(object):
         """ raise an exceptions on bad headers """
         code = int(self.c.getinfo(pycurl.RESPONSE_CODE))
         if code in bad_headers:
-            #404 will NOT raise an exception
+            # 404 will NOT raise an exception
             raise BadHeader(code, self.header, self.getResponse())
         return code
 
@@ -297,14 +322,13 @@ class HTTPRequest(object):
         """ retrieve response from string io """
         if self.rep is None:
             return ""
-
-        else:
-            return self.rep.getvalue()
+        return self.rep.getvalue()
 
     def decodeResponse(self, rep):
         """ decode with correct encoding, relies on header """
         header = self.header.splitlines()
-        encoding = "utf8" # default encoding
+        # Default encoding
+        encoding = "utf8"
 
         for line in header:
             line = line.lower().replace(" ", "")
@@ -319,14 +343,13 @@ class HTTPRequest(object):
                     encoding = charset[0]
 
         try:
-            #self.log.debug("Decoded %s" % encoding )
             if lookup(encoding).name == 'utf-8' and rep.startswith(smart_text(BOM_UTF8)):
                 encoding = 'utf-8-sig'
 
             decoder = getincrementaldecoder(encoding)("replace")
             rep = decoder.decode(smart_bytes(rep), True)
 
-            #TODO: html_unescape as default
+            # TODO: html_unescape as default
 
         except LookupError:
             self.log.debug("No Decoder foung for %s" % encoding)
@@ -353,7 +376,7 @@ class HTTPRequest(object):
         self.header += smart_text(buf)
 
     def putHeader(self, name, value):
-        self.headers.append("%s: %s" % (name, value))
+        self.headers.append("{0}: {1}".format(name, value))
 
     def clearHeaders(self):
         self.headers = []
@@ -370,8 +393,3 @@ class HTTPRequest(object):
         if hasattr(self, "c"):
             self.c.close()
             del self.c
-
-if __name__ == "__main__":
-    url = "http://pyload.org"
-    c = HTTPRequest()
-    print(c.load(url))

@@ -10,28 +10,30 @@ from __future__ import (
 
 from logging import getLogger
 
-from .HTTPDownload import HTTPDownload
-from .HTTPRequest import HTTPRequest
+from module.network.HTTPDownload import HTTPDownload
+from module.network.HTTPRequest import HTTPRequest
 
 
 class Browser(object):
     __slots__ = ("log", "options", "bucket", "cj", "_size", "http", "dl")
 
-    def __init__(self, bucket=None, options={}):
+    def __init__(self, bucket=None, options=None):
         self.log = getLogger("log")
 
-        self.options = options #holds pycurl options
+        # Holds pycurl options
+        self.options = options if options is not None else {}
         self.bucket = bucket
 
-        self.cj = None # needs to be setted later
+        # Needs to be set later
+        self.cj = None
         self._size = 0
 
         self.renewHTTPRequest()
         self.dl = None
 
-
     def renewHTTPRequest(self):
-        if hasattr(self, "http"): self.http.close()
+        if hasattr(self, "http"):
+            self.http.close()
         self.http = HTTPRequest(self.cj, self.options)
 
     def setLastURL(self, val):
@@ -69,7 +71,8 @@ class Browser(object):
 
     @property
     def percent(self):
-        if not self.size: return 0
+        if not self.size:
+            return 0
         return (self.arrived * 100) / self.size
 
     def clearCookies(self):
@@ -90,8 +93,18 @@ class Browser(object):
                      progressNotify=None, disposition=False):
         """ this can also download ftp """
         self._size = 0
-        self.dl = HTTPDownload(url, filename, get, post, self.lastEffectiveURL if ref else None,
-            self.cj if cookies else None, self.bucket, self.options, progressNotify, disposition)
+        self.dl = HTTPDownload(
+            url,
+            filename,
+            get,
+            post,
+            self.lastEffectiveURL if ref else None,
+            self.cj if cookies else None,
+            self.bucket,
+            self.options,
+            progressNotify,
+            disposition
+        )
         name = self.dl.download(chunks, resume)
         self._size = self.dl.size
 
@@ -113,10 +126,12 @@ class Browser(object):
         :param pwd: string, user:password
         """
         self.options["auth"] = pwd
-        self.renewHTTPRequest() #we need a new request
+        # We need a new request
+        self.renewHTTPRequest()
 
     def removeAuth(self):
-        if "auth" in self.options: del self.options["auth"]
+        if "auth" in self.options:
+            del self.options["auth"]
         self.renewHTTPRequest()
 
     def setOption(self, name, value):
@@ -124,7 +139,8 @@ class Browser(object):
         self.options[name] = value
 
     def deleteOption(self, name):
-        if name in self.options: del self.options[name]
+        if name in self.options:
+            del self.options[name]
 
     def clearHeaders(self):
         self.http.clearHeaders()
@@ -138,15 +154,3 @@ class Browser(object):
             del self.dl
         if hasattr(self, "cj"):
             del self.cj
-
-if __name__ == "__main__":
-    browser = Browser()#proxies={"socks5": "localhost:5000"})
-    ip = "http://www.whatismyip.com/automation/n09230945.asp"
-    #browser.getPage("http://google.com/search?q=bar")
-    #browser.getPage("https://encrypted.google.com/")
-    #print browser.getPage(ip)
-    #print browser.getRedirectLocation("http://google.com/")
-    #browser.getPage("https://encrypted.google.com/")
-    #browser.getPage("http://google.com/search?q=bar")
-
-    browser.httpDownload("http://speedtest.netcologne.de/test_10mb.bin", "test_10mb.bin")
