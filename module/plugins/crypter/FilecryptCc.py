@@ -10,6 +10,7 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
 import binascii
 import re
 
@@ -22,10 +23,12 @@ from module.network.HTTPRequest import (
     HTTPRequest,
 )
 from module.singletons import get_request_factory
+from module.util.encoding import smart_bytes
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..captcha.SolveMedia import SolveMedia
 from ..internal.Crypter import Crypter
+from ..internal.Plugin import Abort
 
 
 class BIGHTTPRequest(HTTPRequest):
@@ -56,7 +59,7 @@ class BIGHTTPRequest(HTTPRequest):
 class FilecryptCc(Crypter):
     __name__ = "FilecryptCc"
     __type__ = "crypter"
-    __version__ = "0.39"
+    __version__ = "0.40"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?filecrypt\.cc/Container/\w+'
@@ -256,7 +259,9 @@ class FilecryptCc(Crypter):
         #Key = key
         #IV = key
         obj = Cryptodome.Cipher.AES.new(key, Cryptodome.Cipher.AES.MODE_CBC, key)
-        text = obj.decrypt(crypted.decode('base64'))
+        text = obj.decrypt(
+            base64.b64decode(smart_bytes(crypted))
+        )
 
         #: Extract links
         text = text.replace("\x00", "").replace("\r", "")

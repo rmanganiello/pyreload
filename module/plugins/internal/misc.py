@@ -10,6 +10,7 @@ from __future__ import (
 )
 
 # import HTMLParser  #@TODO: Use in 0.4.10
+import base64
 import datetime
 import hashlib
 import itertools
@@ -100,31 +101,25 @@ class DB(object):
         self.plugin = plugin
 
     def store(self, key, value):
-        """
-        Saves a value persistently to the database
-        """
-        entry = json.dumps(value, ensure_ascii=False).encode('base64')
+        """Saves a value persistently to the database."""
+        json_value = json.dumps(smart_text(value), ensure_ascii=False)
+        entry = base64.b64encode(smart_bytes(json_value))
         self.plugin.pyload.db.setStorage(self.plugin.classname, key, entry)
 
     def retrieve(self, key=None, default=None):
-        """
-        Retrieves saved value or dict of all saved entries if key is None
-        """
+        """Retrieves saved value or dict of all saved entries if key is None."""
         entry = self.plugin.pyload.db.getStorage(self.plugin.classname, key)
 
-        if key:
-            if entry is None:
-                value = default
-            else:
-                value = json.loads(entry.decode('base64'))
-        else:
-            if not entry:
-                value = default
-            else:
-                value = dict((k, json.loads(v.decode('base64')))
-                             for k, v in value.items())
+        if not entry:
+            return default
 
-        return value
+        if not key:
+            return {
+                _key: json.loads(smart_text(base64.b64decode(_value)))
+                for _key, _value in six.iteritems(entry)
+            }
+
+        return json.loads(smart_text(base64.b64decode(entry)))
 
     def delete(self, key):
         """

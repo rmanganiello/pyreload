@@ -7,10 +7,12 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
 import re
 import time
 
 from module.network.RequestFactory import getURL as get_url
+from module.util.encoding import smart_bytes
 
 from ..captcha.ReCaptcha import ReCaptcha
 from ..internal.SimpleHoster import SimpleHoster
@@ -19,7 +21,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class ShareonlineBiz(SimpleHoster):
     __name__ = "ShareonlineBiz"
     __type__ = "hoster"
-    __version__ = "0.66"
+    __version__ = "0.67"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?(share-online\.biz|egoshare\.com)/(download\.php\?id=|dl/)(?P<ID>\w+)'
@@ -100,7 +102,7 @@ class ShareonlineBiz(SimpleHoster):
         self.check_errors()
 
         res = self.handle_captcha()
-        self.link = res.decode('base64')
+        self.link = base64.b64decode(smart_bytes(res))
 
         if not self.link.startswith("http://"):
             self.error(_("Invalid url"))

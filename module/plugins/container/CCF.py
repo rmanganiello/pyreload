@@ -7,12 +7,14 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
 import re
 
 from six.moves.urllib.request import build_opener
 
 import MultipartPostHandler
 
+from module.util.encoding import smart_bytes
 from ..internal.Container import Container
 from ..internal.misc import (
     encode,
@@ -23,7 +25,7 @@ from ..internal.misc import (
 class CCF(Container):
     __name__ = "CCF"
     __type__ = "container"
-    __version__ = "0.31"
+    __version__ = "0.32"
     __status__ = "testing"
 
     __pattern__ = r'.+\.ccf$'
@@ -52,12 +54,14 @@ class CCF(Container):
             dlc = re.search(
                 r'<dlc>(.+)</dlc>',
                 dlc_content,
-                re.S).group(1).decode('base64')
+                re.S,
+            ).group(1)
+            decoded_dlc = base64.b64decode(smart_bytes(dlc))
 
         except AttributeError:
             self.fail(_("Container is corrupted"))
 
         with open(dlc_file, "w") as tempdlc:
-            tempdlc.write(dlc)
+            tempdlc.write(decoded_dlc)
 
         self.links = [dlc_file]

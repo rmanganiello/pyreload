@@ -7,12 +7,15 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
 import binascii
 import re
 
 import pycurl
 
 import Cryptodome.Cipher.AES
+
+from module.util.encoding import smart_bytes
 
 from ..internal.Crypter import Crypter
 from ..internal.misc import (
@@ -24,7 +27,7 @@ from ..internal.misc import (
 class LinkCryptWs(Crypter):
     __name__ = "LinkCryptWs"
     __type__ = "crypter"
-    __version__ = "0.22"
+    __version__ = "0.23"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?linkcrypt\.ws/(dir|container)/(?P<ID>\w+)'
@@ -324,7 +327,9 @@ class LinkCryptWs(Crypter):
         Key = key
         IV = key
         obj = Cryptodome.Cipher.AES.new(Key, Cryptodome.Cipher.AES.MODE_CBC, IV)
-        text = obj.decrypt(crypted.decode('base64'))
+        text = obj.decrypt(
+            base64.b64decode(smart_bytes(crypted))
+        )
 
         #: Extract links
         text = text.replace("\x00", "").replace("\r", "")

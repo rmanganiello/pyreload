@@ -7,11 +7,13 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
 import binascii
 import re
 
 import Cryptodome.Cipher.AES
 
+from module.util.encoding import smart_bytes
 from ..internal.Container import Container
 from ..internal.misc import encode
 
@@ -19,7 +21,7 @@ from ..internal.misc import encode
 class RSDF(Container):
     __name__ = "RSDF"
     __type__ = "container"
-    __version__ = "0.38"
+    __version__ = "0.39"
     __status__ = "testing"
 
     __pattern__ = r'.+\.rsdf$'
@@ -65,7 +67,5 @@ class RSDF(Container):
             for link in raw_links:
                 if not link:
                     continue
-                link = cipher.decrypt(
-                    link.decode('base64')).replace(
-                    'CCF: ', '')
+                link = cipher.decrypt(base64.b64decode(smart_bytes(link))).replace('CCF: ', '')
                 self.links.append(link)

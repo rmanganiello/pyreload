@@ -7,9 +7,12 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
 import re
 
 from six.moves.urllib.parse import urljoin
+
+from module.util.encoding import smart_bytes
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -17,7 +20,7 @@ from ..internal.SimpleHoster import SimpleHoster
 class FileSharkPl(SimpleHoster):
     __name__ = "FileSharkPl"
     __type__ = "hoster"
-    __version__ = "0.23"
+    __version__ = "0.24"
     __status__ = "testing"
 
     __pattern__ = r'https?://(?:www\.)?fileshark\.pl/pobierz/\d+/\w+'
@@ -112,7 +115,9 @@ class FileSharkPl(SimpleHoster):
             self.retry(msg=_("Captcha image not found"))
 
         inputs['form[captcha]'] = self.captcha.decrypt_image(
-            m.group(1).decode('base64'), input_type='jpeg')
+            base64.b64decode(smart_bytes(m.group(1))),
+            input_type='jpeg',
+        )
         inputs['form[start]'] = ""
 
         self.download(link, post=inputs, disposition=True)

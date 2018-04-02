@@ -7,10 +7,13 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
 import binascii
 import re
 
 import Cryptodome.Cipher.AES
+
+from module.util.encoding import smart_bytes
 
 from ..internal.Crypter import Crypter
 
@@ -18,7 +21,7 @@ from ..internal.Crypter import Crypter
 class ShareLinksBiz(Crypter):
     __name__ = "ShareLinksBiz"
     __type__ = "crypter"
-    __version__ = "1.30"
+    __version__ = "1.31"
     __status__ = "testing"
 
     __pattern__ = r'http://(?:www\.)?(share-links|s2l)\.biz/(?P<ID>_?\w+)'
@@ -81,7 +84,7 @@ class ShareLinksBiz(Crypter):
         if 's2l.biz' in url:
             header = self.load(url, just_header=True)
 
-            if not 'location' in header:
+            if 'location' not in header:
                 self.fail(_("Unable to initialize download"))
             else:
                 url = header.get('location')
@@ -301,11 +304,15 @@ class ShareLinksBiz(Crypter):
         params = res.split(";;")
 
         #: Get jk
-        strlist = list(params[1].decode('base64'))
+        strlist = list(
+            base64.b64decode(smart_bytes(params[1]))
+        )
         jk = "".join(strlist[::-1])
 
         #: Get crypted
-        strlist = list(params[2].decode('base64'))
+        strlist = list(
+            base64.b64decode(smart_bytes(params[2]))
+        )
         crypted = "".join(strlist[::-1])
 
         #: Log and return
@@ -321,7 +328,9 @@ class ShareLinksBiz(Crypter):
         Key = key
         IV = key
         obj = Cryptodome.Cipher.AES.new(Key, Cryptodome.Cipher.AES.MODE_CBC, IV)
-        text = obj.decrypt(crypted.decode('base64'))
+        text = obj.decrypt(
+            base64.b64decode(smart_bytes(crypted))
+        )
 
         #: Extract links
         text = text.replace("\x00", "").replace("\r", "")

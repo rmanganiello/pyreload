@@ -7,22 +7,21 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
 import re
 import xml.dom.minidom
 
 import Cryptodome.Cipher.AES
 
+from module.util.encoding import smart_bytes
 from ..internal.Container import Container
-from ..internal.misc import (
-    decode,
-    encode,
-)
+from ..internal.misc import encode
 
 
 class DLC(Container):
     __name__ = "DLC"
     __type__ = "container"
-    __version__ = "0.33"
+    __version__ = "0.34"
     __status__ = "testing"
 
     __pattern__ = r'(.+\.dlc|[\w\+^_]+==[\w\+^_/]+==)$'
@@ -51,18 +50,21 @@ class DLC(Container):
         data += '=' * (-len(data) % 4)
 
         dlc_key = data[-88:]
-        dlc_data = data[:-88].decode('base64')
+        dlc_data = base64.b64decode(smart_bytes(data[:-88]))
         dlc_content = self.load(self.API_URL % dlc_key)
 
         try:
-            rc = re.search(r'<rc>(.+)</rc>', dlc_content, re.S).group(1).decode('base64')[:16]
+            rc = re.search(r'<rc>(.+)</rc>', dlc_content, re.S).group(1)
+            decoded_rc = base64.b64decode(smart_bytes(rc))[:16]
 
         except AttributeError:
             self.fail(_("Container is corrupted"))
 
-        key = iv = Cryptodome.Cipher.AES.new(self.KEY, Cryptodome.Cipher.AES.MODE_CBC, self.IV).decrypt(rc)
+        key = iv = Cryptodome.Cipher.AES.new(self.KEY, Cryptodome.Cipher.AES.MODE_CBC, self.IV).decrypt(decoded_rc)
 
-        self.data = Cryptodome.Cipher.AES.new(key, Cryptodome.Cipher.AES.MODE_CBC, iv).decrypt(dlc_data).decode('base64')
+        self.data = base64.b64decode(smart_bytes(
+            Cryptodome.Cipher.AES.new(key, Cryptodome.Cipher.AES.MODE_CBC, iv).decrypt(dlc_data)
+        ))
 
         self.packages = [(name or pyfile.name, links, name or pyfile.name)
                          for name, links in self.get_packages()]
@@ -73,9 +75,16 @@ class DLC(Container):
         return self.parse_packages(content)
 
     def parse_packages(self, startNode):
-        return [(decode(node.getAttribute("name")).decode('base64'), self.parse_links(node))
-                for node in startNode.getElementsByTagName("package")]
+        return [
+            (
+                base64.b64decode(smart_bytes(node.getAttribute("name"))),
+                self.parse_links(node),
+            )
+            for node in startNode.getElementsByTagName("package")
+        ]
 
     def parse_links(self, startNode):
-        return [node.getElementsByTagName("url")[0].firstChild.data.decode('base64')
-                for node in startNode.getElementsByTagName("file")]
+        return [
+            base64.b64decode(smart_bytes(node.getElementsByTagName("url")[0].firstChild.data))
+            for node in startNode.getElementsByTagName("file")
+        ]

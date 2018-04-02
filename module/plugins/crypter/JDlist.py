@@ -7,13 +7,17 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
+
+from module.util.encoding import smart_bytes
+
 from ..internal.Crypter import Crypter
 
 
 class JDlist(Crypter):
     __name__ = "JDlist"
     __type__ = "crypter"
-    __version__ = "0.05"
+    __version__ = "0.06"
     __status__ = "testing"
 
     __pattern__ = r'jdlist://(?P<LIST>[\w\+^_]+==)'
@@ -27,4 +31,5 @@ class JDlist(Crypter):
 
     def decrypt(self, pyfile):
         self.links.extend(
-            self.info['pattern']['LIST'].decode('base64').split(','))
+            base64.b64decode(smart_bytes(self.info['pattern']['LIST'])).split(',')
+        )

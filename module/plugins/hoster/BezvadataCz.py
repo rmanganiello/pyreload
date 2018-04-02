@@ -7,7 +7,10 @@ from __future__ import (
     unicode_literals,
 )
 
+import base64
 import re
+
+from module.util.encoding import smart_bytes
 
 from ..internal.SimpleHoster import SimpleHoster
 
@@ -58,7 +61,9 @@ class BezvadataCz(SimpleHoster):
             self.retry_captcha()
 
         inputs['captcha'] = self.captcha.decrypt_image(
-            m.group(1).decode('base64'), input_type='png')
+            base64.b64decode(smart_bytes(m.group(1))),
+            input_type='png',
+        )
 
         #: Download url
         self.data = self.load("http://bezvadata.cz%s" % action, post=inputs)
