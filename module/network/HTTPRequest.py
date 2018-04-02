@@ -89,15 +89,15 @@ unofficial_responses = {
 class BadHeader(Exception):
     def __init__(self, code, header="", content=""):
         int_code = int(code)
-        super(BadHeader, self).__init__(
-            self, "Bad server response: {} {}".format(
-                code,
-                http_client.responses.get(
-                    int_code,
-                    unofficial_responses.get(int_code, "unknown error code"),
-                ),
-            ),
+        client_response = http_client.responses.get(
+            int_code,
+            unofficial_responses.get(int_code, "unknown error code"),
         )
+        message = "Bad server response: {0} {1}".format(
+            code,
+            client_response,
+        )
+        super(BadHeader, self).__init__(message)
         self.code = int_code
         self.header = header
         self.content = content

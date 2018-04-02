@@ -15,21 +15,20 @@ from tests.unit.base import BaseUnitTestCase
 class BrowserTestCase(BaseUnitTestCase):
 
     def setUp(self):
+        super(BrowserTestCase, self).setUp()
         # Patchers
         self.http_request_patcher = patch('module.network.Browser.HTTPRequest')
         self.http_download_patcher = patch('module.network.Browser.HTTPDownload')
         self.cookie_jar_patcher = patch('module.network.CookieJar.CookieJar')
+        self.addCleanup(self.http_request_patcher.stop)
+        self.addCleanup(self.http_download_patcher.stop)
+        self.addCleanup(self.cookie_jar_patcher.stop)
         # Mocks
         self.http_request_mock = self.http_request_patcher.start()
         self.http_download_mock = self.http_download_patcher.start()
         self.cookie_jar_mock = self.cookie_jar_patcher.start()
 
         self.browser = Browser()
-
-    def tearDown(self):
-        self.http_request_patcher.stop()
-        self.http_download_patcher.stop()
-        self.cookie_jar_patcher.stop()
 
     def test_default_properties(self):
         self.assertIsInstance(self.browser.log, Logger)
@@ -53,7 +52,7 @@ class BrowserTestCase(BaseUnitTestCase):
         self.browser.addAuth(expected_password)
 
         self.assertEqual(self.browser.options['auth'], expected_password)
-        self.assertTrue(self.browser.http.close.called)
+        self.assertEqual(self.browser.http.close.call_count, 1)
 
     def test_last_url(self):
         self.assertEqual(self.browser.lastURL, self.browser.http.lastURL)
@@ -111,19 +110,18 @@ class BrowserTestCase(BaseUnitTestCase):
 
         self.assertEqual(self.browser.speed, expected_speed)
 
-    def test_clear_cookies(self):
-        # Without cj
+    def test_clear_cookies_without_cookie_jar(self):
         self.browser.clearCookies()
 
-        self.assertTrue(self.browser.http.clearCookies.called)
+        self.assertEqual(self.browser.http.clearCookies.call_count, 1)
 
-        # With cj
+    def test_clear_cookies_with_cookie_jar(self):
         cj = self.cookie_jar_mock()
         self.browser.cj = cj
         self.browser.clearCookies()
 
         self.assertTrue(cj.clear.called)
-        self.assertTrue(self.browser.http.clearCookies.called)
+        self.assertEqual(self.browser.http.clearCookies.call_count, 1)
 
     def test_clear_referer(self):
         self.browser.clearReferer()
@@ -183,7 +181,7 @@ class BrowserTestCase(BaseUnitTestCase):
     def test_clear_headers(self):
         self.browser.clearHeaders()
 
-        self.assertTrue(self.browser.http.clearHeaders.called)
+        self.assertEqual(self.browser.http.clearHeaders.call_count, 1)
 
     def test_close(self):
         self.browser.close()

@@ -201,7 +201,7 @@ class HTTPDownload():
 
         while 1:
             # Need to create chunks
-            # Will be setted later by first chunk
+            # Will be set later by first chunk
             if not chunksCreated and self.chunkSupport and self.size:
                 if not resume:
                     self.info.setSize(self.size)

@@ -27,6 +27,7 @@ from tests.unit.base import BaseUnitTestCase
 class HTTPRequestCurlOptionsTestCase(BaseUnitTestCase):
 
     def setUp(self):
+        super(HTTPRequestCurlOptionsTestCase, self).setUp()
         pycurl_patcher = patch('module.network.HTTPRequest.pycurl.Curl')
         self.addCleanup(pycurl_patcher.stop)
         pycurl_patcher.start()
@@ -134,6 +135,7 @@ class HTTPRequestCurlOptionsTestCase(BaseUnitTestCase):
 class HTTPRequestTestCase(BaseUnitTestCase):
 
     def setUp(self):
+        super(HTTPRequestTestCase, self).setUp()
         pycurl_patcher = patch('module.network.HTTPRequest.pycurl.Curl')
         set_interface_patcher = patch.object(HTTPRequest, 'setInterface')
         self.addCleanup(pycurl_patcher.stop)
@@ -158,7 +160,7 @@ class HTTPRequestTestCase(BaseUnitTestCase):
         self.http_request.addCookies()
 
         self.http_request.c.getinfo.assert_called_with(pycurl.INFO_COOKIELIST)
-        self.assertTrue(self.http_request.cj.addCookies.called)
+        self.assertEqual(self.http_request.cj.addCookies.call_count, 1)
 
     def test_get_cookies(self):
         mock_cookies = [
@@ -300,12 +302,12 @@ class HTTPRequestTestCase(BaseUnitTestCase):
             False,
         )
         for mock in args:
-            self.assertTrue(mock.called)
+            self.assertEqual(mock.call_count, 1)
         self.http_request.c.setopt.assert_any_call(pycurl.HTTPHEADER, self.http_request.headers)
         self.http_request.c.setopt.assert_any_call(pycurl.POSTFIELDS, "")
         self.http_request.c.getinfo.assert_any_call(pycurl.EFFECTIVE_URL)
-        self.assertTrue(self.http_request.c.perform.called)
-        self.assertTrue(close_rep_mock.called)
+        self.assertEqual(self.http_request.c.perform.call_count, 1)
+        self.assertEqual(close_rep_mock.call_count, 1)
         self.assertEqual(self.http_request.header, "")
 
     @patch.object(HTTPRequest, 'verifyHeader')
@@ -328,7 +330,7 @@ class HTTPRequestTestCase(BaseUnitTestCase):
             False,
         )
         for mock in args:
-            self.assertTrue(mock.called)
+            self.assertEqual(mock.call_count, 1)
         self.http_request.c.setopt.assert_any_call(pycurl.HTTPHEADER, self.http_request.headers)
         self.http_request.c.setopt.assert_any_call(pycurl.POSTFIELDS, "")
         self.http_request.c.setopt.assert_any_call(pycurl.FOLLOWLOCATION, 0)
@@ -336,8 +338,8 @@ class HTTPRequestTestCase(BaseUnitTestCase):
         self.http_request.c.setopt.assert_any_call(pycurl.NOBODY, 1)
         self.http_request.c.setopt.assert_any_call(pycurl.NOBODY, 0)
         self.http_request.c.getinfo.assert_any_call(pycurl.EFFECTIVE_URL)
-        self.assertTrue(self.http_request.c.perform.called)
-        self.assertTrue(close_rep_mock.called)
+        self.assertEqual(self.http_request.c.perform.call_count, 1)
+        self.assertEqual(close_rep_mock.call_count, 1)
         self.assertEqual(self.http_request.header, "")
 
     @patch.object(HTTPRequest, 'decodeResponse', return_value='expected_response')
@@ -362,12 +364,12 @@ class HTTPRequestTestCase(BaseUnitTestCase):
             False,
         )
         for mock in args:
-            self.assertTrue(mock.called)
+            self.assertEqual(mock.call_count, 1)
         self.http_request.c.setopt.assert_any_call(pycurl.HTTPHEADER, self.http_request.headers)
         self.http_request.c.setopt.assert_any_call(pycurl.POSTFIELDS, "")
         self.http_request.c.getinfo.assert_any_call(pycurl.EFFECTIVE_URL)
-        self.assertTrue(self.http_request.c.perform.called)
-        self.assertTrue(close_rep_mock.called)
+        self.assertEqual(self.http_request.c.perform.call_count, 1)
+        self.assertEqual(close_rep_mock.call_count, 1)
         self.assertEqual(self.http_request.header, "")
 
     def test_get_response(self):
@@ -377,7 +379,7 @@ class HTTPRequestTestCase(BaseUnitTestCase):
 
         self.http_request.rep = Mock()
         response = self.http_request.getResponse()
-        self.assertTrue(self.http_request.rep.getvalue.called)
+        self.assertEqual(self.http_request.rep.getvalue.call_count, 1)
 
     @patch.object(HTTPRequest, 'getResponse')
     @patch('module.network.HTTPRequest.open')
@@ -390,10 +392,10 @@ class HTTPRequestTestCase(BaseUnitTestCase):
         self.http_request.rep.tell.return_value = 2000000
         with self.assertRaises(Exception):
             self.http_request.write(expected_text)
-            self.assertTrue(self.http_request.getResponse.called)
+            self.assertEqual(self.http_request.getResponse.call_count, 1)
             open_mock.assert_called_once_with('response.dump', 'wb')
             open_mock.write.assert_called_once_with(expected_response)
-            self.assertTrue(open_mock.close.called)
+            self.assertEqual(open_mock.close.call_count, 1)
             self.assertFalse(self.http_request.write.called)
 
     @patch.object(HTTPRequest, 'getResponse')
@@ -407,7 +409,7 @@ class HTTPRequestTestCase(BaseUnitTestCase):
         self.http_request.rep.tell.return_value = 2000000
         with self.assertRaises(Abort):
             self.http_request.write(expected_text)
-            self.assertTrue(self.http_request.getResponse.called)
+            self.assertEqual(self.http_request.getResponse.call_count, 1)
 
     def test_write(self):
         expected_text = 'some-text'
@@ -441,7 +443,7 @@ class HTTPRequestTestCase(BaseUnitTestCase):
 
         with self.assertRaises(BadHeader):
             self.http_request.verifyHeader()
-            self.assertTrue(get_response_mock.called)
+            self.assertEqual(get_response_mock.call_count, 1)
             self.http_request.c.getinfo.assert_any_call(pycurl.RESPONSE_CODE)
 
     def test_verify_header_without_bad_header(self):
@@ -487,8 +489,8 @@ class HTTPRequestTestCase(BaseUnitTestCase):
 
         self.http_request.close()
 
-        self.assertTrue(rep_close_mock.called)
-        self.assertTrue(c_close_mock.called)
+        self.assertEqual(rep_close_mock.call_count, 1)
+        self.assertEqual(c_close_mock.call_count, 1)
         self.assertFalse(hasattr(self.http_request, 'rep'))
         self.assertFalse(hasattr(self.http_request, 'cj'))
         self.assertFalse(hasattr(self.http_request, 'c'))

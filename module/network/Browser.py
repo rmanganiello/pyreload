@@ -24,7 +24,7 @@ class Browser(object):
         self.options = options if options is not None else {}
         self.bucket = bucket
 
-        # Needs to be setted later
+        # Needs to be set later
         self.cj = None
         self._size = 0
 
