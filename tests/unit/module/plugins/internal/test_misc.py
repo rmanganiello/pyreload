@@ -40,6 +40,16 @@ class TestDb(BaseUnitTestCase):
             b'IntcIm5hbWVcIjogXCJ0ZXN0XCJ9Ig==',
         )
 
+    def test_db_store_object(self):
+        self.db.store('tést_key', {"name": "test"})
+        self.assertEqual(1, self.set_storage_mock.call_count)
+
+        self.set_storage_mock.assert_called_once_with(
+            'BasePlugin',
+            't\xe9st_key',
+            b'eyJuYW1lIjogInRlc3QifQ==',
+        )
+
     def test_db_store_with_bytestring(self):
         self.db.store(b'test_key', b'{"name": "test"}')
         self.assertEqual(1, self.set_storage_mock.call_count)

@@ -102,7 +102,11 @@ class DB(object):
 
     def store(self, key, value):
         """Saves a value persistently to the database."""
-        json_value = json.dumps(smart_text(value), ensure_ascii=False)
+        # We can't dump bytestrings, so cast them to unicode
+        if isinstance(value, six.binary_type):
+            value = smart_text(value)
+
+        json_value = json.dumps(value, ensure_ascii=False)
         entry = base64.b64encode(smart_bytes(json_value))
         self.plugin.pyload.db.setStorage(self.plugin.classname, key, entry)
 
