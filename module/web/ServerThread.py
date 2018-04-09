@@ -66,11 +66,10 @@ class WebServer(threading.Thread):
                 log.warning(_("Of course you need to be familiar with linux and know how to compile software"))
                 self.server = "builtin"
 
-        if IS_WINDOWS:
+        if IS_WINDOWS and self.server != 'flask':
             self.core.log.info(_("Server set to threaded, due to known performance problems on windows."))
             self.core.config['webinterface']['server'] = "threaded"
             self.server = "threaded"
-
 
         if self.server == "fastcgi":
             self.start_fcgi()
@@ -78,6 +77,8 @@ class WebServer(threading.Thread):
             self.start_threaded()
         elif self.server == "lightweight":
             self.start_lightweight()
+        elif self.server == 'flask':
+            self.start_flask()
         else:
             self.start_builtin()
 
@@ -111,6 +112,9 @@ class WebServer(threading.Thread):
 
         self.core.log.info(_("Starting lightweight webserver (bjoern): %(host)s:%(port)d") % {"host": self.host, "port": self.port})
         webinterface.run_lightweight(host=self.host, port=self.port)
+
+    def start_flask(self):
+        webinterface.run_flask(host=self.host, port=self.port)
 
     def quit(self):
         self.running = False

@@ -145,6 +145,18 @@ def run_simple(host="0.0.0.0", port="8000"):
     run(app=web, host=host, port=port, quiet=True)
 
 
+def run_flask(host='0.0.0.0', port='8000'):
+    """Run Flask server."""
+    from autoapp import app
+
+    app.run(
+        host=host,
+        port=port,
+        # FIXME: reloader only works in the main thread. Find a way to run Flask that way
+        use_reloader=False,
+    )
+
+
 def run_lightweight(host="0.0.0.0", port="8000"):
     run(app=web, host=host, port=port, quiet=True, server="bjoern")
 
