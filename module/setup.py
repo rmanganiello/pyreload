@@ -100,7 +100,7 @@ class Setup():
         print(_("When you are ready for system check, hit enter."))
         input()
 
-        basic, ssl, captcha, gui, web, js = self.system_check()
+        basic, ssl, captcha, web, js = self.system_check()
         print("")
 
         if not basic:
@@ -119,7 +119,6 @@ class Setup():
         if self.check_module("Cryptodome"): avail.append(_("container decrypting"))
         if ssl: avail.append(_("ssl connection"))
         if captcha: avail.append(_("automatic captcha decryption"))
-        if gui: avail.append(_("GUI"))
         if web: avail.append(_("Webinterface"))
         if js: avail.append(_("extended Click'N'Load"))
 
@@ -149,11 +148,6 @@ class Setup():
             if not captcha:
                 print(_("** no Captcha OCR Recognition available **"))
                 print(_("Only needed for some hosters and as freeuser."))
-                print("")
-
-            if not gui:
-                print(_("** Gui not available **"))
-                print(_("The Graphical User Interface."))
                 print("")
 
             if not js:
@@ -247,10 +241,6 @@ class Setup():
 
         print("")
 
-        gui = self.check_module("PyQt4")
-        self.print_dep("PyQt4", gui)
-
-        print("")
         jinja = True
 
         try:
@@ -279,14 +269,14 @@ class Setup():
         js = True if JsEngine.ENGINE else False
         self.print_dep(_("JS engine"), js)
 
-        return basic, ssl, captcha, gui, web, js
+        return basic, ssl, captcha, web, js
 
     def conf_basic(self):
         print("")
         print(_("## Basic Setup ##"))
 
         print("")
-        print(_("The following logindata is valid for CLI, GUI and webinterface."))
+        print(_("The following logindata is valid for CLI and webinterface."))
 
         from module.database import DatabaseBackend
 
@@ -298,7 +288,7 @@ class Setup():
         db.shutdown()
 
         print("")
-        print(_("External clients (GUI, CLI or other) need remote access to work over the network."))
+        print(_("External clients (CLI or other) need remote access to work over the network."))
         print(_("However, if you only want to use the webinterface you may disable it to save ram."))
         self.config["remote"]["activated"] = self.ask(_("Enable remote access"), self.yes, bool=True)
 

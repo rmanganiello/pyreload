@@ -174,7 +174,6 @@ class Core(object):
                 print("false")
                 exit(1)
 
-        self.startedInGui = False
         self.running = False
         self.pidfile = kwargs.get('pidfile') or 'pyload.pid'
         self.doDebug = bool(kwargs.get('do_debug'))
